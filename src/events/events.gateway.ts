@@ -21,7 +21,7 @@ export class EventsGateway {
 
   @SubscribeMessage('events')
   findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-    this._logger.log(data);
+    this._logger.debug(data);
     return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
   }
 

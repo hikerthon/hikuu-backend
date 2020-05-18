@@ -8,7 +8,7 @@
 ## Installation
 
 ```bash
-$ npm install
+$ npm install --no-save
 ```
 
 ## Running the app
