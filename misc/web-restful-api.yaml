@@ -1,48 +1,49 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
   title: Web Platform API
   description: API web platform for Hikoo backend server
   version: 1.0.0
-schemes:
-  - http
 paths:
   /allgps:
     get:
-      summary: Returns list of hiker, events, and broadcast.
+      summary: 'Returns list of hiker, events, and broadcast.'
       responses:
         '200':
           description: A JSON array of data location and its info
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  location:
-                    type: string
-                    description: latitude and longitude value
-                  point_type:
-                    type: string
-                    description: map legend information
-                    enum: ['hiker', 'event', 'alert']
-                  event_id:
-                    type: integer
-                    description: event id number
-                  event_type:
-                    type: string
-                    description: event type name
-                    example: Blocked Path
-                  alert_id: 
-                    type: integer
-                    description: alert id number
-                  alert_level:
-                    type: string
-                    description: alert level name
-                    example: WARNING
-                  timestamp:
-                    type: string
-                    description: time creation of the point
+          schema:
+            type: object
+            properties:
+              location:
+                type: string
+                description: latitude and longitude value
+              point_type:
+                type: string
+                description: map legend information
+                enum:
+                  - hiker
+                  - event
+                  - alert
+              event_id:
+                type: integer
+                description: event id number
+              event_type:
+                type: string
+                description: event type name
+                example: Blocked Path
+              alert_id:
+                type: integer
+                description: alert id number
+              alert_level:
+                type: string
+                description: alert level name
+                example: WARNING
+              timestamp:
+                type: string
+                description: time creation of the point
   /events:
     get:
+      tags: 
+        - event
       summary: Return list of event
       produces:
         - application/json
@@ -52,45 +53,49 @@ paths:
           schema:
             type: object
             properties:
-                hike_id:
-                  type: integer
-                  description: id of the hike
-                permit_name:
-                  type: string
-                  description: permit name related to hike
-                location:
-                  type: string
-                  description: latitude and longitude value
-                radius:
-                  type: integer
-                  description: radius event to broadcast in km. Except -1 means to everyone in mountain
-                alert_id: 
-                  type: integer
-                  description: alert id number
-                alert_level:
-                  type: string
-                  description: alert level name
-                  example: WARNING
-                event_id:
-                  type: integer
-                  description: event id number
-                event_type:
-                  type: string
-                  description: event type name
-                  example: Blocked Path
-                event_info:
-                  type: string
-                  description: additional information of the event
-                event_time:
-                  type: string
-                  description: time the event is reported
-                ttl:
-                  type: string
-                  description: time to live before event is obsolete
-                reporter:
-                  type: string
-                  description: id of user who report the event
+              hike_id:
+                type: integer
+                description: id of the hike
+              permit_name:
+                type: string
+                description: permit name related to hike
+              location:
+                type: string
+                description: latitude and longitude value
+              radius:
+                type: integer
+                description: >-
+                  radius event to broadcast in km. Except -1 means to everyone
+                  in mountain
+              alert_id:
+                type: integer
+                description: alert id number
+              alert_level:
+                type: string
+                description: alert level name
+                example: WARNING
+              event_id:
+                type: integer
+                description: event id number
+              event_type:
+                type: string
+                description: event type name
+                example: Blocked Path
+              event_info:
+                type: string
+                description: additional information of the event
+              event_time:
+                type: string
+                description: time the event is reported
+              ttl:
+                type: string
+                description: time to live before event is obsolete
+              reporter:
+                type: string
+                description: id of user who report the event
     post:
+      tags: 
+        - event
       summary: Create a new event
       produces:
         - application/json
@@ -110,8 +115,10 @@ paths:
                 description: latitude and longitude value
               radius:
                 type: integer
-                description: radius event to broadcast in km. Except -1 means to everyone in mountain
-              alert_id: 
+                description: >-
+                  radius event to broadcast in km. Except -1 means to everyone
+                  in mountain
+              alert_id:
                 type: integer
                 description: alert id number
               event_id:
@@ -134,13 +141,15 @@ paths:
           description: Created a new event
   /alerts:
     get:
+      tags: 
+        - alert
       summary: Returns list of alert
       produces:
         - application/json
       responses:
         '200':
           description: A JSON array of alert data
-          schema: 
+          schema:
             type: object
             properties:
               permit_id:
@@ -154,8 +163,10 @@ paths:
                 description: latitude and longitude value
               radius:
                 type: integer
-                description: radius event to broadcast in km. Except [-1] means to everyone in permit_id
-              alert_id: 
+                description: >-
+                  radius event to broadcast in km. Except [-1] means to everyone
+                  in permit_id
+              alert_id:
                 type: integer
                 description: alert id number
               alert_level:
@@ -185,6 +196,8 @@ paths:
                 type: string
                 description: station responsible for the event
     post:
+      tags: 
+        - alert
       summary: Create a new alert
       produces:
         - application/json
@@ -204,8 +217,10 @@ paths:
                 description: latitude and longitude value
               radius:
                 type: integer
-                description: radius event to broadcast in km. Except -1 means to everyone in mountain
-              alert_id: 
+                description: >-
+                  radius event to broadcast in km. Except -1 means to everyone
+                  in mountain
+              alert_id:
                 type: integer
                 description: alert id number
               event_id:
@@ -222,7 +237,9 @@ paths:
                 description: time to live before event is obsolete
               origin_source:
                 type: integer
-                description: origin of the event if this alert is from event reported. CAN BE NULL
+                description: >-
+                  origin of the event if this alert is from event reported. CAN
+                  BE NULL
               creator:
                 type: integer
                 description: id of the station who made the alert
