@@ -38,7 +38,7 @@ paths:
                 description: alert level name
                 example: WARNING
               timestamp:
-                type: string
+                type: integer
                 description: time creation of the point
   /events:
     get:
