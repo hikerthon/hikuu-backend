@@ -4,7 +4,7 @@ import { EventsService } from "./events.service";
 
 export class Events {
     @ApiProperty()
-    hike_id: string;
+    hike_id: number;
   
     @ApiProperty()
     hiker_id: number;
