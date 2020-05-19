@@ -37,6 +37,13 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## API
+```bash
+$ npm run start:dev
+
+$ google-chrome http://localhost:3000/api
+```
+
 ## License
 
   Nest is [MIT licensed](LICENSE).
