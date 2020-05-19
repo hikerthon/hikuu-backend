@@ -26,38 +26,56 @@ CREATE TABLE IF NOT EXISTS stations (
     station_name VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS mountains (
+CREATE TABLE IF NOT EXISTS permits (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    mountain_name VARCHAR(255), 
-    station_jurisdiction INT UNSIGNED, 
-    FOREIGN KEY (station_jurisdiction) REFERENCES stations(id)
+    permit_name VARCHAR(255)
 );
+
+INSERT INTO permits VALUES
+(1, 'Yushan National Park Permit'),
+(2, 'Taroko National Park Permit'),
+(3, 'Shei-Pa National Park Permit');
+
+CREATE TABLE IF NOT EXISTS trails (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    trail_name VARCHAR(255), 
+    permit INT UNSIGNED, 
+    FOREIGN KEY (permit) REFERENCES permits(id)
+);
+
+INSERT INTO trails VALUES
+(1, 'Yushan trails', 1),
+(2, 'Qilai trails', 2),
+(3, 'Zhuilu trails', 2),
+(4, 'Nanhu trails', 2),
+(5, 'Xuejian trails', 3),
+(6, 'Daba trails', 3);
 
 CREATE TABLE IF NOT EXISTS alert_level (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     alert_name VARCHAR(255),
-    alert_ttl TIME,
-    alert_radius DECIMAL(5, 2)
+    alert_ttl TIME, -- default time to live 
+    alert_radius DECIMAL(5, 2) -- default radius in km to notify hiker
 );
 
 INSERT INTO alert_level VALUES
-(1, 'misc', '6:00:00', 3),
-(2, 'info', '9:00:00', 5),
-(3, 'warn', '12:00:00', 7),
-(4, 'sos', '24:00:00', -1);
+(1, 'Information', '6:00:00', 5),
+(2, 'Caution', '12:00:00', 7),
+(3, 'Danger', '24:00:00', 10),
+(4, 'Emergency', '48:00:00', -1);
 
-CREATE TABLE IF NOT EXISTS events (
+CREATE TABLE IF NOT EXISTS event_type (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    event_name VARCHAR(255), -- WILD_ANIMAL, BLOCKED_ROUTE, BROKEN_STRUCTURE ETC
-    event_desc VARCHAR(255),
+    event_type_name VARCHAR(255), -- WILD_ANIMAL, BLOCKED_ROUTE, BROKEN_STRUCTURE ETC
+    event_type_desc VARCHAR(255),
     default_alert INT UNSIGNED, 
     FOREIGN KEY (default_alert) REFERENCES alert_level(id)
 );
 
-INSERT INTO events VALUES
-(1, 'Wild Animal', 'Wild animal on hiking trail', 2),
-(2, 'Item dropped', 'Other hikers belonging that dropped on trail', 1),
-(3, 'Blocked Route', 'Anything that blocking the route', 3),
+INSERT INTO event_type VALUES
+(1, 'Animal', 'Wild/stray animal spotted nearby the trail', 1),
+(2, 'Item Found', 'Item dropped on trail', 1),
+(3, 'Blocked Route', 'Anything that blocking the trail route', 2),
 (4, 'SOS', 'SOS', 4);
 
 CREATE TABLE IF NOT EXISTS hikes (
@@ -66,14 +84,16 @@ CREATE TABLE IF NOT EXISTS hikes (
     request_time DATETIME,
     hike_start DATETIME,
     hike_end DATETIME,
-    mountain_id INT UNSIGNED,
+    permit INT UNSIGNED,
     permit_accepted BOOLEAN,
     accepted_time DATETIME,
     logtime DATETIME,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
-    FOREIGN KEY (mountain_id) REFERENCES mountains(id)
+    FOREIGN KEY (permit) REFERENCES permits(id)
 );
 
+-- track history hold history data of each tracker entry
+-- used for statistic data along with hikes table
 CREATE TABLE IF NOT EXISTS track_history (
     hiker_id INT UNSIGNED, 
     hike_id INT UNSIGNED, 
@@ -91,7 +111,8 @@ CREATE TABLE IF NOT EXISTS track_history (
     INDEX(latpt, lngpt)
 );
 
--- create trigger to upsert to tracker after inserting to track_history
+-- tracker holds current location of every hiker
+-- create trigger to insert to track_history after inserting to tracker
 CREATE TABLE IF NOT EXISTS tracker (
     hiker_id INT UNSIGNED, 
     hike_id INT UNSIGNED, 
@@ -103,31 +124,52 @@ CREATE TABLE IF NOT EXISTS tracker (
     network SMALLINT, 
     elapsed_time TIME, 
     logtime DATETIME,
-    PRIMARY KEY (hike_id, hiker_id), 
+    PRIMARY KEY (hiker_id), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
     INDEX(latpt, lngpt)
 );
 
-CREATE TABLE IF NOT EXISTS broadcast (
+CREATE TABLE IF NOT EXISTS events (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    mountain_id INT UNSIGNED,
-    is_broadcast BOOLEAN, 
-    event_id INT UNSIGNED,
-    alert_id INT UNSIGNED,
+    event_type_id INT UNSIGNED,
+    alert_level_id INT UNSIGNED,
     event_info VARCHAR(255), 
     event_time DATETIME, 
+    hike_id INT UNSIGNED,
     latpt DECIMAL(10, 8), 
     lngpt DECIMAL(11, 8), 
-    radius DECIMAL(5, 2), -- if value = -1, to be broadcasted to everyone in mountain_id
+    radius DECIMAL(5, 2), 
     reporter INT UNSIGNED, 
-    report_time DATETIME,
     ttl TIME,
     is_active BOOLEAN,
     logtime DATETIME, 
-    FOREIGN KEY (mountain_id) REFERENCES mountains(id), 
-    FOREIGN KEY (event_id) REFERENCES events(id),
-    FOREIGN KEY (alert_id) REFERENCES alert_level(id),
+    FOREIGN KEY (event_type_id) REFERENCES event_type(id),
+    FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
+    FOREIGN KEY (hike_id) REFERENCES hikes(id), 
     FOREIGN KEY (reporter) REFERENCES account(id),
+    INDEX(latpt, lngpt)
+);
+
+CREATE TABLE IF NOT EXISTS alerts (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    event_type_id INT UNSIGNED,
+    alert_level_id INT UNSIGNED,
+    event_info VARCHAR(255), 
+    event_time DATETIME, 
+    permit_id INT UNSIGNED,
+    latpt DECIMAL(10, 8), 
+    lngpt DECIMAL(11, 8), 
+    radius DECIMAL(5, 2), -- if value = -1, to be broadcasted to everyone who have the same permit_id
+    creator INT UNSIGNED, 
+    origin_source INT UNSIGNED DEFAULT NULL, -- event_id if alert came from event
+    ttl TIME,
+    is_active BOOLEAN,
+    logtime DATETIME, 
+    FOREIGN KEY (event_type_id) REFERENCES event_type(id),
+    FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
+    FOREIGN KEY (permit_id) REFERENCES permits(id), 
+    FOREIGN KEY (creator) REFERENCES stations(id),
+    FOREIGN KEY (origin_source) REFERENCES events(id),
     INDEX(latpt, lngpt)
 );
