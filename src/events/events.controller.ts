@@ -4,13 +4,13 @@ import { EventsService } from "./events.service";
 
 export class Events {
     @ApiProperty()
-    hike_id: number;
+    hikeId: number;
   
     @ApiProperty()
-    hiker_id: number;
+    hikerId: number;
   
     @ApiProperty()
-    hiker_name: string;
+    hikerName: string;
   
     @ApiProperty()
     location: string;
@@ -19,22 +19,22 @@ export class Events {
     radius: number;
 
     @ApiProperty()
-    alert_id: number;
+    alertId: number;
 
     @ApiProperty()
-    alert_level: string;
+    alertLevel: string;
 
     @ApiProperty()
-    event_id: number;
+    eventId: number;
 
     @ApiProperty()
-    event_type: string;
+    eventType: string;
 
     @ApiProperty()
-    event_info: string;
+    eventInfo: string;
 
     @ApiProperty()
-    event_time: string;
+    eventTime: string;
 
     @ApiProperty()
     ttl: number;

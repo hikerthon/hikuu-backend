@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
+import { HikooResponse } from '../models/hikoo.model';
 
 export class Example {
   @ApiProperty()
@@ -27,8 +28,8 @@ export class ExampleController {
 
   @Post()
   @ApiBody({ type: Example })
-  @ApiResponse({ status: 200, type: Response, description: 'Creates example object.' })
-  newExample(@Body() example: Example): Response {
+  @ApiResponse({ status: 200, type: HikooResponse, description: 'Creates example object.' })
+  newExample(@Body() example: Example): HikooResponse {
     this._logger.debug(example);
     return { success: true };
   }
@@ -36,17 +37,17 @@ export class ExampleController {
   @Put(':id')
   @ApiBody({ type: Example })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, type: Response, description: 'Modify example object.' })
-  modifyExample(@Param('id') id: string, @Body() example: Example): Response {
+  @ApiResponse({ status: 200, type: HikooResponse, description: 'Modify example object.' })
+  modifyExample(@Param('id') id: string, @Body() example: Example): HikooResponse {
     this._logger.debug(example);
     return { success: true };
   }
 
   @Delete(':id')
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: HttpStatus.OK, type: Response, description: 'Delete example object.' })
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: Response, description: 'Failed to delete example object.' })
-  deleteExample(@Param('id') id: string): Response {
+  @ApiResponse({ status: HttpStatus.OK, type: HikooResponse, description: 'Delete example object.' })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: HikooResponse, description: 'Failed to delete example object.' })
+  deleteExample(@Param('id') id: string): HikooResponse {
     if (id === '1') {
       throw new HttpException({ success: false, errorMessage: 'Cannot delete id 1 example' }, HttpStatus.FORBIDDEN);
     }

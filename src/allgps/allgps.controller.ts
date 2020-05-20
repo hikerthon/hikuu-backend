@@ -7,13 +7,13 @@ export class AllGps {
     location: string;
   
     @ApiProperty({ enum: ['Hiker','Event','Alert']})
-    point_type: string;
+    pointType: string;
   
     @ApiProperty()
-    event_id: number;
+    eventId: number;
     
     @ApiProperty()
-    alert_id: number;
+    alertId: number;
 
     @ApiProperty()
     timestamp: number;

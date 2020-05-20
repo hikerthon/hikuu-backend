@@ -1,6 +1,7 @@
-import { ApiResponse, ApiTags, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Logger } from '@nestjs/common';
-import { AlertsService, Alerts } from './alerts.service';
+import { AlertsService } from './alerts.service';
+import { Alerts, CreateAlert } from '../models/alert.model'
 import { HikooResponse } from '../models/hikoo.model';
 
 @ApiTags('alerts')
@@ -17,9 +18,9 @@ export class AlertsController {
     }
 
     @Post()
-    @ApiBody({ type: Alerts })
-    @ApiParam({ name: 'id', type: 'string' })
-    createAlert(@Body() alert: Alerts): HikooResponse {
+    @ApiOperation({ summary: 'Create new Alert' })
+    @ApiResponse({ status: 200, type: HikooResponse })
+    createAlert(@Body() alert: CreateAlert): HikooResponse {
         this._logger.debug(alert);
         return { success: true };
     }
