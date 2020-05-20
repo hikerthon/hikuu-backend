@@ -81,12 +81,13 @@ INSERT INTO event_type VALUES
 CREATE TABLE IF NOT EXISTS hikes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED, 
-    request_time DATETIME,
     hike_start DATETIME,
     hike_end DATETIME,
     permit INT UNSIGNED,
     permit_accepted BOOLEAN,
     accepted_time DATETIME,
+    hike_started BOOLEAN, 
+    hike_finished BOOLEAN, 
     logtime DATETIME,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (permit) REFERENCES permits(id)

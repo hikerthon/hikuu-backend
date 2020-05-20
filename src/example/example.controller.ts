@@ -12,14 +12,6 @@ export class Example {
   e2: number;
 }
 
-export class Response {
-  @ApiProperty()
-  success: boolean;
-
-  @ApiProperty()
-  errorMessage?: string;
-}
-
 @Controller('example')
 export class ExampleController {
 

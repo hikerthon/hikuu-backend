@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
-import { stat } from 'fs';
 
 export class Alerts {
     @ApiProperty()
@@ -16,13 +15,13 @@ export class Alerts {
     radius: number;
 
     @ApiProperty()
-    alertId: number;
+    alertLevelId: number;
 
-    @ApiProperty()
+    @ApiProperty( {required: false} )
     alertLevel: string;
 
     @ApiProperty()
-    eventId: number;
+    eventTypeId: number;
 
     @ApiProperty()
     eventType: string;
@@ -42,23 +41,27 @@ export class Alerts {
     @ApiProperty()
     stationName: string;
 
-    constructor(permitId: number, permitName: string, location: string, radius: number, 
-        alertId: number, alertLevel: string, eventId: number, eventType: string, 
-        eventInfo: string, eventTime: string, ttl: number, stationId: number, stationName: string){
-        this.permitId = permitId;
-        this.permitName = permitName;
-        this.location = location;
-        this.radius = radius;
-        this.alertId = alertId;
-        this.alertLevel = alertLevel;
-        this.eventId = eventId;
-        this.eventType = eventType;
-        this.eventInfo = eventInfo;
-        this.eventTime = eventTime;
-        this.ttl = ttl;
-        this.stationId = stationId;
-        this.stationName = stationName;
-    }
+    constructor(permitId: number, permitName: string, 
+        location: string, radius: number, 
+        alertLevelId: number, alertLevel: string, 
+        eventTypeId: number, eventType: string, 
+        eventInfo: string, eventTime: string, ttl: number, 
+        stationId: number, stationName: string) 
+        {
+            this.permitId = permitId;
+            this.permitName = permitName;
+            this.location = location;
+            this.radius = radius;
+            this.alertLevelId = alertLevelId;
+            this.alertLevel = alertLevel;
+            this.eventTypeId = eventTypeId;
+            this.eventType = eventType;
+            this.eventInfo = eventInfo;
+            this.eventTime = eventTime;
+            this.ttl = ttl;
+            this.stationId = stationId;
+            this.stationName = stationName;
+        }
 }
 
 @Injectable()
