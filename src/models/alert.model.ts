@@ -65,32 +65,32 @@ export class Alerts {
 
 export class CreateAlert {
     @ApiProperty()
-    permitId: number;
+    readonly permitId: number;
 
     @ApiProperty()
-    location: string;
+    readonly location: string;
     
     @ApiProperty()
-    radius: number;
+    readonly radius: number;
 
     @ApiProperty()
-    alertLevelId: number;
+    readonly alertLevelId: number;
 
     @ApiProperty()
-    eventTypeId: number;
+    readonly eventTypeId: number;
 
     @ApiProperty()
-    eventInfo: string;
+    readonly eventInfo: string;
 
     @ApiProperty()
-    eventTime: string;
+    readonly eventTime: string;
 
     @ApiProperty()
-    ttl: number;
+    readonly ttl: number;
     
     @ApiProperty()
-    stationId: number;
+    readonly stationId: number;
 
     @ApiProperty( {required: false} )
-    originEventId: number;
+    readonly originEventId: number;
 }
