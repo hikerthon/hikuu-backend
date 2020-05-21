@@ -90,11 +90,12 @@ CREATE TABLE IF NOT EXISTS hikes (
     guide_name VARCHAR(255), 
     guide_contact VARCHAR(255),
     guide_contact2 VARCHAR(255), 
-    permit_accepted BOOLEAN,
+    permit_accepted ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
     accepted_time DATETIME,
     memo VARCHAR(255), 
-    hike_started BOOLEAN, 
-    hike_finished BOOLEAN, 
+    hike_started BOOLEAN DEFAULT FALSE, 
+    hike_finished BOOLEAN DEFAULT FALSE, 
+    hike_cancelled BOOLEAN DEFAULT FALSE,
     logtime DATETIME,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id)
@@ -167,7 +168,7 @@ CREATE TABLE IF NOT EXISTS events (
 
 CREATE TABLE IF NOT EXISTS event_attachment (
     event_id INT UNSIGNED, 
-    image_path VARCHAR(255),
+    image_path VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS alerts (
@@ -195,5 +196,5 @@ CREATE TABLE IF NOT EXISTS alerts (
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
     alert_id INT UNSIGNED, 
-    image_path VARCHAR(255),
+    image_path VARCHAR(255)
 );
