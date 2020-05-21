@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Injectable } from '@nestjs/common';
 import { Alerts } from '../models/alert.model'
 

@@ -1,24 +1,18 @@
 import { Controller, Logger, Get } from '@nestjs/common';
-import { ApiProperty, ApiResponse } from '@nestjs/swagger';
-
-export class Permit {
-  @ApiProperty()
-  id: number;
-
-  @ApiProperty()
-  permitName: string;
-}
+import { ApiResponse } from '@nestjs/swagger';
+import { PermitView } from '../models/permit.model';
+import { PermitService } from './permit.service';
 
 @Controller('permit')
 export class PermitController {
 
-  constructor(private _logger: Logger) {
+  constructor(private permitSvc: PermitService, private _logger: Logger) {
     _logger.setContext(PermitController.name);
   }
 
   @Get()
-  @ApiResponse({ status: 200, type: Permit, isArray: true, description: 'Get permits.' })
+  @ApiResponse({ status: 200, type: PermitView, isArray: true, description: 'Get permit list' })
   getPermit() {
-    return { id: 0, permitName: 'stub permit'};
+    return this.permitSvc.getFakePermits()
   }
 }

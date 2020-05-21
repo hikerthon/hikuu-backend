@@ -5,10 +5,38 @@ export class PermitView {
     permitId: number;
   
     @ApiProperty()
-    permitName: string;    
+    permitName: string;
+
+    @ApiProperty()
+    trailList: TrailView[]
+
+    constructor(permitId: number, permitName: string, trailList: TrailView[])
+    {
+        this.permitId = permitId;
+        this.permitName = permitName;
+        this.trailList = trailList;
+    }
 }
 
-export class HikingPermitView {
+export class TrailView {
+    @ApiProperty()
+    trailId: number;
+  
+    @ApiProperty()
+    trailName: string;
+
+    @ApiProperty()
+    permitId: number;
+
+    constructor(trailId: number, trailName: string, permitId: number)
+    {
+        this.trailId = trailId;
+        this.trailName = trailName;
+        this.permitId = permitId;
+    }
+}
+
+export class HikingRequestView {
     @ApiProperty()
     hikeId: number;
   
@@ -70,16 +98,9 @@ export class HikingPermitView {
         }
 }
 
-export class CreateHikingPermit {
-    @ApiProperty()
+export class CreateHikingRequest {
     readonly hikerId: number;
-  
-    @ApiProperty()
     readonly hikeStartTime: string;
-  
-    @ApiProperty()
     readonly hikeEndTime: string;
-  
-    @ApiProperty()
     readonly permitId: number;
 }
