@@ -1,20 +1,7 @@
 import { ApiResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { AlertlevelService } from "./alertlevel.service";
-
-export class AlertLevel {
-    @ApiProperty()
-    id: number;
-  
-    @ApiProperty()
-    name: string;
-  
-    @ApiProperty()
-    ttl: number;
-    
-    @ApiProperty()
-    radius: number;
-}
+import { AlertLevel } from '../models/alertlevel.model'
 
 @ApiTags('basic')
 @Controller('alertlevel')
