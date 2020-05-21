@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS account (
     emergency_number VARCHAR(255)
 );
 
+INSERT INTO account VALUES
+(1, 'tonylin', 'iliketopoo', 'Tony', 'Lin', '/selfie/tonylin', '/identity/tonylin', 'M', '2000-01-01', 'Taoyuan, St.Somewhere No.99', 'tonylin@gmail.com', 'Taiwan', 'AB12345', '0965-123-4567', '0965-123-4567', '0965-123-4567', 'Annice', '0965-123-4567'),
+(2, 'tonymadden', 'iliketoeat', 'Tony', 'Madden', '/selfie/tonymadden', '/identity/tonymadden', 'M', '2000-01-01', 'Taipei, St.Arounthere No.88', 'tonymadden@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Rachel Weize', '0965-777-8888');
+
 CREATE TABLE IF NOT EXISTS shelters (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     shelter_name VARCHAR(255),
@@ -32,10 +36,28 @@ CREATE TABLE IF NOT EXISTS shelters (
     lngpt DECIMAL(11, 8)
 );
 
+INSERT INTO shelters VALUES
+(1, 'Paiyun Lodge', 100, 23.4539585,120.9542283),
+(2, 'Yuanfeng Cabin', 15, 23.4539585,120.9542283),
+(3, 'Lele Cabin', 25, 23.5459956,120.9359691),
+(4, 'Heishuitang Cabin', 8, 23.995492,120.7968085),
+(5, 'Chenggong Cabin', 34, 24.1066942,121.2813432),
+(6, 'Chenggong Cabin 2', 10, 24.11616, 121.31881),
+(7, 'Qilai Cabin', 8, 24.1086741,121.3247684),
+(8, 'Yunleng Cabin', 55, 24.39118,121.3505313),
+(9, 'Nanhu Cabin', 40, 24.3531246,121.4308206),
+(10, 'Qika Lodge', 130, 24.3834962,121.2840058),
+(11, 'Sanliujiu Lodge', 106, 24.3843803,121.2699295),
+(12, 'Cuichi Cabin', 12, 24.3853837,121.2228219);
+
 CREATE TABLE IF NOT EXISTS stations (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     station_name VARCHAR(255)
 );
+
+INSERT INTO stations VALUES
+(1, 'HePing Police Station'),
+(2, 'Cheng Gone Police Station');
 
 CREATE TABLE IF NOT EXISTS permits (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -56,11 +78,14 @@ CREATE TABLE IF NOT EXISTS trails (
 
 INSERT INTO trails VALUES
 (1, 'Yushan trails', 1),
-(2, 'Qilai trails', 2),
-(3, 'Zhuilu trails', 2),
-(4, 'Nanhu trails', 2),
-(5, 'Xuejian trails', 3),
-(6, 'Daba trails', 3);
+(2, 'Batonggaun Traversing Trail', 1),
+(3, 'South Section 2 of Central Mountains Trail', 1),
+(4, 'Qilai trails', 2),
+(5, 'Zhuilu trails', 2),
+(6, 'Nanhu trails', 2),
+(7, 'Xuejian trails', 3),
+(8, 'Daba trails', 3),
+(9, 'Shengleng Trail', 3);
 
 CREATE TABLE IF NOT EXISTS alert_level (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -84,7 +109,7 @@ CREATE TABLE IF NOT EXISTS event_type (
 );
 
 INSERT INTO event_type VALUES
-(1, 'Animal', 'Wild/stray animal spotted nearby the trail', 1),
+(1, 'Wild Animal', 'Wild/stray animal spotted nearby the trail', 1),
 (2, 'Item Found', 'Item dropped on trail', 1),
 (3, 'Blocked Route', 'Anything that blocking the trail route', 2),
 (4, 'SOS', 'SOS', 4);
@@ -109,12 +134,19 @@ CREATE TABLE IF NOT EXISTS hikes (
     FOREIGN KEY (permit_id) REFERENCES permits(id)
 );
 
+INSERT INTO hikes VALUES
+(1, 1, '2020-06-05 07:00', '2020-06-07 17:00', 1, 'Chuck Noris', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-21 21:22:23', 'Chuck good', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
+(2, 2, '2020-06-05 07:00', '2020-06-07 17:00', 2, 'Rambo', '0965-999-9999', '0965-888-8888', 'PENDING', '2020-05-21 21:22:23', 'Rambo good', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
+(3, 1, '2020-06-05 07:00', '2020-06-07 17:00', 3, 'Stephen Chow', '0965-999-9999', '0965-888-8888', 'REJECTED', '2020-05-21 21:22:23', 'Stephen Chow no good', FALSE, FALSE, FALSE, '2020-05-20 08:00');
+
 CREATE TABLE IF NOT EXISTS hike_destination (
     hike_id INT UNSIGNED, 
     trail_id INT UNSIGNED, 
     FOREIGN KEY (trail_id) REFERENCES trails(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
+
+INSERT INTO hike_destination VALUES(1, 1),(1, 2),(2, 1),(2, 2),(3, 1),(3, 2);
 
 -- track history hold history data of each tracker entry
 -- used for statistic data along with hikes table
@@ -201,6 +233,9 @@ CREATE TABLE IF NOT EXISTS alerts (
     FOREIGN KEY (origin_source) REFERENCES events(id),
     INDEX(latpt, lngpt)
 );
+
+INSERT INTO alerts VALUES
+(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00', 1, 23.468818, 120.954489, 3, 1, NULL, '3:00:00', FALSE, '2020-05-23-16:00');
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
     alert_id INT UNSIGNED, 
