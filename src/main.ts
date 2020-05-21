@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { MobileappModule } from './mobile/mobileapp.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,8 @@ async function bootstrap() {
     .build();
   const mDocument = SwaggerModule.createDocument(mobileApp, mOptions);
   SwaggerModule.setup('api', mobileApp, mDocument);
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
   await mobileApp.listen(3001)

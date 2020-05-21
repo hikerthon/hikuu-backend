@@ -1,15 +1,19 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
 import { HikooResponse } from '../models/hikoo.model';
+import { IsEmail, IsUUID, IsDefined } from 'class-validator';
 
 export class Example {
-  @ApiProperty()
+  @ApiProperty({ format: 'uuid' })
+  @IsUUID()
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ minLength: 10, format: 'email' })
+  @IsEmail()
   e1: string;
 
   @ApiProperty()
+  @IsDefined()
   e2: number;
 }
 
