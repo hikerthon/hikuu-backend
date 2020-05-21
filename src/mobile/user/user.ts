@@ -27,4 +27,13 @@ export class User {
 
   @ApiProperty()
   emergencyContactNumber: string;
+
+  @ApiProperty()
+  firstName: string;
+
+  @ApiProperty()
+  lastName: string;
+
+  @ApiProperty()
+  satellitePhoneNumber: string;
 }

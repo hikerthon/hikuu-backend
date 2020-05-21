@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Location } from './location';
+import { Location } from '../../models/location.model';
 import { LocationService } from './location.service';
 
 @ApiTags('location')

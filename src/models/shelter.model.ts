@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class Location {
+export class Shelter {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  name: string;
+
   @ApiProperty()
   lat: string;
 

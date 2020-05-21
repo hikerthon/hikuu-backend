@@ -5,10 +5,14 @@ import { LocationModule } from './location/location.module';
 import { MountainpermitModule } from './mountainpermit/mountainpermit.module';
 import { SosModule } from './sos/sos.module';
 import { UserModule } from './user/user.module';
+import { ShelterController } from './shelter/shelter.controller';
+import { ShelterService } from './shelter/shelter.service';
 
 
 @Module({
   imports: [AlertModule, EventModule, LocationModule, MountainpermitModule, SosModule, UserModule,],
+  controllers: [ShelterController],
+  providers: [ShelterService],
 })
 export class MobileappModule { }
 

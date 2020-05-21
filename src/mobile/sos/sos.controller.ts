@@ -1,5 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { SOS } from './sos'
+import { SOS } from '../../models/sos.model';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SosService } from './sos.service';
 
