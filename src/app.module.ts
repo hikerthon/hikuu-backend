@@ -15,10 +15,37 @@ import { PermitModule } from './permit/permit.module';
 import { TrailsController } from './trails/trails.controller';
 import { TrailsService } from './trails/trails.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), EventsModule, ExampleModule, PermitModule],
-  controllers: [AppController, AllgpsController, EventtypeController, AlertlevelController, AlertsController, TrailsController],
-  providers: [Logger, AppService, AllgpsService, EventtypeService, AlertlevelService, AlertsService, TrailsService],
+  imports: [
+    TypeOrmModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static/socketio'),
+    }),
+    EventsModule,
+    ExampleModule,
+    PermitModule
+  ],
+  controllers: [
+    AppController,
+    AllgpsController,
+    EventtypeController,
+    AlertlevelController,
+    AlertsController,
+    TrailsController
+  ],
+  providers: [
+    Logger,
+    AppService,
+    AllgpsService,
+    EventtypeService,
+    AlertlevelService,
+    AlertsService,
+    TrailsService,
+    EventsGateway]
+  ,
 })
-export class AppModule {}
+export class AppModule { }

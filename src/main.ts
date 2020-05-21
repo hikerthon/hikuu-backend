@@ -27,6 +27,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', mobileApp, mDocument);
 
   app.useGlobalPipes(new ValidationPipe());
+  mobileApp.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
   await mobileApp.listen(3001)

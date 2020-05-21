@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
 import { HikooResponse } from '../models/hikoo.model';
-import { IsEmail, IsUUID, IsDefined } from 'class-validator';
+import { IsEmail, IsUUID, IsDefined, Max, IsOptional } from 'class-validator';
+import { EventsGateway } from 'src/events/events.gateway';
 
 export class Example {
   @ApiProperty({ format: 'uuid' })
@@ -12,15 +13,19 @@ export class Example {
   @IsEmail()
   e1: string;
 
-  @ApiProperty()
+  @ApiProperty({ maximum: 10 })
   @IsDefined()
+  @Max(10)
   e2: number;
 }
 
 @Controller('example')
 export class ExampleController {
 
-  constructor(private _logger: Logger) {
+  constructor(
+    private _logger: Logger,
+    private _eventGateway: EventsGateway
+  ) {
     _logger.setContext(ExampleController.name);
   }
 
@@ -35,6 +40,7 @@ export class ExampleController {
   @ApiResponse({ status: 200, type: HikooResponse, description: 'Creates example object.' })
   newExample(@Body() example: Example): HikooResponse {
     this._logger.debug(example);
+    this._eventGateway.newTest('fuck');
     return { success: true };
   }
 

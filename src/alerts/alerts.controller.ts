@@ -13,7 +13,7 @@ export class AlertsController {
 
     @Get()
     @ApiResponse({ status: 200, type: Alerts, isArray: true, description: 'Return list of alert' })
-    getAllAlert() {
+    getAllAlert(): Alerts[] {
         return this.alertSvc.getFakeAlerts();
     }
 

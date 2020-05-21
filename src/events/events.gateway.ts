@@ -29,4 +29,12 @@ export class EventsGateway {
   async identity(@MessageBody() data: number): Promise<number> {
     return data;
   }
+
+  // newEvent(e: Event) {
+
+  // }
+
+  newTest(message: string): void {
+    this.server.emit('test', message);
+  }
 }
