@@ -9,12 +9,15 @@ CREATE TABLE IF NOT EXISTS account (
     userpwd VARCHAR(255),
     first_name VARCHAR(255), 
     last_name VARCHAR(255),
+    selfie_path VARCHAR(255), 
+    identity_path VARCHAR(255), 
     gender ENUM('M', 'F'), 
     dob DATE, 
     addr VARCHAR(255), 
     email VARCHAR(255), 
     nationality VARCHAR(255), 
     id_number VARCHAR(255),
+    home_number VARCHAR(255), 
     mobile_number VARCHAR(255), 
     satellite_number VARCHAR(255), 
     emergency_contact VARCHAR(255), 
@@ -83,14 +86,25 @@ CREATE TABLE IF NOT EXISTS hikes (
     hiker_id INT UNSIGNED, 
     hike_start DATETIME,
     hike_end DATETIME,
-    permit INT UNSIGNED,
+    permit_id INT UNSIGNED,
+    guide_name VARCHAR(255), 
+    guide_contact VARCHAR(255),
+    guide_contact2 VARCHAR(255), 
     permit_accepted BOOLEAN,
     accepted_time DATETIME,
+    memo VARCHAR(255), 
     hike_started BOOLEAN, 
     hike_finished BOOLEAN, 
     logtime DATETIME,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
-    FOREIGN KEY (permit) REFERENCES permits(id)
+    FOREIGN KEY (permit_id) REFERENCES permits(id)
+);
+
+CREATE TABLE IF NOT EXISTS hike_destination (
+    hike_id INT UNSIGNED, 
+    trail_id INT UNSIGNED, 
+    FOREIGN KEY (trail_id) REFERENCES trails(id),
+    FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
 -- track history hold history data of each tracker entry
@@ -142,14 +156,18 @@ CREATE TABLE IF NOT EXISTS events (
     lngpt DECIMAL(11, 8), 
     radius DECIMAL(5, 2), 
     reporter INT UNSIGNED, 
-    ttl TIME,
-    is_active BOOLEAN,
+    stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD'),
     logtime DATETIME, 
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id), 
     FOREIGN KEY (reporter) REFERENCES account(id),
     INDEX(latpt, lngpt)
+);
+
+CREATE TABLE IF NOT EXISTS event_attachment (
+    event_id INT UNSIGNED, 
+    image_path VARCHAR(255),
 );
 
 CREATE TABLE IF NOT EXISTS alerts (
@@ -173,4 +191,9 @@ CREATE TABLE IF NOT EXISTS alerts (
     FOREIGN KEY (creator) REFERENCES stations(id),
     FOREIGN KEY (origin_source) REFERENCES events(id),
     INDEX(latpt, lngpt)
+);
+
+CREATE TABLE IF NOT EXISTS alert_attachment (
+    alert_id INT UNSIGNED, 
+    image_path VARCHAR(255),
 );
