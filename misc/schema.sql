@@ -24,6 +24,14 @@ CREATE TABLE IF NOT EXISTS account (
     emergency_number VARCHAR(255)
 );
 
+CREATE TABLE IF NOT EXISTS shelters (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    shelter_name VARCHAR(255),
+    capacity SMALLINT,
+    latpt DECIMAL(10, 8), 
+    lngpt DECIMAL(11, 8)
+);
+
 CREATE TABLE IF NOT EXISTS stations (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     station_name VARCHAR(255)
