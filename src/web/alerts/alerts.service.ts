@@ -11,4 +11,8 @@ export class AlertsService {
     getFakeAlerts() {
         return this.alerts
     }
+
+    getFakeAllAlertCount() {
+        return 10;
+    }
 }
