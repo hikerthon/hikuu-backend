@@ -1,7 +1,7 @@
 import { ApiResponse, ApiBody, ApiProperty, ApiParam, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { Controller, Get, HttpStatus, Logger, Param } from '@nestjs/common';
 import { EventsService } from "./events.service";
-import { Event } from '../../models/event.model'
+import { Event } from '../../share/models/event.model'
 
 @ApiTags('events')
 @Controller('events')

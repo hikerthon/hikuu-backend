@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Location } from '../../models/location.model';
+import { Location } from '../../share//models/location.model';
 
 @Injectable()
 export class LocationService {

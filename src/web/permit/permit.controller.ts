@@ -2,8 +2,6 @@ import { Controller, Logger, Get, Put, Param, Body, Req, Query} from '@nestjs/co
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PermitView, DataTypeRole } from '../../models/permit.model';
 import { PermitService } from './permit.service';
-import { HikooResponse } from '../../models/hikoo.model';
-import { Example } from '../../example/example.controller';
 
 @ApiTags('permit')
 @Controller('permit')

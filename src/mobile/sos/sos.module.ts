@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { SosService } from './sos.service';
 import { SosController } from './sos.controller';
 
 @Module({
   controllers: [SosController],
-  providers: [SosService],
+  providers: [Logger, SosService],
 })
 export class SosModule { }

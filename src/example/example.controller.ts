@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
-import { HikooResponse } from '../models/hikoo.model';
+import { HikooResponse } from '../share/models/hikoo.model';
 import { IsEmail, IsUUID, IsDefined, Max, IsOptional } from 'class-validator';
 import { EventsGateway } from 'src/web/events/events.gateway';
 

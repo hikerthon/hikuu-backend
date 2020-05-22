@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EventStatus } from '../../models/event.model';
+import { EventStatus } from '../../share/models/event.model';
 
 @Injectable()
 export class EventsService {

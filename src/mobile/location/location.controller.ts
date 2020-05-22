@@ -1,7 +1,7 @@
 import { Controller, Post, Logger, Body } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiBody, ApiOperation } from '@nestjs/swagger';
-import { HikooResponse } from '../../models/hikoo.model';
-import { Location } from '../../models/location.model';
+import { HikooResponse } from '../../share/models/hikoo.model';
+import { Location } from '../../share/models/location.model';
 import { LocationService } from './location.service';
 
 @ApiTags('location')

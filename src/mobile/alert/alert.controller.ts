@@ -1,13 +1,12 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
-import { Alerts } from '../../models/alert.model';
+import { Alerts } from '../../share/models/alert.model';
 import { AlertService } from './alert.service'
 
 
 @ApiTags('alert')
 @Controller('alert')
 export class AlertController {
-
   constructor(private srv: AlertService, private _logger: Logger) {
     _logger.setContext(AlertController.name);
   }
