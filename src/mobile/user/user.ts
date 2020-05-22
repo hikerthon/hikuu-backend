@@ -36,4 +36,7 @@ export class User {
 
   @ApiProperty()
   satellitePhoneNumber: string;
+
+  @ApiProperty()
+  address: string;
 }

@@ -7,7 +7,6 @@ import { AlertService } from './alert.service'
 @ApiTags('alert')
 @Controller('alert')
 export class AlertController {
-
   constructor(private srv: AlertService, private _logger: Logger) {
     _logger.setContext(AlertController.name);
   }
