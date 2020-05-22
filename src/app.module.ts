@@ -15,10 +15,11 @@ import { PermitModule } from './permit/permit.module';
 import { TrailsController } from './trails/trails.controller';
 import { TrailsService } from './trails/trails.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EventtypeModule } from './eventtype/eventtype.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), EventsModule, ExampleModule, PermitModule],
-  controllers: [AppController, AllgpsController, EventtypeController, AlertlevelController, AlertsController, TrailsController],
-  providers: [Logger, AppService, AllgpsService, EventtypeService, AlertlevelService, AlertsService, TrailsService],
+  imports: [TypeOrmModule.forRoot(), EventsModule, ExampleModule, PermitModule, EventtypeModule],
+  controllers: [AppController, AllgpsController, AlertlevelController, AlertsController, TrailsController],
+  providers: [Logger, AppService, AllgpsService, AlertlevelService, AlertsService, TrailsService],
 })
 export class AppModule {}

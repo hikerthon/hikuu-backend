@@ -90,15 +90,15 @@ INSERT INTO trails VALUES
 CREATE TABLE IF NOT EXISTS alert_level (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     alert_name VARCHAR(255),
-    alert_ttl TIME, -- default time to live 
+    alert_ttl TINYINT UNSIGNED, -- default time to live in hour
     alert_radius DECIMAL(5, 2) -- default radius in km to notify hiker
 );
 
 INSERT INTO alert_level VALUES
-(1, 'Information', '6:00:00', 5),
-(2, 'Caution', '12:00:00', 7),
-(3, 'Danger', '24:00:00', 10),
-(4, 'Emergency', '48:00:00', -1);
+(1, 'Information', 6, 5),
+(2, 'Caution', 12, 7),
+(3, 'Danger', 24, 10),
+(4, 'Emergency', 48, -1);
 
 CREATE TABLE IF NOT EXISTS event_type (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS hikes (
     hike_started BOOLEAN DEFAULT FALSE, 
     hike_finished BOOLEAN DEFAULT FALSE, 
     hike_cancelled BOOLEAN DEFAULT FALSE,
-    logtime DATETIME,
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id)
 );
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS track_history (
     battery TINYINT, 
     network SMALLINT, 
     elapsed_time TIME, 
-    logtime DATETIME, 
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (hike_id, hiker_id, record_time), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS tracker (
     battery TINYINT, 
     network SMALLINT, 
     elapsed_time TIME, 
-    logtime DATETIME,
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (hiker_id), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS events (
     radius DECIMAL(5, 2), 
     reporter INT UNSIGNED, 
     stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD'),
-    logtime DATETIME, 
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id), 
@@ -217,15 +217,14 @@ CREATE TABLE IF NOT EXISTS alerts (
     alert_level_id INT UNSIGNED,
     event_info VARCHAR(255), 
     event_time DATETIME, 
+    event_end DATETIME, -- the time alert will not be shown up again
     permit_id INT UNSIGNED,
     latpt DECIMAL(10, 8), 
     lngpt DECIMAL(11, 8), 
     radius DECIMAL(5, 2), -- if value = -1, to be broadcasted to everyone who have the same permit_id
     creator INT UNSIGNED, 
     origin_source INT UNSIGNED DEFAULT NULL, -- event_id if alert came from event
-    ttl TIME,
-    is_active BOOLEAN,
-    logtime DATETIME, 
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id), 
@@ -235,7 +234,7 @@ CREATE TABLE IF NOT EXISTS alerts (
 );
 
 INSERT INTO alerts VALUES
-(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00', 1, 23.468818, 120.954489, 3, 1, NULL, '3:00:00', FALSE, '2020-05-23-16:00');
+(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00', '2020-05-23 17:00', 1, 23.468818, 120.954489, 3, 1, NULL, '2020-05-23-16:00');
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
     alert_id INT UNSIGNED, 

@@ -1,20 +1,7 @@
-import { ApiResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { EventtypeService } from "./eventtype.service";
-
-export class EventType {
-    @ApiProperty()
-    id: number;
-  
-    @ApiProperty()
-    name: string;
-  
-    @ApiProperty()
-    description: string;
-    
-    @ApiProperty()
-    defAlert: number;
-}
+import { EventTypeDto } from './dto/eventtype.dto'
 
 @ApiTags('basic')
 @Controller('eventtype')
@@ -22,9 +9,9 @@ export class EventtypeController {
     constructor(private etSvc: EventtypeService) {}
 
     @Get()
-    @ApiResponse({ status: 200, type: EventType, isArray: true, description: 'Returns all event types' })
+    @ApiResponse({ status: 200, type: EventTypeDto, isArray: true, description: 'Returns all event types' })
     getAlertLevels() {
-        return this.etSvc.getEventTypes();
+        return this.etSvc.getAllEventTypes();
     }
 
 }

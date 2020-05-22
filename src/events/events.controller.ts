@@ -1,4 +1,4 @@
-import { ApiResponse, ApiBody, ApiProperty, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { EventsService } from "./events.service";
 
