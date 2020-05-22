@@ -3,16 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EventsModule } from './web/events/events.module';
 import { ExampleModule } from './example/example.module';
-import { AllgpsService } from './web/allgps/allgps.service';
-import { AllgpsController } from './web/allgps/allgps.controller';
+import { AlertlevelModule } from './web/alertlevel/alertlevel.module'
+import { AlertsModule } from './web/alerts/alerts.module';
+import { AllgpsModule } from './web/allgps/allgps.module';
 import { EventtypeModule } from './web/eventtype/eventtype.module';
-import { AlertlevelService } from './web/alertlevel/alertlevel.service';
-import { AlertlevelController } from './web/alertlevel/alertlevel.controller';
-import { AlertsService } from './web/alerts/alerts.service';
-import { AlertsController } from './web/alerts/alerts.controller';
 import { PermitModule } from './web/permit/permit.module';
-import { TrailsController } from './web/trails/trails.controller';
-import { TrailsService } from './web/trails/trails.service';
+import { TrailsModule } from './web/trails/trails.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -27,23 +23,19 @@ import { EventsGateway } from './web/events/events.gateway';
     EventsModule,
     EventtypeModule,
     ExampleModule,
-    PermitModule
+    PermitModule,
+    AlertlevelModule,
+    AlertsModule,
+    AllgpsModule,
+    TrailsModule
   ],
   controllers: [
     AppController,
-    AllgpsController,
-    AlertlevelController,
-    AlertsController,
-    TrailsController
   ],
   providers: [
     Logger,
-    AppService,
-    AllgpsService,
-    AlertlevelService,
-    AlertsService,
-    TrailsService,
-    EventsGateway]
+    AppService
+  ]
   ,
 })
 export class AppModule { }
