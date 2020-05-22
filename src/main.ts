@@ -4,9 +4,8 @@ import { AppModule } from './app.module';
 import { MobileappModule } from './mobile/mobileapp.module';
 import { ValidationPipe } from '@nestjs/common';
 
-async function bootstrap() {
+async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
-  const mobileApp = await NestFactory.create(MobileappModule);
 
   const options = new DocumentBuilder()
     .setTitle('Hikoo')
@@ -17,6 +16,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
+  app.useGlobalPipes(new ValidationPipe());
+
+  await app.listen(3000);
+}
+
+async function bootstrapMobile() {
+  const mobileApp = await NestFactory.create(MobileappModule);
   const mOptions = new DocumentBuilder()
     .setTitle('Hikoo Mobile')
     .setDescription('Hikoo Mobile API')
@@ -26,9 +32,14 @@ async function bootstrap() {
   const mDocument = SwaggerModule.createDocument(mobileApp, mOptions);
   SwaggerModule.setup('api', mobileApp, mDocument);
 
-  app.useGlobalPipes(new ValidationPipe());
+  mobileApp.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3000);
-  await mobileApp.listen(3001)
+  await mobileApp.listen(3001);
 }
+
+async function bootstrap() {
+  await bootstrapApp();
+  await bootstrapMobile();
+}
+
 bootstrap();

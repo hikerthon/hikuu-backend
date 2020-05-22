@@ -1,16 +1,26 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Location } from './location';
+import { Controller, Post, Logger, Body } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { HikooResponse } from '../../share/models/hikoo.model';
+import { Location } from '../../share/models/location.model';
 import { LocationService } from './location.service';
 
 @ApiTags('location')
 @Controller('location')
 export class LocationController {
-  constructor(private srv: LocationService) { }
+  constructor(private srv: LocationService, private _logger: Logger) {
+    _logger.setContext(LocationController.name);
+  }
 
-  @Get()
-  @ApiResponse({ status: 200, type: Location, isArray: false, description: 'Return user location' })
-  getLocation() {
-    this.srv.getLocation();
+  @Post()
+  @ApiOperation({ summary: 'Send hiker location to backend server.' })
+  @ApiBody({ type: Location })
+  @ApiResponse({ status: 200, type: Location, isArray: false, description: 'Send hiker location successfully' })
+  sendLocation(@Body() location: Location): HikooResponse {
+    this._logger.debug(location);
+    if (this.srv.sendLocation(location)) {
+      return { success: true };
+    } else {
+      return { success: false, errorMessage: 'Fail to send hiker location' };
+    }
   }
 }

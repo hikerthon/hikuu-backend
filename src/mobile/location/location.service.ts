@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Location } from './location';
+import { Location } from '../../share/models/location.model';
 
 @Injectable()
 export class LocationService {
-  location: Location = { lat: "123", long: "456" };
 
-  getLocation() {
-    return this.location;
+  sendLocation(location: Location) {
+    // Send hiker location
+    return true;
   }
-
 }
