@@ -1,6 +1,6 @@
 import { Controller, Logger, Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { TrailView } from '../models/permit.model';
+import { TrailView } from '../../models/permit.model';
 import { TrailsService } from './trails.service';
 
 @Controller('trails')

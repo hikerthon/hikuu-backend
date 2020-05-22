@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Alerts } from '../models/alert.model'
+import { Alerts } from '../../models/alert.model'
 
 @Injectable()
 export class AlertsService {

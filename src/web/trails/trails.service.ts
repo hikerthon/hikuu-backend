@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TrailView } from '../models/permit.model';
+import { TrailView } from '../../models/permit.model';
 
 @Injectable()
 export class TrailsService {

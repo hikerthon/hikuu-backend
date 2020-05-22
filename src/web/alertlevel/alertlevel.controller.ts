@@ -1,7 +1,7 @@
 import { ApiResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { AlertlevelService } from "./alertlevel.service";
-import { AlertLevel } from '../models/alertlevel.model'
+import { AlertLevel } from '../../models/alertlevel.model'
 
 @ApiTags('basic')
 @Controller('alertlevel')

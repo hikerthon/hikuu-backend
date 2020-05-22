@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException,
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
 import { HikooResponse } from '../models/hikoo.model';
 import { IsEmail, IsUUID, IsDefined, Max, IsOptional } from 'class-validator';
-import { EventsGateway } from 'src/events/events.gateway';
+import { EventsGateway } from 'src/web/events/events.gateway';
 
 export class Example {
   @ApiProperty({ format: 'uuid' })

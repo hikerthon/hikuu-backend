@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export enum EventStatus {
+  Pending = 0,
+  Processing = 1,
+  Resolved = 2,
+  Bad = 3
+}
+
 export class Event {
   @ApiProperty()
   hikeId: number;
@@ -8,10 +15,13 @@ export class Event {
   hikerId: number;
 
   @ApiProperty()
-  hikerName: string;
+  reporter: string;
 
   @ApiProperty()
-  location: string;
+  lat: number;
+
+  @ApiProperty()
+  long: number;
 
   @ApiProperty()
   radius: number;
@@ -36,4 +46,7 @@ export class Event {
 
   @ApiProperty()
   ttl: number;
+
+  @ApiProperty()
+  status: EventStatus;
 }

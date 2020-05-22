@@ -1,9 +1,9 @@
 import { Controller, Logger, Get, Put, Param, Body, Req, Query} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PermitView } from '../models/permit.model';
+import { PermitView, DataTypeRole } from '../../models/permit.model';
 import { PermitService } from './permit.service';
-import { HikooResponse } from '../models/hikoo.model';
-import { Example } from '../example/example.controller';
+import { HikooResponse } from '../../models/hikoo.model';
+import { Example } from '../../example/example.controller';
 
 @ApiTags('permit')
 @Controller('permit')
@@ -15,11 +15,14 @@ export class PermitController {
 
   @Get()
   @ApiOperation({ summary: 'Get permit list' })
-  @ApiQuery({ name: 'permits', type: 'string' })
-  @ApiQuery({ name: 'hikers', type: 'string' })
+  @ApiQuery({ name: 'dataTypeRole', required: true, enum: DataTypeRole})
+  @ApiQuery({ name: 'permits', type: 'string', required: false })
+  @ApiQuery({ name: 'hikers', type: 'string', required: false })
   @ApiResponse({ status: 200, type: PermitView, isArray: true, description: 'Get permit list' })
-  getPermit(@Query('permits') permits: string,
+  getPermit(@Query('dataTypeRole') dataTypeRole: DataTypeRole,
+            @Query('permits') permits: string,
             @Query('hikers') hikers: string ): PermitView[] {
+    this._logger.debug(`dataTypeRole args = ${dataTypeRole}`)
     this._logger.debug(`Query args = ${permits}`);
     this._logger.debug(`hikers args = ${hikers}`);
     return this.permitSvc.getFakePermits();

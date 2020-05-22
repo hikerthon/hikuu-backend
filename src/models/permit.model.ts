@@ -111,3 +111,9 @@ export class CreateHikingRequest {
     readonly hikeEndTime: string;
     readonly permitId: number;
 }
+
+export enum DataTypeRole {
+    All = 'All',
+    Current = 'Current',
+    History = 'History',
+}

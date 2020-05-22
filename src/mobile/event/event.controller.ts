@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Event } from './event';
 import { EventService } from './event.service';
-import { EventsGateway } from 'src/events/events.gateway';
+import { EventsGateway } from 'src/web/events/events.gateway';
 import { HikooResponse } from 'src/models/hikoo.model';
 
 @ApiTags('event')
