@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Shelter } from '../../events/share/models/shelter.model';
+import { Shelter } from '../../share/models/shelter.model';
 
 @Injectable()
 export class ShelterService {

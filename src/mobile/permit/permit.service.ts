@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PermitView } from '../../events/share/models/permit.model'
+import { PermitView } from '../../share/models/permit.model'
 
 
 @Injectable()

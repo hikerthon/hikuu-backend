@@ -1,8 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { AlertModule } from './alert/alert.module';
 import { EventModule } from './event/event.module';
 import { LocationModule } from './location/location.module';
-import { MountainpermitModule } from './mountainpermit/mountainpermit.module';
 import { SosModule } from './sos/sos.module';
 import { UserModule } from './user/user.module';
 import { ShelterModule } from './shelter/shelter.module';
@@ -10,9 +9,9 @@ import { PermitController } from './permit/permit.controller';
 import { PermitService } from './permit/permit.service';
 
 @Module({
-  imports: [AlertModule, EventModule, LocationModule, MountainpermitModule, SosModule, UserModule, ShelterModule],
+  imports: [AlertModule, EventModule, LocationModule, SosModule, UserModule, ShelterModule],
   controllers: [PermitController],
-  providers: [PermitService],
+  providers: [Logger, PermitService],
 })
 export class MobileappModule { }
 

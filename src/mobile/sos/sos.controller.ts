@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Logger } from '@nestjs/common';
-import { SOS } from '../../events/share/models/sos.model';
+import { SOS } from '../../share/models/sos.model';
 import { ApiResponse, ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
-import { HikooResponse } from '../../events/share/models/hikoo.model';
+import { HikooResponse } from '../../share/models/hikoo.model';
 import { SosService } from './sos.service';
 
 
