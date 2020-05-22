@@ -5,8 +5,7 @@ import { EventsModule } from './web/events/events.module';
 import { ExampleModule } from './example/example.module';
 import { AllgpsService } from './web/allgps/allgps.service';
 import { AllgpsController } from './web/allgps/allgps.controller';
-import { EventtypeService } from './web/eventtype/eventtype.service';
-import { EventtypeController } from './web/eventtype/eventtype.controller';
+import { EventtypeModule } from './web/eventtype/eventtype.module';
 import { AlertlevelService } from './web/alertlevel/alertlevel.service';
 import { AlertlevelController } from './web/alertlevel/alertlevel.controller';
 import { AlertsService } from './web/alerts/alerts.service';
@@ -26,13 +25,13 @@ import { EventsGateway } from './web/events/events.gateway';
       rootPath: join(__dirname, '..', 'static/socketio'),
     }),
     EventsModule,
+    EventtypeModule,
     ExampleModule,
     PermitModule
   ],
   controllers: [
     AppController,
     AllgpsController,
-    EventtypeController,
     AlertlevelController,
     AlertsController,
     TrailsController
@@ -41,7 +40,6 @@ import { EventsGateway } from './web/events/events.gateway';
     Logger,
     AppService,
     AllgpsService,
-    EventtypeService,
     AlertlevelService,
     AlertsService,
     TrailsService,
