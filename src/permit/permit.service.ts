@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PermitView, TrailView } from '../models/permit.model';
+import { HikingRequestView, PermitView, TrailView } from '../models/permit.model';
 
 @Injectable()
 export class PermitService {
@@ -18,5 +18,11 @@ export class PermitService {
                 new TrailView(6, 'Daba trails', 3)
             ])
         ]
+    }
+
+    getFakePermit() {
+        return new PermitView(1, 'Yushan National Park Permit', [
+            new TrailView(1, 'Yushan trails', 1)
+        ])
     }
 }

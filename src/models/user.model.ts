@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsUUID, IsDefined, isMobilePhone } from 'class-validator';
 
 export class Account {
   @ApiProperty()
@@ -22,6 +23,7 @@ export class Account {
   @ApiProperty()
   address: string;
 
+  @IsEmail()
   @ApiProperty()
   email: string;
 

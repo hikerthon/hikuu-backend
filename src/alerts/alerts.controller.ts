@@ -4,8 +4,8 @@ import { AlertsService } from './alerts.service';
 import { Alerts, CreateAlert } from '../models/alert.model'
 import { HikooResponse } from '../models/hikoo.model';
 
-@ApiTags('alerts')
-@Controller('alerts')
+@ApiTags('alert')
+@Controller('alert')
 export class AlertsController {
     constructor(private alertSvc: AlertsService, private _logger: Logger) {
         _logger.setContext(AlertsController.name);
