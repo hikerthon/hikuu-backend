@@ -1,9 +1,9 @@
 {
     "type": "mysql",
-    "host": "database-hikoo-backend.cpkvkdseufh0.ap-northeast-1.rds.amazonaws.com",
+    "host": "localhost",
     "port": 3306,
-    "username": "hikoo",
-    "password": "Hiker.Thon1234",
+    "username": "root",
+    "password": "root",
     "database": "hikoo",
     "entities": [
         "dist/**/*.entity{.ts,.js}"
