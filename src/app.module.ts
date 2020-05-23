@@ -2,7 +2,6 @@ import { Module, Logger } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EventsModule } from './web/events/events.module';
-import { ExampleModule } from './example/example.module';
 import { AlertlevelModule } from './web/alertlevel/alertlevel.module'
 import { AlertModule } from './web/alert/alert.module';
 import { AllgpsModule } from './web/allgps/allgps.module';
@@ -12,7 +11,6 @@ import { TrailModule } from './web/trail/trail.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { EventsGateway } from './web/events/events.gateway';
 import { FirebaseAdminModule } from '@aginix/nestjs-firebase-admin';
 import * as admin from 'firebase-admin';
 import { readFileSync } from 'fs';
@@ -22,26 +20,25 @@ import { AccountModule } from './web/account/account.module';
 
 @Module({
   imports: [
-    // FirebaseAdminModule.forRootAsync({
-    //   useFactory: () => {
+    FirebaseAdminModule.forRootAsync({
+      useFactory: () => {
 
-    //     const hikooService = JSON.parse(
-    //       readFileSync(join(__dirname, '../fcm/hikoo.json')).toString()
-    //     );
+        const hikooService = JSON.parse(
+          readFileSync(join(__dirname, '../fcm/hikoo.json')).toString()
+        );
 
-    //     return {
-    //       credential: admin.credential.cert(hikooService),
-    //       databaseURL: 'https://bamboo-creek-277702.firebaseio.com'
-    //     };
-    //   }
-    // }),
+        return {
+          credential: admin.credential.cert(hikooService),
+          databaseURL: 'https://bamboo-creek-277702.firebaseio.com'
+        };
+      }
+    }),
     TypeOrmModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static/socketio'),
     }),
     EventsModule,
     EventtypeModule,
-    // ExampleModule,
     PermitModule,
     AlertlevelModule,
     AlertModule,
