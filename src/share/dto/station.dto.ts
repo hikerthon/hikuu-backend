@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { StationEntity } from '../entity/Station.entity';
+import { StationEntity } from '../entity/station.entity';
 
 export class StationDto {
     @ApiProperty()
