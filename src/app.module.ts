@@ -4,11 +4,11 @@ import { AppService } from './app.service';
 import { EventsModule } from './web/events/events.module';
 import { ExampleModule } from './example/example.module';
 import { AlertlevelModule } from './web/alertlevel/alertlevel.module'
-import { AlertsModule } from './web/alerts/alerts.module';
+import { AlertModule } from './web/alert/alert.module';
 import { AllgpsModule } from './web/allgps/allgps.module';
 import { EventtypeModule } from './web/eventtype/eventtype.module';
 import { PermitModule } from './web/permit/permit.module';
-import { TrailsModule } from './web/trails/trails.module';
+import { TrailModule } from './web/trail/trail.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -16,6 +16,9 @@ import { EventsGateway } from './web/events/events.gateway';
 import { FirebaseAdminModule } from '@aginix/nestjs-firebase-admin';
 import * as admin from 'firebase-admin';
 import { readFileSync } from 'fs';
+import { ShelterModule } from './web/shelter/shelter.module';
+import { StationModule } from './web/station/station.module';
+import { AccountModule } from './web/account/account.module';
 
 @Module({
   imports: [
@@ -41,9 +44,12 @@ import { readFileSync } from 'fs';
     // ExampleModule,
     PermitModule,
     AlertlevelModule,
-    AlertsModule,
+    AlertModule,
     AllgpsModule,
-    TrailsModule
+    TrailModule,
+    ShelterModule,
+    StationModule,
+    AccountModule
   ],
   controllers: [
     AppController,
