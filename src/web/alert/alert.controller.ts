@@ -1,15 +1,14 @@
 import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/common';
-import { AlertsService } from './alerts.service';
+import { AlertService } from './alert.service';
 import { HikooResponse } from '../../share/models/hikoo.model';
-import { start } from 'repl';
 import { AlertDto } from 'src/share/dto/alert.dto';
 
 @ApiTags('alert')
 @Controller('alert')
-export class AlertsController {
-    constructor(private alertSvc: AlertsService, private _logger: Logger) {
-        _logger.setContext(AlertsController.name);
+export class AlertController {
+    constructor(private alertSvc: AlertService, private _logger: Logger) {
+        _logger.setContext(AlertController.name);
     }
 
     @Get()
