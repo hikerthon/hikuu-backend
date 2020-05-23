@@ -16,9 +16,13 @@ export class EventsController {
 
     @Get()
     @ApiOperation({ summary: 'Get event list' })
+    @ApiQuery({ name: 'startIndex', type: 'number', required: false })
+    @ApiQuery({ name: 'count', type: 'number', required: false })
     @ApiResponse({ status: HttpStatus.OK, type: Event, isArray: true, description: 'Return list of event' })
-    getAllEvent(): Event[] {
-        return this.evSvc.getAllEvent();
+    getAllEvent(@Query('startIndex') startIndex: number,
+                @Query('count') count: number): Event[] {
+        this._logger.debug(`Get event list, startIndex = [${startIndex}], count = [${count}]`)
+        return this.evSvc.getAllEvent(startIndex, count);
     }
 
     @Get('count')
@@ -34,7 +38,7 @@ export class EventsController {
     @ApiResponse({ status: HttpStatus.OK, type: Event, isArray: false, description: 'Return event detail' })
     getEvent(@Param('id') id: number): Event {
         this._logger.debug(`EventId = [${id}]`)
-        return this.evSvc.getEventById()
+        return this.evSvc.getEventById(id)
     }
 
     @Put(':id')

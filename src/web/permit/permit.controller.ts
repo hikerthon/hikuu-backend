@@ -14,16 +14,16 @@ export class PermitController {
   @Get()
   @ApiOperation({ summary: 'Get permit list' })
   @ApiQuery({ name: 'dataTypeRole', required: true, enum: DataTypeRole })
-  @ApiQuery({ name: 'permits', type: 'string', required: false })
-  @ApiQuery({ name: 'hikers', type: 'string', required: false })
+  @ApiQuery({ name: 'permits', type: Number, required: false })
+  @ApiQuery({ name: 'hikers', type: Number, required: false })
   @ApiResponse({ status: 200, type: PermitView, isArray: true, description: 'Get permit list' })
   getPermit(@Query('dataTypeRole') dataTypeRole: DataTypeRole,
-    @Query('permits') permits: string,
-    @Query('hikers') hikers: string): PermitView[] {
+    @Query('permits') permits: number,
+    @Query('hikers') hikers: number): PermitView[] {
     this._logger.debug(`dataTypeRole args = ${dataTypeRole}`)
     this._logger.debug(`Query args = ${permits}`);
     this._logger.debug(`hikers args = ${hikers}`);
-    return this.permitSvc.getFakePermits();
+    return this.permitSvc.getFakePermits(dataTypeRole, permits, hikers);
   }
 
   @Get(':id')

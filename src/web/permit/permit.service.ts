@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { HikingRequestView, PermitView, TrailView } from '../../share/models/permit.model'
+import {
+    DataTypeRole,
+    PermitView,
+    TrailView } from '../../share/models/permit.model';
 
 @Injectable()
 export class PermitService {
-    getFakePermits() {
+    getFakePermits(dataTypeRole ?: DataTypeRole, permits ?: Number, hikers ?: Number) {
         return [
             new PermitView(1, 'Yushan National Park Permit', [
                 new TrailView(1, 'Yushan trails', 1)

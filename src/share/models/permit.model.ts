@@ -110,7 +110,7 @@ export class CreateHikingRequest {
 }
 
 export enum DataTypeRole {
-    All = 'All',
-    Current = 'Current',
-    History = 'History',
+    All = 0,
+    Current = 1,
+    History = 2,
 }
