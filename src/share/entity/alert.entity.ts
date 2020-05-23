@@ -1,20 +1,21 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { AlertlevelEntity } from './alertlevel.entity';
 import { EventtypeEntity } from './eventtype.entity';
 import { PermitEntity } from './permit.entity';
+import { AccountEntity } from './account.entity';
 
 @Entity({ name: "alerts" })
 export class AlertEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(type => EventtypeEntity, entType => entType.id)
+    @ManyToOne(type => EventtypeEntity, entType => entType.id, {nullable: false})
     @JoinColumn({name: 'event_type_id'})
-    eventTypeId: number;
+    eventType: EventtypeEntity;
 
-    @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id)
+    @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, {nullable: false})
     @JoinColumn({name: 'alert_level_id'})
-    alertLevelId: AlertlevelEntity;
+    alertLevel: AlertlevelEntity;
 
     @Column({name: 'event_info'})
     eventInfo: string;
@@ -25,9 +26,9 @@ export class AlertEntity {
     @Column({name: 'event_end'})
     eventEnd: Date;
 
-    @ManyToOne(type => PermitEntity, permit => permit.id)
+    @ManyToOne(type => PermitEntity, permit => permit.id, {nullable: false})
     @JoinColumn({name: 'permit_id'})
-    permitId: PermitEntity;
+    permit: PermitEntity;
 
     @Column()
     latpt: number;
@@ -41,11 +42,26 @@ export class AlertEntity {
     @Column()
     creator: number;
 
-    // @ManyToOne(type => EventtypeEntity, entType => entType.id, {nullable: true})
-    // @JoinColumn({name: 'origin_source'})
-    @Column({name: 'origin_source', nullable: true})
-    originSource: number;
+    @ManyToOne(type => AccountEntity, entType => entType.id, {nullable: true})
+    @JoinColumn({name: 'origin_source'})
+    originSource: AccountEntity;
 
-    @Column({ type:'datetime', default: () => 'NOW()'})
+    @CreateDateColumn()
     logtime: Date;
+    
+    @OneToMany(type => AlertAttachmentEntity, attachment => attachment.alert)
+    attachments: AlertAttachmentEntity[];
+}
+
+@Entity({name: 'alert_attachment'})
+export class AlertAttachmentEntity {
+    @PrimaryGeneratedColumn()
+    id: number;
+    
+    @ManyToOne(type => AlertEntity, alert => alert.id, {nullable: false})
+    @JoinColumn({name: 'alert_id'})
+    alert: AlertEntity;
+
+    @Column({name: 'image_path'})
+    imagePath: string;
 }
