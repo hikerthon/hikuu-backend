@@ -1,8 +1,9 @@
 import { Controller, Logger, Get } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TrailView } from '../../share/models/permit.model';
 import { TrailsService } from './trails.service';
 
+@ApiTags('trails')
 @Controller('trails')
 export class TrailsController {
 

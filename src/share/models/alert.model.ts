@@ -9,7 +9,10 @@ export class Alerts {
     permitName: string;
 
     @ApiProperty()
-    location: string;
+    lat: number;
+
+    @ApiProperty()
+    lng: number;
 
     @ApiProperty()
     radius: number;
@@ -42,14 +45,15 @@ export class Alerts {
     stationName: string;
 
     constructor(permitId: number, permitName: string,
-        location: string, radius: number,
+        lat: number, lng: number, radius: number,
         alertLevelId: number, alertLevel: string,
         eventTypeId: number, eventType: string,
         eventInfo: string, eventTime: string, ttl: number,
         stationId: number, stationName: string) {
         this.permitId = permitId;
         this.permitName = permitName;
-        this.location = location;
+        this.lat = lat;
+        this.lng = lng;
         this.radius = radius;
         this.alertLevelId = alertLevelId;
         this.alertLevel = alertLevel;

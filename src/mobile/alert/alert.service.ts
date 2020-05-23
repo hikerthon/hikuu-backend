@@ -7,7 +7,8 @@ export class AlertService {
     {
       permitId: 1,
       permitName: "Yushan National Park Permit",
-      location: '23.468818, 120.954489',
+      lat: 23.468818,
+      lng: 120.954489,
       radius: 3,
       alertLevelId: 2,
       alertLevel: 'Caution',
@@ -22,7 +23,8 @@ export class AlertService {
     {
       permitId: 2,
       permitName: 'Taroko National Park Permit',
-      location: '24.174251, 121.565319',
+      lat: 23.468818,
+      lng: 120.954489,
       radius: 5,
       alertLevelId: 3,
       alertLevel: 'Danger',
