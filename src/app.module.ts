@@ -19,26 +19,26 @@ import { readFileSync } from 'fs';
 
 @Module({
   imports: [
-    FirebaseAdminModule.forRootAsync({
-      useFactory: () => {
+    // FirebaseAdminModule.forRootAsync({
+    //   useFactory: () => {
 
-        const hikooService = JSON.parse(
-          readFileSync(join(__dirname, '../fcm/hikoo.json')).toString()
-        );
+    //     const hikooService = JSON.parse(
+    //       readFileSync(join(__dirname, '../fcm/hikoo.json')).toString()
+    //     );
 
-        return {
-          credential: admin.credential.cert(hikooService),
-          databaseURL: 'https://bamboo-creek-277702.firebaseio.com'
-        };
-      }
-    }),
+    //     return {
+    //       credential: admin.credential.cert(hikooService),
+    //       databaseURL: 'https://bamboo-creek-277702.firebaseio.com'
+    //     };
+    //   }
+    // }),
     TypeOrmModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static/socketio'),
     }),
     EventsModule,
     EventtypeModule,
-    ExampleModule,
+    // ExampleModule,
     PermitModule,
     AlertlevelModule,
     AlertsModule,

@@ -12,9 +12,9 @@ export class LocationController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Send hiker location to backend server.' })
+  @ApiOperation({ summary: 'Send hiker location to backend server' })
   @ApiBody({ type: Location })
-  @ApiResponse({ status: 200, type: Location, isArray: false, description: 'Send hiker location successfully' })
+  @ApiResponse({ status: 200, type: Location, isArray: false, description: 'successful operation' })
   sendLocation(@Body() location: Location): HikooResponse {
     this._logger.debug(location);
     if (this.srv.sendLocation(location)) {

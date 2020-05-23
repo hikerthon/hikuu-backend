@@ -18,7 +18,7 @@ export class ShelterService {
     }
   ];
 
-  getNearbyShelters(userId: Number) {
+  getNearbyShelters(userId: number) {
     return this.shelters;
   }
 }
