@@ -4,11 +4,29 @@
 - node.js version 10+
 - npm
 
-
 ## Installation
 
+### Step 1
 ```bash
 $ npm install --no-save
+```
+
+### Step 2
+If FCM account server is not configured, go to firebase console to aquire a account service json file and put it under fcm folder and name it hikoo.json.
+
+### Step 3
+Create ormconfig.json
+example
+```json
+{
+    "type": "mysql",
+    "host": "database-hikoo-backend.example.ap-northeast-2000.rds.amazonaws.com",
+    "port": 3306,
+    "username": "example",
+    "password": "example",
+    "database": "hikoo",
+    "entities": ["dist/**/*.entity{.ts,.js}"]
+}
 ```
 
 ## Running the app

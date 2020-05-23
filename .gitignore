@@ -35,3 +35,6 @@ lerna-debug.log*
 
 # fcm dev
 /fcm
+
+# ormconfig
+ormconfig.json
