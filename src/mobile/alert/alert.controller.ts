@@ -12,8 +12,8 @@ export class AlertController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all alerts.' })
-  @ApiResponse({ status: 200, type: AlertDto, isArray: true, description: 'Get alerts successfully' })
+  @ApiOperation({ summary: 'Get all alerts' })
+  @ApiResponse({ status: 200, type: AlertDto, isArray: true, description: 'successful operation' })
   getAlerts(): AlertDto[] {
     return this.srv.getAlerts();
   }

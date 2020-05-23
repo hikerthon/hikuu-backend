@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
 import { HikooResponse } from '../share/models/hikoo.model';
-import { IsEmail, IsUUID, IsDefined, Max, IsOptional } from 'class-validator';
+import { IsEmail, IsUUID, IsDefined, Max } from 'class-validator';
 import { EventsGateway } from 'src/web/events/events.gateway';
+import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin';
 
 export class Example {
   @ApiProperty({ format: 'uuid' })
@@ -24,14 +25,22 @@ export class ExampleController {
 
   constructor(
     private _logger: Logger,
-    private _eventGateway: EventsGateway
+    private _eventGateway: EventsGateway,
+    private _fcm: FirebaseMessagingService
   ) {
     _logger.setContext(ExampleController.name);
   }
 
   @Get()
   @ApiResponse({ status: 200, type: Example, isArray: true, description: 'Get example objects.' })
-  getExample(): Example[] {
+  async getExample(): Promise<Example[]> {
+    await this._fcm.send({
+      notification: {
+        title: 'Hikoo',
+        body: 'Example Hikko Notification'
+      },
+      token: 'erS6EVSQFwQ:APA91bGG1GsuMdgp-QqKh9k96Tbm_OjoJjRp1HC0ZCVLBJHybZ-cbkT_0KtTef0K5aJWePnnrkskH3Rlu-135zaAq0ksRXdinwfbRCyno9lqHn-StUHwpBkgp7Tk8ZL1a95gVWRXK8TW'
+    });
     return [];
   }
 

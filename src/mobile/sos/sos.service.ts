@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { SOS } from '../../share/models/sos.model';
+import { Location } from '../../share/models/location.model';
 
 @Injectable()
 export class SosService {
-  callSOS(sos: SOS) {
-    // TODO
+  callSOS(location: Location) {
+    // tranfer loaction to SOS event format
+    // create sos event
     return true;
   }
 }
