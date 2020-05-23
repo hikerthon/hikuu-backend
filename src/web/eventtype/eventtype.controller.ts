@@ -11,7 +11,7 @@ export class EventtypeController {
     @Get()
     @ApiResponse({ status: 200, type: EventTypeDto, isArray: true, description: 'Returns all event types' })
     getAlertLevels() {
-        return this.etSvc.getAllEventTypes();
+        return this.etSvc.getAll();
     }
 
 }

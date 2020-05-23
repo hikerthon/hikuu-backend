@@ -11,6 +11,6 @@ export class AlertlevelController {
     @Get()
     @ApiResponse({ status: 200, type: AlertLevelDto, isArray: true, description: 'Returns all alert level' })
     getAlertLevels() {
-        return this.alSvc.getAlertLevels();
+        return this.alSvc.getAll();
     }
 }
