@@ -9,4 +9,10 @@ export class Event {
 
   @ApiProperty()
   userId: number;
+
+  @ApiProperty()
+  lat: number;
+
+  @ApiProperty()
+  lng: number;
 }

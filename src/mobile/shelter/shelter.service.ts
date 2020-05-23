@@ -7,18 +7,18 @@ export class ShelterService {
     {
       id: 1,
       name: 'Shelter A',
-      location: '23.468818, 120.954489',
-
+      lat: 23.468818,
+      lng: 120.954489
     },
     {
       id: 2,
       name: 'Shelter B',
-      location: '23.558818, 120.754489',
-
+      lat: 23.558818,
+      lng: 120.754489
     }
   ];
 
-  getNearbyShelters(userId: string) {
+  getNearbyShelters(userId: Number) {
     return this.shelters;
   }
 }
