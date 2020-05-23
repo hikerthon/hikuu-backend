@@ -12,9 +12,9 @@ export class ShelterController {
 
   @Get(':userId')
   @ApiOperation({ summary: 'Get nearby shelters by hiker id' })
-  @ApiParam({ name: 'userId', type: 'string' })
+  @ApiParam({ name: 'userId', type: 'number' })
   @ApiResponse({ status: 200, type: Shelter, isArray: true, description: 'Get nearby shelters successfully' })
-  getNearbyShelters(@Param('userId') userId: string): Shelter[] {
+  getNearbyShelters(@Param('userId') userId: Number): Shelter[] {
     this._logger.debug(userId);
     return this.srv.getNearbyShelters(userId);
   }

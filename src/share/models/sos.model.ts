@@ -5,8 +5,8 @@ export class SOS {
   userId: number;
 
   @ApiProperty()
-  lat: string;
+  lat: number;
 
   @ApiProperty()
-  long: string;
+  lng: number;
 }

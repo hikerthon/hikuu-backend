@@ -1,4 +1,4 @@
-import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
+import { ApiResponse, ApiBody, ApiProperty, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { AllgpsService } from "./allgps.service";
 
@@ -19,6 +19,7 @@ export class AllGps {
     timestamp: number;
 }
 
+@ApiTags('allgps')
 @Controller('allgps')
 export class AllgpsController {
     constructor(private allgpsService: AllgpsService) {}

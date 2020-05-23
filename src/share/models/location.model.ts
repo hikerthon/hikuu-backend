@@ -5,5 +5,8 @@ export class Location {
   userId: number;
 
   @ApiProperty()
-  location: string;
+  lat: number;
+
+  @ApiProperty()
+  lng: number;
 }

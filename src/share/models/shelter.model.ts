@@ -8,5 +8,9 @@ export class Shelter {
   name: string;
 
   @ApiProperty()
-  location: string;
+  lat: number;
+
+  @ApiProperty()
+  lng: number;
+
 }

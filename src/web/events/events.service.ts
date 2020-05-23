@@ -3,7 +3,8 @@ import { EventStatus } from '../../share/models/event.model';
 
 @Injectable()
 export class EventsService {
-    getAllEvent() {
+    getAllEvent(startIndex ?: number, count ?: number) {
+        console.log(startIndex, count)
         return [{
             hikeId: 1,
             hikerId: 1,
@@ -37,8 +38,7 @@ export class EventsService {
         }]
     }
 
-
-    getEventById() {
+    getEventById(id: Number) {
         return {
             hikeId: 1,
             hikerId: 1,
@@ -55,5 +55,9 @@ export class EventsService {
             ttl: 1,
             status: EventStatus.Processing
         }
+    }
+
+    getEventCount() {
+        return 10;
     }
 }
