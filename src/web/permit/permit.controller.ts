@@ -26,14 +26,14 @@ export class PermitController {
     return this.permitSvc.getFakePermits();
   }
 
-  // @Get(':id')
-  // @ApiOperation({ summary: 'Get permit info' })
-  // @ApiParam({ name: 'id', type: 'string' })
-  // @ApiResponse({ status: 200, type: PermitView, description: 'Get permit info' })
-  // getPermitById(@Param('id') id: string): PermitView {
-  //   this._logger.debug(`get permit id [${id}]`);
-  //   return this.permitSvc.getFakePermit();
-  // }
+  @Get(':id')
+  @ApiOperation({ summary: 'Get permit info' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiResponse({ status: 200, type: PermitView, description: 'Get permit info' })
+  getPermitById(@Param('id') id: string): PermitView {
+    this._logger.debug(`get permit id [${id}]`);
+    return this.permitSvc.getFakePermit();
+  }
 
 
 }

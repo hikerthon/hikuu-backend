@@ -21,6 +21,13 @@ export class EventsController {
         return this.evSvc.getAllEvent();
     }
 
+    @Get('count')
+    @ApiOperation({ summary: 'Get event count '})
+    @ApiResponse({ status: HttpStatus.OK, type: Number, description: 'Return count of event' })
+    getAllEventCount(): number {
+        return this.evSvc.getEventCount();
+    }
+
     @Get(':id')
     @ApiOperation({summary: 'Get event detail'})
     @ApiParam({ name: 'id', type: 'number' })

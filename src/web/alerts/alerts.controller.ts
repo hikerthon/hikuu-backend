@@ -1,5 +1,5 @@
-import { ApiResponse, ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Logger, Query } from '@nestjs/common';
+import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { Alerts, CreateAlert } from '../../share/models/alert.model'
 import { HikooResponse } from '../../share/models/hikoo.model';
@@ -31,6 +31,16 @@ export class AlertsController {
     allAlertCount(): number {
         this._logger.debug(`get alert count`)
         return this.alertSvc.getFakeAllAlertCount()
+    }
+
+    @Get(':id')
+    @ApiParam({ name: 'id', type: 'number' })
+    @ApiOperation({ summary: 'Get alert detail' })
+    @ApiResponse({ status: 200, type: Alerts, isArray: true, description: 'Return detail of alert' })
+    getAlertById(
+      @Param('id') id: number): Alerts[] {
+        this._logger.debug(`get alert list, startIndex = [${id}]`)
+        return this.alertSvc.getFakeAlerts();
     }
 
     @Post()

@@ -37,7 +37,6 @@ export class EventsService {
         }]
     }
 
-
     getEventById() {
         return {
             hikeId: 1,
@@ -55,5 +54,9 @@ export class EventsService {
             ttl: 1,
             status: EventStatus.Processing
         }
+    }
+
+    getEventCount() {
+        return 10;
     }
 }
