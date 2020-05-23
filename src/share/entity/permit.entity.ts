@@ -13,6 +13,6 @@ export class PermitEntity {
     @OneToMany(type => TrailEntity, event => event.permit)
     trails: TrailEntity[];
     
-    @OneToMany(type => HikeEntity, hike => hike.permitId)
+    @OneToMany(type => HikeEntity, hike => hike.permit)
     hikes: HikeEntity[];
 }

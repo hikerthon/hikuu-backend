@@ -57,6 +57,6 @@ export class AccountEntity {
     @Column({name: 'emergency_number'})
     emergencyNumber: string;
     
-    @OneToMany(type => HikeEntity, hike => hike.hikerId)
+    @OneToMany(type => HikeEntity, hike => hike.hiker)
     hikes: HikeEntity[];
 }

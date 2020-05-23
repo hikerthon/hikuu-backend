@@ -19,7 +19,7 @@ export class EventTypeDto {
         it.id = this.id;
         it.name = this.name;
         it.description = this.description;
-        it.defaultAlert = this.defaultAlert;
+        it.defaultAlert.id = this.defaultAlert;
         return it;
     }
 
@@ -28,7 +28,7 @@ export class EventTypeDto {
         it.id = entity.id;
         it.name = entity.name;
         it.description = entity.description;
-        it.defaultAlert = entity.defaultAlert;
+        it.defaultAlert = entity.defaultAlert.id;
 
         return it;
     }

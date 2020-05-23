@@ -1,7 +1,7 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
-import { Alerts } from '../../share/models/alert.model';
 import { AlertService } from './alert.service'
+import { AlertDto } from 'src/share/dto/alert.dto';
 
 
 @ApiTags('alert')
@@ -13,8 +13,8 @@ export class AlertController {
 
   @Get()
   @ApiOperation({ summary: 'Get all alerts.' })
-  @ApiResponse({ status: 200, type: Alerts, isArray: true, description: 'Get alerts successfully' })
-  getAlerts(): Alerts[] {
+  @ApiResponse({ status: 200, type: AlertDto, isArray: true, description: 'Get alerts successfully' })
+  getAlerts(): AlertDto[] {
     return this.srv.getAlerts();
   }
 }

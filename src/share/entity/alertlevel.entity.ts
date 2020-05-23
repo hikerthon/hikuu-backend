@@ -15,6 +15,6 @@ export class AlertlevelEntity {
     @Column({name: 'alert_radius'})
     radius: number;
 
-    @OneToMany(type => EventtypeEntity, event => event.alertLevels)
+    @OneToMany(type => EventtypeEntity, event => event.defaultAlert)
     eventTypes: EventtypeEntity[];
 }

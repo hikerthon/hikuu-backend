@@ -10,7 +10,7 @@ export class HikeEntity {
 
     @ManyToOne(type => AccountEntity, account => account.hikes)
     @JoinColumn({name:'hiker_id'})
-    hikerId: AccountEntity;
+    hiker: AccountEntity;
 
     @Column({name: 'hike_start'})
     hikeStart: Date;
@@ -18,9 +18,9 @@ export class HikeEntity {
     @Column({name: 'hike_end'})
     hikeEnd: Date;
 
-    @ManyToOne(type => PermitEntity, permit => permit.hikes)
+    @ManyToOne(type => PermitEntity, permits => permits.hikes)
     @JoinColumn({name:'permit_id'})
-    permitId: PermitEntity;
+    permit: PermitEntity;
 
     @Column({name: 'guide_name'})
     guideName: string;
@@ -53,6 +53,10 @@ export class HikeEntity {
     logtime: Date;
     
     @ManyToMany(type => TrailEntity)
-    @JoinTable({name: 'hike_destination'})
+    @JoinTable({
+        name: 'hike_destination', 
+        joinColumn: {name: 'hike_id'}, 
+        inverseJoinColumn: {name: 'trail_id'}
+    })
     trails: TrailEntity[];
 }

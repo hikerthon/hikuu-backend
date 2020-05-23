@@ -12,10 +12,7 @@ export class EventtypeEntity {
     @Column({name: 'event_type_desc'})
     description: string;
 
-    @Column({name: 'default_alert'})
-    defaultAlert: number;
-
     @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.eventTypes)
-    @JoinColumn({name:'id'})
-    alertLevels: AlertlevelEntity;
+    @JoinColumn({name: 'default_alert'})
+    defaultAlert: AlertlevelEntity;
 }

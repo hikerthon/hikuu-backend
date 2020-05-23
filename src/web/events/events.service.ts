@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { EventStatus } from '../../share/models/event.model';
 
 @Injectable()
 export class EventsService {
@@ -19,7 +18,7 @@ export class EventsService {
             eventInfo: "eventInfo",
             eventTime: "11/10/2016, 11:49:36 AM",
             ttl: 1,
-            status: EventStatus.Pending
+            status: 'PENDING'
         }, {
             hikeId: 2,
             hikerId: 2,
@@ -34,7 +33,7 @@ export class EventsService {
             eventInfo: "eventInfo",
             eventTime: "11/10/2016, 11:49:36 AM",
             ttl: 1,
-            status: EventStatus.Pending
+            status: 'PENDING'
         }]
     }
 
@@ -53,7 +52,7 @@ export class EventsService {
             eventInfo: "eventInfo",
             eventTime: "11/10/2016, 11:49:36 AM",
             ttl: 1,
-            status: EventStatus.Processing
+            status: 'PROCESSING'
         }
     }
 
