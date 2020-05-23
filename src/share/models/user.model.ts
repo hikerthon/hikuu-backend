@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class Account {
   @ApiProperty()
-  userId: string;
+  userId: number;
 
   @ApiProperty()
   userPwd: string;
@@ -46,11 +46,10 @@ export class Account {
   @ApiProperty()
   emergencyNumber: string;
 
-  constructor(userId: string, userPwd: string, firstName: string, lastName: string,
-              gender: string, dob: string, address: string, email: string, serPwd: string,
-              nationality: string, idNumber: string, mobileNumber: string, satelliteNumber: string,
-              emergencyContact: string, emergencyNumber: string)
-  {
+  constructor(userId: number, userPwd: string, firstName: string, lastName: string,
+    gender: string, dob: string, address: string, email: string, serPwd: string,
+    nationality: string, idNumber: string, mobileNumber: string, satelliteNumber: string,
+    emergencyContact: string, emergencyNumber: string) {
     this.userId = userId;
     this.userPwd = userPwd;
     this.firstName = firstName;
@@ -67,4 +66,12 @@ export class Account {
     this.emergencyContact = emergencyContact;
     this.emergencyNumber = emergencyNumber;
   }
+}
+
+export class LoginData {
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  userPwd: string;
 }

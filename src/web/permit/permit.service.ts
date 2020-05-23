@@ -1,31 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import {
-    DataTypeRole,
-    PermitView,
-    TrailView } from '../../share/models/permit.model';
+import { PermitDto } from 'src/share/dto/permit.dto';
+import { PermitEntity } from 'src/share/entity/permit.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PermitService {
-    getFakePermits(dataTypeRole ?: DataTypeRole, permits ?: Number, hikers ?: Number) {
+    constructor(
+      @InjectRepository(PermitEntity)
+      private readonly repo: Repository<PermitEntity>,
+    ) {}
+
+    getFakeData() {
         return [
-            new PermitView(1, 'Yushan National Park Permit', [
-                new TrailView(1, 'Yushan trails', 1)
-            ]),
-            new PermitView(2, 'Taroko National Park Permit', [
-                new TrailView(2, 'Qilai trails', 2),
-                new TrailView(3, 'Zhuilu trails', 2),
-                new TrailView(4, 'Nanhu trails', 2)
-            ]),
-            new PermitView(3, 'Shei-Pa National Park Permit', [
-                new TrailView(5, 'Xuejian trails', 3),
-                new TrailView(6, 'Daba trails', 3)
-            ])
+            {id: 1, name: 'Yushan National Park Permit'},
+            {id: 2, name: 'Taroko National Park Permit'},
+            {id: 3, name: 'Shei-Pa National Park Permit'}
         ]
     }
 
-    getFakePermit() {
-        return new PermitView(1, 'Yushan National Park Permit', [
-            new TrailView(1, 'Yushan trails', 1)
-        ])
+    async getAll(): Promise<PermitDto[]> {
+        const permits = await this.repo.find();
+        return permits.map( permit => PermitDto.fromEntity(permit) );
+    }
+
+    async getById(id: number): Promise<PermitDto> {
+        const one = await this.repo.findOne({where: {id: id}});
+        return PermitDto.fromEntity(one);
     }
 }

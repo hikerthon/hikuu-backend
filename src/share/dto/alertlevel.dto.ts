@@ -22,4 +22,14 @@ export class AlertLevelDto {
         it.radius = this.radius;
         return it;
     }
+
+    public static fromEntity(entity: AlertlevelEntity): AlertLevelDto {
+        const it = new AlertLevelDto();
+        it.id = entity.id;
+        it.name = entity.name;
+        it.ttl = entity.ttl;
+        it.radius = entity.radius;
+
+        return it;
+    }
 }

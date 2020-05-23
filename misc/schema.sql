@@ -172,14 +172,14 @@ CREATE TABLE IF NOT EXISTS track_history (
 CREATE TABLE IF NOT EXISTS tracker (
     hiker_id INT UNSIGNED, 
     hike_id INT UNSIGNED, 
-    record_time DATETIME, 
+    record_time DATETIME, -- time created on mobile app
     latpt DECIMAL(10, 8), 
     lngpt DECIMAL(11, 8), 
     elevation DECIMAL(8, 3), 
     battery TINYINT, 
     network SMALLINT, 
     elapsed_time TIME, 
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, -- time this record is inserted to db
     PRIMARY KEY (hiker_id), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -208,7 +208,8 @@ CREATE TABLE IF NOT EXISTS events (
 
 CREATE TABLE IF NOT EXISTS event_attachment (
     event_id INT UNSIGNED, 
-    image_path VARCHAR(255)
+    image_path VARCHAR(255),
+    FOREIGN KEY (event_id) REFERENCES events(id)
 );
 
 CREATE TABLE IF NOT EXISTS alerts (
@@ -238,5 +239,6 @@ INSERT INTO alerts VALUES
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
     alert_id INT UNSIGNED, 
-    image_path VARCHAR(255)
+    image_path VARCHAR(255),
+    FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
