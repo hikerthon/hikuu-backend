@@ -39,7 +39,7 @@ export class ExampleController {
         title: 'Hikoo',
         body: 'Example Hikko Notification'
       },
-      token: 'erS6EVSQFwQ:APA91bGG1GsuMdgp-QqKh9k96Tbm_OjoJjRp1HC0ZCVLBJHybZ-cbkT_0KtTef0K5aJWePnnrkskH3Rlu-135zaAq0ksRXdinwfbRCyno9lqHn-StUHwpBkgp7Tk8ZL1a95gVWRXK8TW'
+      token: '<user-token>'
     });
     return [];
   }
