@@ -13,5 +13,5 @@ services:
       - "3000:3000"
       - "3001:3001"
     volumes:
-      - .:/home/node/configs/
+      - /home/ec2-user/credentials/:/home/node/configs/
     hostname: hikoo-backend
