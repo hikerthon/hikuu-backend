@@ -4,6 +4,7 @@ import { Repository, TreeRepository } from 'typeorm';
 import { AlertEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 import { HikooResponse } from 'src/share/models/hikoo.model';
+import e = require('express');
 
 @Injectable()
 export class AlertService {
@@ -75,9 +76,12 @@ export class AlertService {
     }
 
     async create(alert: AlertDto): Promise<HikooResponse> {
-        let errMessage: string;
-        const result = await this.repo.save(alert).catch((err: any) => { errMessage = err })
+        try {
+            await this.repo.save(alert)
+        } catch (e) {
+            return { success: false, errorMessage: e.message };
+        }
 
-        return new HikooResponse(result ? true : false, errMessage);
+        return { success: true }
     }
 }
