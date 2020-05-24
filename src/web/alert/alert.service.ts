@@ -8,9 +8,9 @@ import { HikooResponse } from 'src/share/models/hikoo.model';
 @Injectable()
 export class AlertService {
     constructor(
-      @InjectRepository(AlertEntity)
-      private readonly repo: Repository<AlertEntity>
-    ) {}
+        @InjectRepository(AlertEntity)
+        private readonly repo: Repository<AlertEntity>
+    ) { }
 
     getFakeAlerts() {
         return null;
@@ -41,23 +41,23 @@ export class AlertService {
 
     async getAll(): Promise<AlertDto[]> {
         const alerts = await this.repo.find();
-        return alerts.map( alert => AlertDto.fromEntity(alert) );
+        return alerts.map(alert => AlertDto.fromEntity(alert));
     }
 
     async getById(id: number): Promise<AlertDto> {
-        const one = await this.repo.findOne({where: {id: id}});
+        const one = await this.repo.findOne({ where: { id: id } });
         return AlertDto.fromEntity(one);
     }
 
     async getAllView(start: number, count: number): Promise<AlertViewDto[]> {
         const alerts = await this.repo.find({
             relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
-            order: {logtime: 'DESC'},
+            order: { logtime: 'DESC' },
             take: count,
             skip: start
         });
 
-        return alerts.map( alert => AlertViewDto.fromEntity(alert) );
+        return alerts.map(alert => AlertViewDto.fromEntity(alert));
     }
 
     async getCount(): Promise<number> {
@@ -66,14 +66,18 @@ export class AlertService {
     }
 
     async getViewById(id: number): Promise<AlertViewDto> {
-        const alert = await this.repo.findOneOrFail();
+        const alert = await this.repo.findOne({
+            relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
+            order: { logtime: 'DESC' },
+            where: { id }
+        });
         return AlertViewDto.fromEntity(alert);
     }
 
     async create(alert: AlertDto): Promise<HikooResponse> {
         let errMessage: string;
-        const result = await this.repo.save(alert).catch((err: any) => {errMessage = err})
-        
-        return new HikooResponse(result? true : false, errMessage);
+        const result = await this.repo.save(alert).catch((err: any) => { errMessage = err })
+
+        return new HikooResponse(result ? true : false, errMessage);
     }
 }
