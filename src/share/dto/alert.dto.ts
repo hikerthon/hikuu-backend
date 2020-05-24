@@ -53,7 +53,7 @@ export class AlertDto {
         it.latpt = this.latpt;
         it.lngpt = this.lngpt;
         it.radius = this.radius;
-        it.creator = this.creatorId;
+        it.creator.id = this.creatorId;
         it.originSource.id = this.originEventId;
         it.logtime = this.logtime;
         
@@ -63,8 +63,82 @@ export class AlertDto {
     public static fromEntity(entity: AlertEntity): AlertDto {
         const it = new AlertDto();
         it.id = entity.id;
-        it.eventTypeId = entity.eventType.id;
-        it.alertLevelId = entity.alertLevel.id;
+        it.eventTypeId = entity.eventTypeId;
+        it.alertLevelId = entity.alertLevelId;
+        it.eventInfo = entity.eventInfo;
+        it.eventTime = entity.eventTime;
+        it.eventEnd = entity.eventEnd;
+        it.permitId = entity.permitId;
+        it.latpt = entity.latpt;
+        it.lngpt = entity.lngpt;
+        it.radius = entity.radius;
+        it.creatorId = entity.creatorId;
+        it.originEventId = entity.originSourceId;
+        it.logtime = entity.logtime;
+
+        return it;
+    }
+}
+
+export class AlertViewDto {
+    @ApiProperty()
+    id: number;
+  
+    @ApiProperty()
+    eventTypeId: number;
+  
+    @ApiProperty()
+    eventTypeName: string;
+  
+    @ApiProperty()
+    alertLevelId: number;
+  
+    @ApiProperty()
+    alertLevelName: string;
+    
+    @ApiProperty()
+    eventInfo: string;
+    
+    @ApiProperty()
+    eventTime: Date;
+    
+    @ApiProperty()
+    eventEnd: Date;
+    
+    @ApiProperty()
+    permitId: number;
+    
+    @ApiProperty()
+    permitName: string;
+    
+    @ApiProperty()
+    latpt: number;
+    
+    @ApiProperty()
+    lngpt: number;
+    
+    @ApiProperty()
+    radius: number;
+    
+    @ApiProperty()
+    creatorId: number;
+    
+    @ApiProperty()
+    creatorName: string;
+
+    @ApiProperty()
+    originEventId: number;
+    
+    @ApiProperty()
+    logtime: Date;
+
+    public static fromEntity(entity: AlertEntity): AlertViewDto {
+        const it = new AlertViewDto();
+        it.id = entity.id;
+        it.eventTypeId = entity.eventTypeId;
+        it.eventTypeName = entity.eventType.name;
+        it.alertLevelId = entity.alertLevelId;
+        it.alertLevelName = entity.alertLevel.name;
         it.eventInfo = entity.eventInfo;
         it.eventTime = entity.eventTime;
         it.eventEnd = entity.eventEnd;
@@ -72,8 +146,9 @@ export class AlertDto {
         it.latpt = entity.latpt;
         it.lngpt = entity.lngpt;
         it.radius = entity.radius;
-        it.creatorId = entity.creator;
-        it.originEventId = entity.originSource.id;
+        it.creatorId = entity.creatorId;
+        it.creatorName = entity.creator.name;
+        it.originEventId = entity.originSourceId;
         it.logtime = entity.logtime;
 
         return it;

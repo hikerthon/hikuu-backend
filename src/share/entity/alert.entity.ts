@@ -3,15 +3,22 @@ import { AlertlevelEntity } from './alertlevel.entity';
 import { EventtypeEntity } from './eventtype.entity';
 import { PermitEntity } from './permit.entity';
 import { AccountEntity } from './account.entity';
+import { StationEntity } from './station.entity';
 
 @Entity({ name: "alerts" })
 export class AlertEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({name: 'event_type_id', nullable:true})
+    eventTypeId: number;
+
     @ManyToOne(type => EventtypeEntity, entType => entType.id, {nullable: false})
     @JoinColumn({name: 'event_type_id'})
     eventType: EventtypeEntity;
+
+    @Column({name: 'alert_level_id', nullable:true})
+    alertLevelId: number;
 
     @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, {nullable: false})
     @JoinColumn({name: 'alert_level_id'})
@@ -26,6 +33,9 @@ export class AlertEntity {
     @Column({name: 'event_end'})
     eventEnd: Date;
 
+    @Column({name: 'permit_id', nullable:true})
+    permitId: number;
+
     @ManyToOne(type => PermitEntity, permit => permit.id, {nullable: false})
     @JoinColumn({name: 'permit_id'})
     permit: PermitEntity;
@@ -39,8 +49,15 @@ export class AlertEntity {
     @Column()
     radius: number;
 
-    @Column()
-    creator: number;
+    @Column({name: 'creator', nullable:true})
+    creatorId: number;
+
+    @ManyToOne(type => StationEntity, station => station.id, {nullable: true})
+    @JoinColumn({name: 'creator'})
+    creator: StationEntity;
+
+    @Column({name: 'origin_source', nullable:true})
+    originSourceId: number;
 
     @ManyToOne(type => AccountEntity, entType => entType.id, {nullable: true})
     @JoinColumn({name: 'origin_source'})

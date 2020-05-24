@@ -16,8 +16,8 @@ export class AccountService {
     }
 
     async getAll(): Promise<AccountDto[]> {
-        const permits = await this.repo.find();
-        return permits.map( permit => AccountDto.fromEntity(permit) );
+        const accounts = await this.repo.find();
+        return accounts.map( account => AccountDto.fromEntity(account) );
     }
 
     async getById(id: number): Promise<AccountDto> {

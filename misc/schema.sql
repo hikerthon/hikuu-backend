@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS events (
     hike_id INT UNSIGNED,
     latpt DECIMAL(10, 8), 
     lngpt DECIMAL(11, 8), 
-    radius DECIMAL(5, 2), 
+    radius DECIMAL(5, 2), -- radius in km to broadcast from lat,lng
     reporter INT UNSIGNED, 
     stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD'),
     logtime DATETIME DEFAULT CURRENT_TIMESTAMP, 
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS alerts (
     INDEX(latpt, lngpt)
 );
 
-INSERT INTO alerts VALUES
+INSERT INTO alerts(id, event_type_id, alert_level_id, event_info, event_time, event_end, permit_id, latpt, lngpt, radius, creator, origin_source, logtime) VALUES
 (1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00', '2020-05-23 17:00', 1, 23.468818, 120.954489, 3, 1, NULL, '2020-05-23-16:00');
 
 CREATE TABLE IF NOT EXISTS alert_attachment (

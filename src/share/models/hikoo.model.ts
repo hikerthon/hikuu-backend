@@ -6,4 +6,9 @@ export class HikooResponse {
 
     @ApiProperty()
     errorMessage?: string;
+
+    constructor(success: boolean, message: string){
+        this.success = success;
+        this.errorMessage = message;
+    }
 }
