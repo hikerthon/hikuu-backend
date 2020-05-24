@@ -7,6 +7,8 @@ import { TrailEntity } from './trail.entity';
 export class HikeEntity {
     @PrimaryGeneratedColumn()
     id: number;
+    @Column({name: 'hiker_id', nullable:true})
+    hikerId: number;
 
     @ManyToOne(type => AccountEntity, account => account.hikes)
     @JoinColumn({name:'hiker_id'})
@@ -18,7 +20,10 @@ export class HikeEntity {
     @Column({name: 'hike_end'})
     hikeEnd: Date;
 
-    @ManyToOne(type => PermitEntity, permits => permits.hikes)
+    @Column({name: 'permit_id', nullable:true})
+    permitId: number;
+
+    @ManyToOne(type => PermitEntity)
     @JoinColumn({name:'permit_id'})
     permit: PermitEntity;
 

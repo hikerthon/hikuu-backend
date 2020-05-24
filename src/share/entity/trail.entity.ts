@@ -9,6 +9,9 @@ export class TrailEntity {
     @Column({name: 'trail_name'})
     name: string;
 
+    @Column({name: 'permit', nullable:true})
+    permitId: number;
+
     @ManyToOne(type => PermitEntity, permit => permit.trails)
     @JoinColumn({name:'permit'})
     permit: PermitEntity;

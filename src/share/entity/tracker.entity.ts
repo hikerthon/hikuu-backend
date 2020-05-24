@@ -1,12 +1,18 @@
-import { Entity, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { AccountEntity } from './account.entity';
 import { HikeEntity } from './hike.entity';
 
 @Entity({ name: "tracker" })
 export class TrackerEntity {
-    @OneToOne(type => AccountEntity, {primary: true, nullable: false})
+    @PrimaryColumn({name: 'hiker_id', nullable: false})
+    hikerId: number;
+
+    @OneToOne(type => AccountEntity, {nullable: false})
     @JoinColumn({name: 'hiker_id'})
     hiker: AccountEntity;
+
+    @Column({name: 'hike_id', nullable:true})
+    hikeId: number;
 
     @ManyToOne(type => HikeEntity, {nullable: false})
     @JoinColumn({name: 'hike_id'})

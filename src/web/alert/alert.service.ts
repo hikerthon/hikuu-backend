@@ -14,10 +14,6 @@ export class AlertService {
     ) { }
 
     getFakeAlerts() {
-        return null;
-    }
-
-    getFakeAlertById(id) {
         return {
             permitId: 1,
             permitName: 'Yushan National Park Permit',
@@ -34,10 +30,6 @@ export class AlertService {
             stationId: 1,
             stationName: 'Yushan'
         }
-    }
-
-    getFakeAllAlertCount() {
-        return 10;
     }
 
     async getAll(): Promise<AlertDto[]> {

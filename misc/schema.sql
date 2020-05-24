@@ -206,6 +206,11 @@ CREATE TABLE IF NOT EXISTS events (
     INDEX(latpt, lngpt)
 );
 
+INSERT INTO events (id, event_type_id, alert_level_id, event_info, event_time, hike_id, latpt, lngpt, radius, reporter, stat, logtime) VALUES
+(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, 'RESOLVED', '2020-05-24 10:18:10'),
+(2, 1, 1, 'Herd of water buffalo spotted around', '2020-05-23 15:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, 'RESOLVED', '2020-05-24 10:18:10'),
+(3, 1, 3, 'A snake spotted around', '2020-05-23 15:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, 'RESOLVED', '2020-05-24 10:18:10');
+
 CREATE TABLE IF NOT EXISTS event_attachment (
     event_id INT UNSIGNED, 
     image_path VARCHAR(255),
@@ -235,7 +240,9 @@ CREATE TABLE IF NOT EXISTS alerts (
 );
 
 INSERT INTO alerts(id, event_type_id, alert_level_id, event_info, event_time, event_end, permit_id, latpt, lngpt, radius, creator, origin_source, logtime) VALUES
-(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00', '2020-05-23 17:00', 1, 23.468818, 120.954489, 3, 1, NULL, '2020-05-23-16:00');
+(1, 1, 2, 'Herd of monkeys spotted around', '2020-05-23 15:00:00', '2020-05-23 17:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, NULL, '2020-05-23 16:00:00'),
+(2, 1, 1, 'Herd of water buffalo spotted around', '2020-05-23 15:00:00', '2020-05-23 17:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, NULL, '2020-05-23 16:00:00'),
+(3, 1, 3, 'A snake spotted around', '2020-05-23 15:00:00', '2020-05-23 17:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, NULL, '2020-05-23 16:00:00');
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
     alert_id INT UNSIGNED, 

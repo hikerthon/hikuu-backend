@@ -80,57 +80,18 @@ export class AlertDto {
     }
 }
 
-export class AlertViewDto {
-    @ApiProperty()
-    id: number;
-  
-    @ApiProperty()
-    eventTypeId: number;
-  
+export class AlertViewDto extends AlertDto {
     @ApiProperty()
     eventTypeName: string;
-  
-    @ApiProperty()
-    alertLevelId: number;
   
     @ApiProperty()
     alertLevelName: string;
     
     @ApiProperty()
-    eventInfo: string;
-    
-    @ApiProperty()
-    eventTime: Date;
-    
-    @ApiProperty()
-    eventEnd: Date;
-    
-    @ApiProperty()
-    permitId: number;
-    
-    @ApiProperty()
     permitName: string;
     
     @ApiProperty()
-    latpt: number;
-    
-    @ApiProperty()
-    lngpt: number;
-    
-    @ApiProperty()
-    radius: number;
-    
-    @ApiProperty()
-    creatorId: number;
-    
-    @ApiProperty()
     creatorName: string;
-
-    @ApiProperty()
-    originEventId: number;
-    
-    @ApiProperty()
-    logtime: Date;
 
     public static fromEntity(entity: AlertEntity): AlertViewDto {
         const it = new AlertViewDto();

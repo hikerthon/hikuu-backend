@@ -75,6 +75,9 @@ export class AlertAttachmentEntity {
     @PrimaryGeneratedColumn()
     id: number;
     
+    @Column({name: 'alert_id'})
+    alertId: number;
+    
     @ManyToOne(type => AlertEntity, alert => alert.id, {nullable: false})
     @JoinColumn({name: 'alert_id'})
     alert: AlertEntity;

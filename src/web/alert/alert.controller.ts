@@ -45,7 +45,7 @@ export class AlertController {
     @ApiOperation({ summary: 'Create new Alert' })
     @ApiResponse({ status: 200, type: HikooResponse })
     async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
-        this._logger.debug(`@Post, ${alert}`);
+        this._logger.debug(`@Post, info: ${alert.eventInfo}`);
         return await this.alertSvc.create(alert);
     }
 }

@@ -11,7 +11,6 @@ export class AccountController {
       _logger.setContext(AccountController.name);
     }
 
-
     @Get()
     @ApiOperation({ summary: 'Get account list' })
     @ApiResponse({ status: 200, type: AccountDto, isArray: true, description: 'Get account list' })
