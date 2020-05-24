@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  hikoo-backend:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: hikoo-backend
+    security_opt:
+      - seccomp:unconfined
+    container_name: hikoo-backend
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    hostname: hikoo-backend
