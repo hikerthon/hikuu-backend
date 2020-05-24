@@ -34,6 +34,9 @@ export class HikeDto {
     
     @ApiProperty()
     memo: string;
+  
+    @ApiProperty()
+    checkinId: number;
     
     @ApiProperty()
     hikeStarted: boolean;
@@ -46,26 +49,6 @@ export class HikeDto {
     
     @ApiProperty()
     logtime: Date;
-
-    public toEntity():HikeEntity {
-        const it = new HikeEntity();
-        it.id = this.id;
-        it.hiker.id = this.hikerId;
-        it.hikeStart = this.hikeStart;
-        it.hikeEnd = this.hikeEnd;
-        it.permit.id = this.permitId;
-        it.guideName = this.guideName;
-        it.guideContact = this.guideContact;
-        it.guideContact2 = this.guideContact2;
-        it.permitAccepted = this.permitAccepted;
-        it.acceptedTime = this.acceptedTime;
-        it.memo = this.memo;
-        it.hikeStarted = this.hikeStarted;
-        it.hikeFinished = this.hikeFinished;
-        it.hikeCancelled = this.hikeCancelled;
-        it.logtime = this.logtime;
-        return it;
-    }
 
     public static fromEntity(entity: HikeEntity): HikeDto {
         const it = new HikeDto();
@@ -80,6 +63,7 @@ export class HikeDto {
         it.permitAccepted = entity.permitAccepted;
         it.acceptedTime = entity.acceptedTime;
         it.memo = entity.memo;
+        it.checkinId = (entity.checkin? entity.checkin.id : null);
         it.hikeStarted = entity.hikeStarted;
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;

@@ -126,12 +126,14 @@ CREATE TABLE IF NOT EXISTS hikes (
     permit_accepted ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
     accepted_time DATETIME,
     memo VARCHAR(255), 
+    checkin_id INT UNSIGNED NULL,
     hike_started BOOLEAN DEFAULT FALSE, 
     hike_finished BOOLEAN DEFAULT FALSE, 
     hike_cancelled BOOLEAN DEFAULT FALSE,
     logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
-    FOREIGN KEY (permit_id) REFERENCES permits(id)
+    FOREIGN KEY (permit_id) REFERENCES permits(id),
+    FOREIGN KEY (checkin_id) REFERENCES checkin(id)
 );
 
 INSERT INTO hikes VALUES
@@ -147,6 +149,15 @@ CREATE TABLE IF NOT EXISTS hike_destination (
 );
 
 INSERT INTO hike_destination VALUES(1, 1),(1, 2),(2, 1),(2, 2),(3, 1),(3, 2);
+
+CREATE TABLE IF NOT EXISTS checkin (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    hiker_id INT UNSIGNED,
+    hike_id INT UNSIGNED, 
+    checkin_time DATETIME, 
+    FOREIGN KEY (hiker_id) REFERENCES account(id),
+    FOREIGN KEY (hike_id) REFERENCES hikes(id)
+);
 
 -- track history hold history data of each tracker entry
 -- used for statistic data along with hikes table
@@ -212,6 +223,7 @@ INSERT INTO events (id, event_type_id, alert_level_id, event_info, event_time, h
 (3, 1, 3, 'A snake spotted around', '2020-05-23 15:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, 'RESOLVED', '2020-05-24 10:18:10');
 
 CREATE TABLE IF NOT EXISTS event_attachment (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  -- typeorm dont like table without PK
     event_id INT UNSIGNED, 
     image_path VARCHAR(255),
     FOREIGN KEY (event_id) REFERENCES events(id)
@@ -245,6 +257,7 @@ INSERT INTO alerts(id, event_type_id, alert_level_id, event_info, event_time, ev
 (3, 1, 3, 'A snake spotted around', '2020-05-23 15:00:00', '2020-05-23 17:00:00', 1, 23.46881800, 120.95448900, 3.00, 1, NULL, '2020-05-23 16:00:00');
 
 CREATE TABLE IF NOT EXISTS alert_attachment (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,  -- typeorm dont like table without PK
     alert_id INT UNSIGNED, 
     image_path VARCHAR(255),
     FOREIGN KEY (alert_id) REFERENCES alerts(id)

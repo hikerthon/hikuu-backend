@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { HikeEntity } from './hike.entity';
+import { CheckinEntity } from './checkin.entity';
 
 @Entity({ name: "account" })
 export class AccountEntity {
@@ -59,4 +60,7 @@ export class AccountEntity {
     
     @OneToMany(type => HikeEntity, hike => hike.hiker)
     hikes: HikeEntity[];
+    
+    @OneToMany(type => CheckinEntity, checkin => checkin.hiker)
+    checkins: CheckinEntity[];
 }

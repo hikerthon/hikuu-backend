@@ -78,8 +78,7 @@ export class EventService {
             order: { logtime: 'DESC' },
             where: { id: id }
         });
-
-        console.log(event)
+        
         return EventViewDto.fromEntity(event);
     }
 

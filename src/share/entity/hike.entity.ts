@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, ManyToMany, JoinTable, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne, ManyToMany, JoinTable, CreateDateColumn, OneToOne } from 'typeorm';
 import { AccountEntity } from './account.entity';
 import { PermitEntity } from './permit.entity';
 import { TrailEntity } from './trail.entity';
+import { CheckinEntity } from './checkin.entity';
 
 @Entity({ name: "hikes" })
 export class HikeEntity {
@@ -44,6 +45,10 @@ export class HikeEntity {
 
     @Column()
     memo: string;
+
+    @OneToOne(type => CheckinEntity, {nullable: true})
+    @JoinColumn({name: 'checkin_id'})
+    checkin: CheckinEntity;
 
     @Column({name: 'hike_started', default: false})
     hikeStarted: boolean;
