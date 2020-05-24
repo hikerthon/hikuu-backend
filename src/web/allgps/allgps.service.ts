@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { MapGpsEntity } from 'src/share/entity/allgps.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AllgpsService {
-    getAllGPS() {
+    constructor(
+        @InjectRepository(MapGpsEntity)
+        private readonly repo: Repository<MapGpsEntity>
+    ) { }
+
+    getFakeGPS() {
         return [{
             location: '23.468858, 120.954451',
             pointType: 'hiker',
@@ -22,5 +30,10 @@ export class AllgpsService {
             alertId: 1,
             timestamp: 1589895049
         }]
+    }
+
+    async getAll(): Promise<MapGpsEntity[]> {
+        const gpsData = await this.repo.find();
+        return gpsData;
     }
 }

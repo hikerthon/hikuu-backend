@@ -260,3 +260,13 @@ CREATE TABLE IF NOT EXISTS alert_attachment (
     image_path VARCHAR(255),
     FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
+
+CREATE VIEW GpsMaps AS
+    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, logtime FROM tracker 
+    WHERE logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
+    UNION ALL
+    SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
+    WHERE event_end >= NOW()
+    UNION ALL 
+    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events 
+    WHERE stat IN ('PENDING', 'PROCESSING')
