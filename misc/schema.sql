@@ -126,14 +126,12 @@ CREATE TABLE IF NOT EXISTS hikes (
     permit_accepted ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
     accepted_time DATETIME,
     memo VARCHAR(255), 
-    checkin_id INT UNSIGNED NULL,
     hike_started BOOLEAN DEFAULT FALSE, 
     hike_finished BOOLEAN DEFAULT FALSE, 
     hike_cancelled BOOLEAN DEFAULT FALSE,
     logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
-    FOREIGN KEY (permit_id) REFERENCES permits(id),
-    FOREIGN KEY (checkin_id) REFERENCES checkin(id)
+    FOREIGN KEY (permit_id) REFERENCES permits(id)
 );
 
 INSERT INTO hikes VALUES

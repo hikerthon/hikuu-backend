@@ -46,8 +46,7 @@ export class HikeEntity {
     @Column()
     memo: string;
 
-    @OneToOne(type => CheckinEntity, {nullable: true})
-    @JoinColumn({name: 'checkin_id'})
+    @OneToOne(type => CheckinEntity)
     checkin: CheckinEntity;
 
     @Column({name: 'hike_started', default: false})
