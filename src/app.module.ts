@@ -17,6 +17,8 @@ import { readFileSync } from 'fs';
 import { ShelterModule } from './web/shelter/shelter.module';
 import { StationModule } from './web/station/station.module';
 import { AccountModule } from './web/account/account.module';
+import { HikesModule } from './web/hikes/hikes.module';
+import { CheckinModule } from './web/checkin/checkin.module';
 
 @Module({
   imports: [
@@ -46,7 +48,9 @@ import { AccountModule } from './web/account/account.module';
     TrailModule,
     ShelterModule,
     StationModule,
-    AccountModule
+    AccountModule,
+    HikesModule,
+    CheckinModule
   ],
   controllers: [
     AppController,

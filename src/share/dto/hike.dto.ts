@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { HikeEntity } from '../entity/hike.entity';
+import { TrailEntity } from '../entity/trail.entity';
 
 export class HikeDto {
     @ApiProperty()
@@ -34,9 +35,6 @@ export class HikeDto {
     
     @ApiProperty()
     memo: string;
-  
-    @ApiProperty()
-    checkinId: number;
     
     @ApiProperty()
     hikeStarted: boolean;
@@ -63,12 +61,54 @@ export class HikeDto {
         it.permitAccepted = entity.permitAccepted;
         it.acceptedTime = entity.acceptedTime;
         it.memo = entity.memo;
-        it.checkinId = (entity.checkin? entity.checkin.id : null);
         it.hikeStarted = entity.hikeStarted;
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;
         it.logtime = entity.logtime;
 
+        return it;
+    }
+}
+
+export class HikeViewDto extends HikeDto {
+
+    @ApiProperty()
+    address: string;
+
+    @ApiProperty()
+    satelliteNumber: string;
+
+    @ApiProperty()
+    emergencyContact: string;
+
+    @ApiProperty()
+    emergencyNumber: string;
+
+    @ApiProperty()
+
+    trails: TrailEntity[];
+
+    public static fromEntity(entity: HikeEntity): HikeViewDto {
+        const it = new HikeViewDto();
+        it.id = entity.id;
+        it.hikerId = entity.hiker.id;
+        it.hikeStart = entity.hikeStart;
+        it.hikeEnd = entity.hikeEnd;
+        it.permitId = entity.permit.id;
+        it.guideName = entity.guideName;
+        it.guideContact = entity.guideContact;
+        it.guideContact2 = entity.guideContact2;
+        it.address = entity.hiker.address;
+        it.emergencyContact = entity.hiker.emergencyContact;
+        it.emergencyNumber = entity.hiker.emergencyNumber;
+        it.permitAccepted = entity.permitAccepted;
+        it.acceptedTime = entity.acceptedTime;
+        it.memo = entity.memo;
+        it.hikeStarted = entity.hikeStarted;
+        it.hikeFinished = entity.hikeFinished;
+        it.hikeCancelled = entity.hikeCancelled;
+        it.logtime = entity.logtime;
+        it.trails = entity.trails;
         return it;
     }
 }
