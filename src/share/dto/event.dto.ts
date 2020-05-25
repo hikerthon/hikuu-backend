@@ -106,3 +106,46 @@ export class EventViewDto extends EventDto {
         return it;
     }
 }
+
+export class EventCountDto {
+
+    @ApiProperty({type: Number, default: 0})
+    pendingCount: number;
+
+    @ApiProperty({type: Number, default: 0})
+    processingCount: number;
+
+    @ApiProperty({type: Number, default: 0})
+    resolved: number;
+
+    @ApiProperty({type: Number, default: 0})
+    bad: number;
+
+    constructor(pendingCount: number, processingCount: number, resolved: number, bad: number) {
+        this.pendingCount = pendingCount;
+        this.processingCount = processingCount;
+        this.resolved = resolved;
+        this.bad = bad;
+    }
+
+    public static fromEntity(entity: any): EventCountDto {
+        const it = new EventCountDto(0, 0, 0, 0);
+        entity.forEach(e => {
+            switch (e['stat']) {
+                case 'PENDING':
+                    it.pendingCount = Number(e['count(*)'])
+                    break
+                case 'PROCESSING':
+                    it.processingCount = Number(e['count(*)'])
+                    break
+                case 'RESOLVED':
+                    it.resolved = Number(e['count(*)'])
+                    break
+                case 'BAD':
+                    it.bad = Number(e['count(*)'])
+                    break
+            }
+        })
+        return it;
+    }
+}
