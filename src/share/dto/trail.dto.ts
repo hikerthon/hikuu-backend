@@ -23,8 +23,7 @@ export class TrailDto {
         const it = new TrailDto();
         it.id = entity.id;
         it.name = entity.name;
-        it.permit = entity.permit.id;
-
+        it.permit = entity.permitId;
         return it;
     }
 }

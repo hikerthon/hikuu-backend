@@ -7,13 +7,10 @@ import {
     ManyToMany,
     JoinTable,
     CreateDateColumn,
-    OneToOne,
-    OneToMany,
 } from 'typeorm';
 import { AccountEntity } from './account.entity';
 import { PermitEntity } from './permit.entity';
 import { TrailEntity } from './trail.entity';
-import { CheckinEntity } from './checkin.entity';
 
 @Entity({ name: "hikes" })
 export class HikeEntity {
