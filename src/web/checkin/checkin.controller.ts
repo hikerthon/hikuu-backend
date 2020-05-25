@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckinService } from './checkin.service';
-import { CheckinDto } from '../../share/dto/checkin.dto';
+import { CheckinDto, CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 
 
 @ApiTags('checkin')
@@ -9,6 +9,13 @@ import { CheckinDto } from '../../share/dto/checkin.dto';
 export class CheckinController {
   constructor(private hikesSvc: CheckinService, private _logger: Logger) {
     _logger.setContext(CheckinController.name);
+  }
+
+  @Get('/checkinTime/count')
+  @ApiOperation({ summary: 'Get checkin-record times by Today' })
+  @ApiResponse({ status: 200, type: CheckinTimeByTodayDto, description: 'Return list of checkin-record times' })
+  getTodayCheckinTimes() {
+    return this.hikesSvc.getTodayCheckinTime();
   }
 
   @Get(':hikerId')

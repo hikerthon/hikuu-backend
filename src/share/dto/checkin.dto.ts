@@ -24,3 +24,18 @@ export class CheckinDto {
         return it;
     }
 }
+
+export class CheckinTimeByTodayDto {
+    @ApiProperty()
+    hour: string;
+
+    @ApiProperty()
+    count: number;
+
+    public static fromEntity(entity: any): CheckinTimeByTodayDto {
+        const it = new CheckinTimeByTodayDto();
+        it.hour = entity['hour(checkin_time)']
+        it.count = entity['count(*)']
+        return it;
+    }
+}
