@@ -9,34 +9,34 @@ import { HikeEntity } from 'src/share/entity/hike.entity';
 @Injectable()
 export class SosService {
   constructor(
-      @InjectRepository(EventEntity)
-      private readonly repo: Repository<EventEntity>
+    @InjectRepository(EventEntity, 'mobile')
+    private readonly repo: Repository<EventEntity>
   ) { }
 
   async create(sos: EventDto): Promise<HikooResponse> {
-      try {
-        const exist = await getConnection()
-          .createQueryBuilder()
-          .select('hike.id')
-          .from(HikeEntity, 'hike')
-          .where("hiker_id=:id", {id: sos.reporterId})
-          .andWhere('hike_started=1')
-          .andWhere('hike_finished=0')
-          .orderBy('hike_start', 'DESC')
-          .getRawOne();
-        
-        console.log(exist);
-        
-        if (!exist) {
-          return new HikooResponse(false, 'User doesnt have active hiking permit');
-        }
+    try {
+      const exist = await getConnection()
+        .createQueryBuilder()
+        .select('hike.id')
+        .from(HikeEntity, 'hike')
+        .where("hiker_id=:id", { id: sos.reporterId })
+        .andWhere('hike_started=1')
+        .andWhere('hike_finished=0')
+        .orderBy('hike_start', 'DESC')
+        .getRawOne();
 
-        sos.hikeId = exist.hike_id;
-        await this.repo.save(sos);
-      } catch (e) {
-        return new HikooResponse(false, e.message);
+      console.log(exist);
+
+      if (!exist) {
+        return new HikooResponse(false, 'User doesnt have active hiking permit');
       }
 
-      return { success: true }
+      sos.hikeId = exist.hike_id;
+      await this.repo.save(sos);
+    } catch (e) {
+      return new HikooResponse(false, e.message);
+    }
+
+    return { success: true }
   }
 }

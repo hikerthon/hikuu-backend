@@ -5,7 +5,7 @@ import { EventEntity } from 'src/share/entity/event.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EventEntity])],
+  imports: [TypeOrmModule.forFeature([EventEntity], 'mobile')],
   providers: [Logger, SosService],
   controllers: [SosController],
 })
