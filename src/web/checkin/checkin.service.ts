@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { CheckinEntity } from '../../share/entity/checkin.entity';
-import { CheckinDto } from '../../share/dto/checkin.dto';
+import { CheckinDto, CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 
 @Injectable()
 export class CheckinService {
@@ -21,5 +21,13 @@ export class CheckinService {
     })
 
     return records.map(record => CheckinDto.fromEntity(record))
+  }
+
+  async getTodayCheckinTime(): Promise<CheckinTimeByTodayDto[]> {
+    const records = await this.repo.createQueryBuilder("checkin")
+      .select('count(*), hour(checkin_time)')
+      .groupBy('hour(checkin_time)')
+      .getRawMany()
+    return records.map(record => CheckinTimeByTodayDto.fromEntity(record))
   }
 }
