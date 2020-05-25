@@ -19,13 +19,30 @@ Create ormconfig.json
 example
 ```json
 {
+  "default": {
+    "name": "default",
     "type": "mysql",
     "host": "database-hikoo-backend.example.ap-northeast-2000.rds.amazonaws.com",
     "port": 3306,
     "username": "example",
     "password": "example",
     "database": "hikoo",
-    "entities": ["dist/**/*.entity{.ts,.js}"]
+    "entities": [
+      "dist/**/*.entity{.ts,.js}"
+    ]
+  },
+  "mobile": {
+    "name": "mobile",
+    "type": "mysql",
+    "host": "database-hikoo-backend.example.ap-northeast-2000.rds.amazonaws.com",
+    "port": 3306,
+    "username": "example",
+    "password": "example",
+    "database": "hikoo",
+    "entities": [
+      "dist/**/*.entity{.ts,.js}"
+    ]
+  }
 }
 ```
 

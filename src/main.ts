@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { MobileappModule } from './mobile/mobileapp.module';
+import { MobileappModule } from './mobileapp.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrapApp() {
@@ -9,7 +9,7 @@ async function bootstrapApp() {
 
   const options = new DocumentBuilder()
     .setTitle('Hikoo')
-    .setDescription('Hikoo API')
+    .setDescription('Hikoo Web API')
     .setVersion('1.0')
     .addTag('hikoo')
     .build();
