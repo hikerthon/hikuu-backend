@@ -76,4 +76,6 @@ export class AlertService {
 
         return { success: true }
     }
+
+    // createFromEvent --> need to update Events stat into RESOLVED
 }

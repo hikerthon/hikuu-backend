@@ -25,8 +25,12 @@ CREATE TABLE IF NOT EXISTS account (
 );
 
 INSERT INTO account VALUES
-(1, 'tonylin', 'iliketopoo', 'Tony', 'Lin', '/selfie/tonylin', '/identity/tonylin', 'M', '2000-01-01', 'Taoyuan, St.Somewhere No.99', 'tonylin@gmail.com', 'Taiwan', 'AB12345', '0965-123-4567', '0965-123-4567', '0965-123-4567', 'Annice', '0965-123-4567'),
-(2, 'tonymadden', 'iliketoeat', 'Tony', 'Madden', '/selfie/tonymadden', '/identity/tonymadden', 'M', '2000-01-01', 'Taipei, St.Arounthere No.88', 'tonymadden@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Rachel Weize', '0965-777-8888');
+(1, 'tonylin', 'iliketopoo', 'Tony', 'Lin', '/selfie/tonylin', '/identity/tonylin', 'M', '2000-01-01', 'Taoyuan, St.Somewhere No.99', 'tonylin@gmail.com', 'Taiwan', 'AB12345', '0965-123-4567', '0965-123-4567', '0965-123-4567', 'Emma Watson', '0965-123-4567'),
+(2, 'tonymadden', 'iliketoeat', 'Tony', 'Madden', '/selfie/tonymadden', '/identity/tonymadden', 'M', '2000-01-01', 'Taipei, St.Around there No.88', 'tonymadden@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Rachel Weize', '0965-777-8888'),
+(3, 'jerrylee', 'iliketosleep', 'Jerry', 'Lee', '/selfie/jerrylee', '/identity/jerrylee', 'M', '2000-01-01', 'Hsinchu, St.That area No.77', 'jerrylee@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Margot Robbie', '0965-777-8888'),
+(4, 'nyotoyang', 'iliketofart', 'Nyoto', 'Yang', '/selfie/nyotoyang', '/identity/nyotoyang', 'M', '2000-01-01', 'Hsinchu, St.This area No.66', 'nyotoyang@gmail.com', 'Indonesia', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Emma Stone', '0965-777-8888'),
+(5, 'mrchuck', 'ilikeme', 'Chuck', 'Norris', '/selfie/mrchuck', '/identity/mrchuck', 'M', '2000-01-01', 'Navasota, St.Those area No.88', 'mrchuck@gmail.com', 'United States', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Gena O-Kelley', '0965-777-8888'),
+(6, 'mrstallone', 'ilikemyself', 'Sylvester', 'Stallone', '/selfie/mrstallone', '/identity/mrstallone', 'M', '2000-01-01', 'California, St.These area No.88', 'mrstallone@gmail.com', 'United States', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Jennifer Flavin', '0965-777-8888');
 
 CREATE TABLE IF NOT EXISTS shelters (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -102,7 +106,7 @@ INSERT INTO alert_level VALUES
 
 CREATE TABLE IF NOT EXISTS event_type (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    event_type_name VARCHAR(255), -- WILD_ANIMAL, BLOCKED_ROUTE, BROKEN_STRUCTURE ETC
+    event_type_name VARCHAR(255),
     event_type_desc VARCHAR(255),
     default_alert INT UNSIGNED, 
     FOREIGN KEY (default_alert) REFERENCES alert_level(id)
@@ -135,9 +139,14 @@ CREATE TABLE IF NOT EXISTS hikes (
 );
 
 INSERT INTO hikes VALUES
-(1, 1, '2020-06-05 07:00', '2020-06-07 17:00', 1, 'Chuck Noris', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-21 21:22:23', 'Chuck good', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
-(2, 2, '2020-06-05 07:00', '2020-06-07 17:00', 2, 'Rambo', '0965-999-9999', '0965-888-8888', 'PENDING', '2020-05-21 21:22:23', 'Rambo good', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
-(3, 1, '2020-06-05 07:00', '2020-06-07 17:00', 3, 'Stephen Chow', '0965-999-9999', '0965-888-8888', 'REJECTED', '2020-05-21 21:22:23', 'Stephen Chow no good', FALSE, FALSE, FALSE, '2020-05-20 08:00');
+(1, 1, '2020-05-11 07:00', '2020-05-12 17:00', 1, 'Chuck Noris', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-10 08:00', 'We will hike like a beast', TRUE, TRUE, FALSE, '2020-05-09 08:00'),
+(2, 1, '2020-05-25 07:00', '2020-05-29 17:00', 2, 'Sylvester Stallone', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-21 08:00', 'We will hike like a soldier', TRUE, FALSE, FALSE, '2020-05-22 08:00'),
+(3, 1, '2020-06-08 07:00', '2020-06-10 17:00', 3, 'Stephen Chow', '0965-999-9999', '0965-888-8888', 'REJECTED', '2020-05-21 09:00', 'I hope i can go home with my limb still attached', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
+(4, 2, '2020-05-28 07:00', '2020-05-29 17:00', 1, 'Jason Statham', '0965-999-9999', '0965-888-8888', 'PENDING', '2020-05-21 09:00', 'Will stay at camping ground', FALSE, FALSE, FALSE, '2020-05-20 08:00'),
+(5, 5, '2020-05-11 07:00', '2020-05-12 17:00', 1, 'Myself', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-10 08:00', 'We will hike like a beast', TRUE, TRUE, FALSE, '2020-05-09 08:00'),
+(6, 6, '2020-05-25 07:00', '2020-05-29 17:00', 2, 'Myself', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-21 08:00', 'We will hike like a soldier', TRUE, FALSE, FALSE, '2020-05-22 08:00'),
+(7, 3, '2020-05-25 07:00', '2020-05-29 17:00', 2, 'Sylvester Stallone', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-10 08:00', 'We will hike like a beast', TRUE, TRUE, FALSE, '2020-05-09 08:00'),
+(8, 4, '2020-05-25 07:00', '2020-05-29 17:00', 2, 'Sylvester Stallone', '0965-999-9999', '0965-888-8888', 'ACCEPTED', '2020-05-10 08:00', 'We will hike like a beast', TRUE, TRUE, FALSE, '2020-05-09 08:00');
 
 CREATE TABLE IF NOT EXISTS hike_destination (
     hike_id INT UNSIGNED, 
@@ -146,7 +155,7 @@ CREATE TABLE IF NOT EXISTS hike_destination (
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
-INSERT INTO hike_destination VALUES(1, 1),(1, 2),(2, 1),(2, 2),(3, 1),(3, 2);
+INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2);
 
 CREATE TABLE IF NOT EXISTS checkin (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -156,6 +165,14 @@ CREATE TABLE IF NOT EXISTS checkin (
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
+
+INSERT INTO checkin VALUES
+(1, 1, 1, '2020-05-11 05:00'),
+(2, 5, 1, '2020-05-11 05:00'),
+(3, 1, 2, '2020-05-25 06:00'),
+(4, 3, 7, '2020-05-25 06:00'),
+(5, 4, 8, '2020-05-25 06:00'),
+(6, 6, 6, '2020-05-25 06:00');
 
 -- track history hold history data of each tracker entry
 -- used for statistic data along with hikes table
@@ -194,6 +211,54 @@ CREATE TABLE IF NOT EXISTS tracker (
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
     INDEX(latpt, lngpt)
 );
+
+DROP TRIGGER IF EXISTS be4_ins_tracker;
+DELIMITER //
+CREATE TRIGGER be4_ins_tracker BEFORE INSERT ON tracker FOR EACH ROW
+BEGIN
+    INSERT INTO track_history(hiker_id, hike_id, record_time, latpt, lngpt, elevation, battery, network, elapsed_time, logtime)
+    VALUES(NEW.hiker_id, NEW.hike_id, NEW.record_time, NEW.latpt, NEW.lngpt, NEW.elevation, NEW.battery, NEW.network, NEW.elapsed_time, NEW.logtime);
+END//
+DELIMITER ;
+
+INSERT INTO tracker VALUES
+    (1, 1, '2020-05-11 05:00', 23.4739179,120.9001783, 2609.0, 95, -67, '00:00:05', '2020-05-11 05:00:01'), -- tataka
+    (5, 5, '2020-05-11 05:00', 23.4739177,120.9001780, 2609.0, 95, -67, '00:00:05', '2020-05-11 05:00:01'), -- tataka
+    (1, 1, '2020-05-11 07:05', 23.4705093,120.9178661, 2867.0, 92, -71, '02:05:03', '2020-05-11 07:22:01'),
+    (1, 1, '2020-05-11 08:05', 23.4735379,120.9154855, 3202.0, 90, -69, '03:05:07', '2020-05-11 08:05:01'), -- front head
+    (1, 1, '2020-05-11 09:05', 23.46739,120.9381274, 3415.0, 86, -70, '04:05:07', '2020-05-11 09:05:01'), -- front
+    (1, 1, '2020-05-11 11:05', 23.4668906,120.9465227, 3420.0, 80, -61, '06:05:07', '2020-05-11 11:05:01'), -- paiyun
+    (5, 5, '2020-05-11 11:05', 23.4668907,120.9465228, 3420.0, 80, -61, '06:05:07', '2020-05-11 11:05:01'), -- paiyun
+    (1, 1, '2020-05-11 12:05', 23.4716737,120.9339604, 3498.0, 72, -90, '07:05:07', '2020-05-11 12:05:01'), -- west
+    (1, 1, '2020-05-11 14:05', 23.4700202,120.9551856, 3917.0, 65, -68, '09:05:07', '2020-05-11 14:05:01'), -- main
+    (1, 1, '2020-05-11 15:05', 23.4824032,120.94618, 3834.0, 53, -62, '10:05:07', '2020-05-11 15:05:01'), -- east
+    (5, 5, '2020-05-11 15:05', 23.4824033,120.946181, 3834.0, 53, -62, '10:05:07', '2020-05-11 15:05:01'), -- east
+    (1, 1, '2020-05-11 18:05', 23.4668906,120.9465227, 3420.0, 42, -61, '13:05:07', '2020-05-11 18:05:01'), -- paiyun
+    (1, 1, '2020-05-12 03:05', 23.4668906,120.9465227, 3420.0, 97, -61, '22:05:07', '2020-05-12 03:05:01'), -- paiyun
+    (1, 1, '2020-05-12 08:05', 23.4877932,120.9570499, 3822.0, 84, -61, '27:05:07', '2020-05-12 08:05:01'), -- north
+    (5, 5, '2020-05-12 08:05', 23.4877933,120.9570500, 3822.0, 84, -61, '27:05:07', '2020-05-12 08:05:01'), -- north
+    (1, 1, '2020-05-12 09:05', 23.4909916,120.9576543, 3794.0, 81, -61, '28:05:07', '2020-05-12 09:05:01'), -- north north
+    (1, 1, '2020-05-12 13:05', 23.4668906,120.9465227, 3420.0, 63, -61, '32:05:07', '2020-05-12 13:05:01'), -- paiyun
+    (1, 1, '2020-05-12 17:05', 23.4735379,120.9154855, 3202.0, 41, -69, '36:05:07', '2020-05-12 17:05:01'), -- front head
+    (1, 1, '2020-05-12 19:00', 23.4739179,120.9001783, 2609.0, 27, -67, '39:05:05', '2020-05-12 19:00:01'), -- tataka
+    (5, 5, '2020-05-12 19:00', 23.4739178,120.9001784, 2609.0, 27, -67, '39:05:05', '2020-05-12 19:00:01'), -- tataka
+    (1, 2, '2020-05-25 06:00', 24.1401054,121.286211, 3134.0, 93, -58, '00:00:05', '2020-05-25 06:00:01'), -- xiaoqilai
+    (3, 7, '2020-05-25 06:00', 24.1401056,121.286221, 3134.0, 93, -58, '00:00:05', '2020-05-25 06:00:01'), -- xiaoqilai
+    (4, 8, '2020-05-25 06:00', 24.1401055,121.286224, 3134.0, 93, -58, '00:00:05', '2020-05-25 06:00:01'), -- xiaoqilai
+    (1, 2, '2020-05-25 10:00', 24.1177876,121.310396, 2716.0, 84, -58, '04:00:05', '2020-05-25 10:00:01'), -- heishuitang
+    (3, 7, '2020-05-25 10:00', 24.1177878,121.310395, 2716.0, 84, -58, '04:00:05', '2020-05-25 10:00:01'), -- heishuitang
+    (4, 8, '2020-05-25 10:00', 24.1177875,121.310394, 2716.0, 84, -58, '04:00:05', '2020-05-25 10:00:01'), -- heishuitang
+    (6, 6, '2020-05-25 10:00', 24.1177877,121.3103961, 2716.0, 84, -58, '04:00:05', '2020-05-25 10:00:01') -- heishuitang
+ON DUPLICATE KEY UPDATE 
+    hike_id=VALUES(hike_id),
+    record_time=VALUES(record_time), 
+    latpt=VALUES(latpt), 
+    lngpt=VALUES(lngpt), 
+    elevation=VALUES(elevation), 
+    battery=VALUES(battery), 
+    network=VALUES(network), 
+    elapsed_time=VALUES(elapsed_time), 
+    logtime=VALUES(logtime);
 
 CREATE TABLE IF NOT EXISTS events (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -261,12 +326,14 @@ CREATE TABLE IF NOT EXISTS alert_attachment (
     FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
 
+DROP VIEW IF EXISTS GpsMaps;
 CREATE VIEW GpsMaps AS
-    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, logtime FROM tracker 
-    WHERE logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
+    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, logtime FROM tracker a INNER JOIN hikes b ON a.hike_id=b.id 
+    WHERE b.hike_finished=0
+    --AND logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
     UNION ALL
     SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
-    WHERE event_end >= NOW()
+    --WHERE event_end >= NOW()
     UNION ALL 
-    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events 
-    WHERE stat IN ('PENDING', 'PROCESSING')
+    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events ;
+    --WHERE stat IN ('PENDING', 'PROCESSING');
