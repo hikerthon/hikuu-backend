@@ -20,6 +20,8 @@ import { AccountModule } from './web/account/account.module';
 import { HikesModule } from './web/hikes/hikes.module';
 import { CheckinModule } from './web/checkin/checkin.module';
 
+const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).toString()).default;
+
 @Module({
   imports: [
     FirebaseAdminModule.forRootAsync({
@@ -35,7 +37,7 @@ import { CheckinModule } from './web/checkin/checkin.module';
         };
       }
     }),
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot(ormConfig),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static/socketio'),
     }),
