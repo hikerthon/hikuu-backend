@@ -326,14 +326,22 @@ CREATE TABLE IF NOT EXISTS alert_attachment (
     FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
 
-DROP VIEW IF EXISTS GpsMaps;
-CREATE VIEW GpsMaps AS
-    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, logtime FROM tracker a INNER JOIN hikes b ON a.hike_id=b.id 
+DROP VIEW IF EXISTS AllGpsMaps;
+CREATE VIEW AllGpsMaps AS
+    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, record_time FROM tracker a INNER JOIN hikes b ON a.hike_id=b.id 
     WHERE b.hike_finished=0
-    --AND logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
+    -- AND logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
     UNION ALL
     SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
-    --WHERE event_end >= NOW()
+    -- WHERE event_end >= NOW()
     UNION ALL 
-    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events ;
-    --WHERE stat IN ('PENDING', 'PROCESSING');
+    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events;
+    -- WHERE stat IN ('PENDING', 'PROCESSING');
+
+DROP VIEW IF EXISTS BroadcastGpsMaps;
+CREATE VIEW BroadcastGpsMaps AS
+    SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
+    -- WHERE event_end >= NOW()
+    UNION ALL 
+    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events;
+    -- WHERE stat IN ('PENDING', 'PROCESSING');

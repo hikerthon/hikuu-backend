@@ -2,7 +2,7 @@ import { ViewEntity, ViewColumn } from "typeorm";
 
 
 @ViewEntity({
-    name: 'GpsMaps',
+    name: 'AllGpsMaps',
     expression: `SELECT *`
 })
 export class MapGpsEntity {
