@@ -7,9 +7,10 @@ import { UserModule } from './user/user.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { PermitController } from './permit/permit.controller';
 import { PermitService } from './permit/permit.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [AlertModule, EventModule, LocationModule, SosModule, UserModule, ShelterModule],
+  imports: [TypeOrmModule.forRoot(), AlertModule, EventModule, LocationModule, SosModule, UserModule, ShelterModule],
   controllers: [PermitController],
   providers: [Logger, PermitService],
 })

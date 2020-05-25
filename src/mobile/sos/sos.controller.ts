@@ -3,6 +3,7 @@ import { Location } from '../../share/models/location.model';
 import { ApiResponse, ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { HikooResponse } from '../../share/models/hikoo.model';
 import { SosService } from './sos.service';
+import { EventDto } from 'src/share/dto/event.dto';
 
 
 @ApiTags("sos")
@@ -13,18 +14,22 @@ export class SosController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Call SOS to police station' })
+  @ApiOperation({ summary: 'Call for SOS (event) to be pushed to stations' })
   @ApiBody({ type: Location })
   @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  callSOS(@Body() location: Location): HikooResponse {
-    this._logger.debug(location);
+  async callSOS(@Body() location: Location): Promise<HikooResponse> {
+    this._logger.debug(`@Post callSOS [${location}]`);
+    let sos = new EventDto;
+    sos.eventTypeId = 4;
+    sos.alertLevelId = 4;
+    sos.reporterId = location.userId;
+    sos.latpt = location.lat;
+    sos.lngpt = location.lng;
+    sos.radius = 10;
+    sos.stat = 'PROCESSING';
+    sos.eventInfo = 'HELP';
+    sos.eventTime = new Date();
 
-    if (this.srv.callSOS(location)) {
-      return { success: true };
-    } else {
-      return { success: false, errorMessage: 'Fail to call SOS to police station' }
-    }
-
+    return await this.srv.create(sos)
   }
-
 }

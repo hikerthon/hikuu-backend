@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, TreeRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AlertEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 import { HikooResponse } from 'src/share/models/hikoo.model';
-import e = require('express');
 
 @Injectable()
 export class AlertService {

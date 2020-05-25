@@ -9,7 +9,7 @@ async function bootstrapApp() {
 
   const options = new DocumentBuilder()
     .setTitle('Hikoo')
-    .setDescription('Hikoo API')
+    .setDescription('Hikoo Web API')
     .setVersion('1.0')
     .addTag('hikoo')
     .build();
