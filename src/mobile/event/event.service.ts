@@ -1,51 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { Event, EventStatus } from '../../share/models/event.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EventEntity } from 'src/share/entity/event.entity';
+import { Repository } from 'typeorm';
+import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
+import { HikooResponse } from 'src/share/models/hikoo.model';
 
 @Injectable()
 export class EventService {
 
-  events: Array<Event> = [
-    {
-      hikeId: 1,
-      hikerId: 1,
-      reporter: "Xu, Yu-Chen",
-      lat: 24.937596,
-      long: 121.021746,
-      radius: 5,
-      alertId: 1,
-      alertLevel: "1",
-      eventId: 1,
-      eventType: "Falling rocks",
-      eventInfo: "eventInfo",
-      eventTime: "11/10/2016, 11:49:36 AM",
-      ttl: 1,
-      status: EventStatus.Pending
-    }, {
-      hikeId: 2,
-      hikerId: 2,
-      reporter: "Xu, Yu-Chen",
-      lat: 24.937596,
-      long: 121.021746,
-      radius: 5,
-      alertId: 1,
-      alertLevel: "1",
-      eventId: 1,
-      eventType: "Falling rocks",
-      eventInfo: "eventInfo",
-      eventTime: "11/10/2016, 11:49:36 AM",
-      ttl: 1,
-      status: EventStatus.Pending
-    }
-  ]
+  constructor(
+    @InjectRepository(EventEntity, 'mobile')
+    private readonly repo: Repository<EventEntity>
+  ) { }
 
-  getEvents(userId: number) {
-    return this.events;
+  async getByHikeId(hikeId: number, start: number, count: number): Promise<EventViewDto[]> {
+    const events = await this.repo.find({
+      relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
+      where: { hikeId: hikeId },
+      order: { logtime: 'DESC' },
+      skip: start,
+      take: count
+
+    });
+
+    return events.map(alert => EventViewDto.fromEntity(alert));
   }
 
-  createEvent(userId: number, event: Event) {
-    console.log(event);
-    // TODO
-    return true;
+  async create(event: EventDto): Promise<HikooResponse> {
+    try {
+      await this.repo.save(event)
+    } catch (e) {
+      return { success: false, errorMessage: e.message };
+    }
+
+    return { success: true }
   }
 
 }

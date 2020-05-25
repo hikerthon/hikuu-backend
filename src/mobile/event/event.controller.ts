@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Logger, Param } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Logger, Param, Query } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
 
 import { EventsGateway } from '../../web/events/events.gateway';
 import { HikooResponse } from '../../share/models/hikoo.model';
+import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
 
 
 @ApiTags('event')
@@ -19,24 +20,32 @@ export class EventController {
   @Get(':userId/event')
   @ApiOperation({ summary: 'Find events by user id' })
   @ApiParam({ name: 'userId', type: 'number' })
+  @ApiQuery({ name: 'start', type: 'number', required: false })
+  @ApiQuery({ name: 'count', type: 'number', required: false })
   @ApiResponse({ status: 200, type: Event, isArray: true, description: 'successful operation' })
-  getEvents(@Param('userId') userId: number) {
-    return this.srv.getEvents(userId);
+  async getEventsByHikeId(
+    @Param('userId') userId: number,
+    @Query('start') start: number,
+    @Query('count') count: number): Promise<EventViewDto[]> {
+    this._logger.debug(userId);
+    this._logger.debug(start);
+    this._logger.debug(count);
+    start = (start != null ? start : 0);
+    count = (count != null ? count : 10);
+    // count must more than 0
+    return this.srv.getByHikeId(userId, start || 0, count || 0);
   }
 
+
   @Post(':userId/event')
-  @ApiOperation({ summary: 'Add new event' })
+  @ApiOperation({ summary: 'Create new event' })
+
   @ApiParam({ name: 'userId', type: 'number' })
   @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  createEvent(@Body() event: Event, @Param('userId') userId: number): HikooResponse {
-    const r = this.srv.createEvent(userId, event);
-    // TODO: check response
-    if (r) {
-      const msg = 'publish message'
-      this.eventGateway.newTest(msg);
-      return { success: true }
-    } else {
-      return { success: true, errorMessage: 'Fail to add event' }
-    }
+  async createEvent(@Body() event: EventDto, @Param('userId') userId: number): Promise<HikooResponse> {
+    this._logger.debug(userId);
+    this._logger.debug(`@Post, info: ${event.eventInfo}`);
+    event.hikeId = userId;
+    return await this.srv.create(event);
   }
 }
