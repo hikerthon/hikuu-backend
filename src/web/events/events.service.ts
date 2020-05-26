@@ -75,7 +75,7 @@ export class EventService {
                 count: count,
                 errorMessage: null
             }
-        } catch(e) {
+        } catch (e) {
             return {
                 success: false,
                 count: 0,
@@ -90,13 +90,13 @@ export class EventService {
             order: { logtime: 'DESC' },
             where: { id: id }
         });
-        
+
         return EventViewDto.fromEntity(event);
     }
 
     async create(event: EventDto): Promise<HikooResponse> {
         try {
-            await this.repo.save(event)
+            await this.repo.save(event.toEntity())
         } catch (e) {
             return { success: false, errorMessage: e.message };
         }

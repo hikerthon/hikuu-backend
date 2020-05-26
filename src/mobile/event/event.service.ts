@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventEntity } from 'src/share/entity/event.entity';
-import { Repository } from 'typeorm';
+import { EventEntity, EventAttachmentEntity } from 'src/share/entity/event.entity';
+import { Repository, getConnection } from 'typeorm';
 import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
 import { HikooResponse } from 'src/share/dto/generic.dto';
 
@@ -28,7 +28,19 @@ export class EventService {
 
   async create(event: EventDto): Promise<HikooResponse> {
     try {
-      await this.repo.save(event)
+      // save event
+      const saveEvent = Object.assign(new EventDto(), event);
+      const newEvent = await this.repo.save(saveEvent.toEntity());
+
+      // save attachments
+      event.attachments.forEach(
+        function (attachment) {
+          const atc = new EventAttachmentEntity();
+          atc.event = newEvent;
+          atc.imagePath = attachment;
+          getConnection('mobile').getRepository(EventAttachmentEntity).save(atc);
+        }
+      )
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }

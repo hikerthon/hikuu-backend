@@ -6,9 +6,9 @@ import { EventtypeEntity } from './eventtype.entity';
 import { AlertlevelEntity } from './alertlevel.entity';
 
 export enum EventStatusEnum {
-    PENDING = 'PENDING', 
-    PROCESSING = 'PROCESSING', 
-    RESOLVED = 'RESOLVED', 
+    PENDING = 'PENDING',
+    PROCESSING = 'PROCESSING',
+    RESOLVED = 'RESOLVED',
     BAD = 'BAD'
 }
 
@@ -17,52 +17,52 @@ export class EventEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({name: 'event_type_id'})
+    @Column({ name: 'event_type_id' })
     eventTypeId: number;
 
-    @ManyToOne(type => EventtypeEntity, entType => entType.id, {nullable: false})
-    @JoinColumn({name: 'event_type_id'})
+    @ManyToOne(type => EventtypeEntity, entType => entType.id, { nullable: false })
+    @JoinColumn({ name: 'event_type_id' })
     eventType: EventtypeEntity;
 
-    @Column({name: 'alert_level_id'})
+    @Column({ name: 'alert_level_id' })
     alertLevelId: number;
 
-    @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, {nullable: false})
-    @JoinColumn({name: 'alert_level_id'})
+    @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, { nullable: false })
+    @JoinColumn({ name: 'alert_level_id' })
     alertLevel: AlertlevelEntity;
 
-    @Column({name: 'event_info'})
+    @Column({ name: 'event_info' })
     eventInfo: string;
 
-    @Column({name: 'event_time'})
+    @Column({ name: 'event_time' })
     eventTime: Date;
 
-    @Column({name: 'hike_id'})
+    @Column({ name: 'hike_id' })
     hikeId: number;
 
-    @ManyToOne(type => HikeEntity, {nullable: false})
-    @JoinColumn({name: 'hike_id'})
+    @ManyToOne(type => HikeEntity, { nullable: false })
+    @JoinColumn({ name: 'hike_id' })
     hike: HikeEntity;
-    
+
     @Column()
     latpt: number;
 
     @Column()
     lngpt: number;
-    
+
     @Column()
     radius: number;
 
-    @Column({name: 'reporter'})
+    @Column({ name: 'reporter' })
     reporterId: number;
 
-    @ManyToOne(type => AccountEntity, acct => acct.id, {nullable: false})
-    @JoinColumn({name: 'reporter'})
+    @ManyToOne(type => AccountEntity, acct => acct.id, { nullable: false })
+    @JoinColumn({ name: 'reporter' })
     reporter: AccountEntity;
 
-    @Column({type: 'enum', enum: EventStatusEnum, default: EventStatusEnum.PENDING})
+    @Column({ type: 'enum', enum: EventStatusEnum, default: EventStatusEnum.PENDING })
     stat: string;
-    
+
     @CreateDateColumn()
     logtime: Date;
 
@@ -70,18 +70,18 @@ export class EventEntity {
     attachments: EventAttachmentEntity[];
 }
 
-@Entity({name: 'event_attachment'})
+@Entity({ name: 'event_attachment' })
 export class EventAttachmentEntity {
     @PrimaryGeneratedColumn()
     id: number;
-    
-    @Column({name: 'event_id'})
+
+    @Column({ name: 'event_id' })
     eventId: number;
 
-    @ManyToOne(type => EventEntity, event => event.id, {nullable: false})
-    @JoinColumn({name: 'event_id'})
+    @ManyToOne(type => EventEntity, event => event.id, { nullable: false })
+    @JoinColumn({ name: 'event_id' })
     event: EventEntity;
 
-    @Column({name: 'image_path'})
+    @Column({ name: 'image_path' })
     imagePath: string;
 }
