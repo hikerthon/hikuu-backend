@@ -1,5 +1,5 @@
 import { Controller, Request, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
 import { HikooResponse, ImageUploadResponse } from '../../share/dto/generic.dto';
@@ -11,6 +11,7 @@ import { S3 } from 'aws-sdk';
 import { ApiFile, s3UploadAsync } from 'src/share/utils/utils';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('event')
 @Controller('event')
 export class EventController {

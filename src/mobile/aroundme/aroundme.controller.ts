@@ -1,10 +1,10 @@
 import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { Location } from '../../share/models/location.model';
-import { ApiResponse, ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { AroundMeService } from './aroundme.service';
 import { AroundMeDto } from 'src/share/dto/aroundme.dto';
 
-
+@ApiBearerAuth()
 @ApiTags("aroundme")
 @Controller('aroundme')
 export class AroundMeController {
@@ -22,11 +22,11 @@ export class AroundMeController {
     @Query('userId') userId: number,
     @Query('lat') lat: number,
     @Query('lng') lng: number): Promise<AroundMeDto[]> {
-      this._logger.debug(`@Get AroundMe id = [${userId}] at [${lat}, ${lng}]`);
-      const location = new Location()
-      location.userId = userId;
-      location.lat = lat;
-      location.lng = lng;
-      return await this.srv.getAroundMe(location)
+    this._logger.debug(`@Get AroundMe id = [${userId}] at [${lat}, ${lng}]`);
+    const location = new Location()
+    location.userId = userId;
+    location.lat = lat;
+    location.lng = lng;
+    return await this.srv.getAroundMe(location)
   }
 }
