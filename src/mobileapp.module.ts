@@ -5,13 +5,13 @@ import { AlertModule } from './mobile/alert/alert.module';
 import { EventModule } from './mobile/event/event.module';
 import { LocationModule } from './mobile/location/location.module';
 import { SosModule } from './mobile/sos/sos.module';
-import { UserModule } from './mobile/user/user.module';
 import { ShelterModule } from './mobile/shelter/shelter.module';
 import { PermitModule } from './mobile/permit/permit.module';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as admin from 'firebase-admin';
 import { S3Module } from 'nestjs-s3';
+import { AroundMeModule } from './mobile/aroundme/aroundme.module';
 // import { ConnectionOptionsReader } from 'typeorm';
 
 const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).toString()).mobile;
@@ -42,9 +42,9 @@ const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).
     EventModule,
     LocationModule,
     SosModule,
-    UserModule,
     ShelterModule,
-    PermitModule
+    PermitModule,
+    AroundMeModule
   ],
   controllers: [],
   providers: [Logger],
