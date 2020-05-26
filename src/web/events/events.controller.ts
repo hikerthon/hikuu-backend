@@ -61,7 +61,7 @@ export class EventsController {
     onNotifyEvent(@Req() request, @Body() event: EventDto): HikooResponse {
         console.log(`sourceIp = ${request.ip} ${request.connection.remoteAddress}`);
         const ip = request.ip || request.connection.remoteAddress;
-        if (typeof (ip) !=== 'string' || ip.indexOf('127.0.0.1') < 0) {
+        if (typeof (ip) !== 'string' || ip.indexOf('127.0.0.1') < 0) {
             throw new HttpException({
                 success: false,
                 errorMessage: 'notify can only be call by localhost'
