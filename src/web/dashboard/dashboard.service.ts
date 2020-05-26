@@ -9,7 +9,10 @@ import { AlertEntity } from '../../share/entity/alert.entity';
 import { AlertCountDto, DashboardDto } from '../../share/dto/dashboard.dto';
 import { CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 import { EventCountDto } from '../../share/dto/event.dto';
-
+import { EventsGateway } from '../events/events.gateway';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { EventListeners } from 'aws-sdk';
+import Core = EventListeners.Core;
 
 
 @Injectable()
@@ -20,7 +23,14 @@ export class DashboardService {
     @InjectRepository(EventEntity)  private readonly repoEvent: Repository<EventEntity>,
     @InjectRepository(CheckinEntity)  private readonly repoCheckin: Repository<CheckinEntity>,
     @InjectRepository(AlertEntity)  private readonly repoAlert: Repository<AlertEntity>,
+    private _eventGateway: EventsGateway,
   ) {}
+
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  async handleCron() {
+    const value = await this.getAll()
+    this._eventGateway.newDashboard(value);
+  }
 
   async getAll(): Promise<DashboardDto> {
     const hikeCount = await this.repoHike.count()
@@ -37,7 +47,6 @@ export class DashboardService {
       .select('alert_level_id, count(*)')
       .groupBy('alert_level_id')
       .getRawMany()
-
     return DashboardDto.fromEntity(
       hikeCount,
       checkinCount,
