@@ -46,6 +46,9 @@ export class Account {
   @ApiProperty()
   emergencyNumber: string;
 
+  @ApiProperty()
+  fcmToken: string;
+
   constructor(userId: number, userPwd: string, firstName: string, lastName: string,
     gender: string, dob: string, address: string, email: string, serPwd: string,
     nationality: string, idNumber: string, mobileNumber: string, satelliteNumber: string,

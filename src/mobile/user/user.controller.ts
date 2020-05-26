@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Get, Param, Logger, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Logger, Put, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { HikooResponse } from '../../share/dto/generic.dto';
 import { Account, LoginData } from '../../share/models/user.model';
+import { UserToken } from 'src/share/dto/user.dto';
 
 
 @ApiTags('user')
@@ -74,5 +75,17 @@ export class UserController {
     return newAccount;
     // need handle error response
 
+  }
+
+  @Put('token')
+  @ApiOperation({ summary: 'Update user FCM token' })
+  @ApiBody({ type: UserToken })
+  @ApiResponse({ status: HttpStatus.OK, type: HikooResponse, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooResponse, description: 'bad request' })
+  updateUserToken(@Body() userToken: UserToken): HikooResponse {
+
+    // TODO: update user token
+
+    return { success: true };
   }
 }
