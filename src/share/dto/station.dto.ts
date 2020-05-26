@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { StationEntity } from '../entity/station.entity';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class StationDto {
     @ApiProperty({readOnly: true})
     @IsNumber()
     id: number;
 
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     name: string;
 
     public toEntity():StationEntity {

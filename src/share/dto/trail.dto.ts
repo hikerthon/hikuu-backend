@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TrailEntity } from '../entity/trail.entity';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class TrailDto {
     @ApiProperty({readOnly: true})
     @IsNumber()
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     name: string;
 
     @ApiProperty()
