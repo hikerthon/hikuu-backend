@@ -44,12 +44,12 @@ CREATE TABLE IF NOT EXISTS shelters (
 );
 
 INSERT INTO shelters VALUES
-(1, 'Paiyun Lodge', 100, 23.4539585,120.9542283),
-(2, 'Yuanfeng Cabin', 15, 23.4539585,120.9542283),
-(3, 'Lele Cabin', 25, 23.5459956,120.9359691),
-(4, 'Heishuitang Cabin', 8, 23.995492,120.7968085),
-(5, 'Chenggong Cabin', 34, 24.1066942,121.2813432),
-(6, 'Chenggong Cabin 2', 10, 24.11616, 121.31881),
+(1, 'Paiyun Lodge', 100, 23.4653464,120.9524677),
+(2, 'Yuanfeng Cabin', 15, 23.4567747,120.9526708),
+(3, 'Lele Cabin', 25, 23.5341217,120.9271226),
+(4, 'Heishuitang Cabin', 8, 24.1205784,121.3097414),
+(5, 'Chenggong Cabin', 34, 24.1160204,121.3164277),
+(6, 'Chenggong Cabin 2', 10, 24.11616,121.31881),
 (7, 'Qilai Cabin', 8, 24.1086741,121.3247684),
 (8, 'Yunleng Cabin', 55, 24.39118,121.3505313),
 (9, 'Nanhu Cabin', 40, 24.3531246,121.4308206),
@@ -121,6 +121,7 @@ INSERT INTO event_type VALUES
 (3, 'Blocked Route', 'Anything that blocking the trail route', 2),
 (4, 'SOS', 'SOS', 4);
 
+-- this table hold data of hiking plan with permit request. user will apply before he go to mountain
 CREATE TABLE IF NOT EXISTS hikes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED,
@@ -164,7 +165,7 @@ CREATE TABLE IF NOT EXISTS checkin (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED,
     hike_id INT UNSIGNED,
-    checkin_time DATETIME,
+    checkin_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
