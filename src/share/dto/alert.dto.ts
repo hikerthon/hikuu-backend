@@ -2,43 +2,43 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AlertEntity } from '../entity/alert.entity';
 
 export class AlertDto {
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventTypeId: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     alertLevelId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventInfo: string;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventTime: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventEnd: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     permitId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     latpt: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     lngpt: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     radius: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     creatorId: number;
 
-    @ApiProperty()
+    @ApiProperty({description: 'id of the event to be upgraded into alert', nullable: true})
     originEventId: number;
     
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     logtime: Date;
 
     public toEntity():AlertEntity {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AccountEntity } from '../entity/account.entity';
+import { AccountEntity, GenderEnum } from '../entity/account.entity';
 
 export class AccountDto {
     @ApiProperty()
@@ -23,7 +23,7 @@ export class AccountDto {
     @ApiProperty()
     identification: string;
     
-    @ApiProperty({enum: ['M', 'F']})
+    @ApiProperty({enum: GenderEnum, nullable: false})
     gender: string;
     
     @ApiProperty()
@@ -55,6 +55,9 @@ export class AccountDto {
     
     @ApiProperty()
     emergencyNumber: string;
+    
+    @ApiProperty()
+    fcmToken: string;
 
     public toEntity():AccountEntity {
         const it = new AccountEntity();
@@ -76,6 +79,7 @@ export class AccountDto {
         it.satelliteNumber = this.satelliteNumber;
         it.emergencyContact = this.emergencyContact;
         it.emergencyNumber = this.emergencyNumber;
+        it.fcmToken = this.fcmToken;
         return it;
     }
 
@@ -99,6 +103,7 @@ export class AccountDto {
         it.satelliteNumber = entity.satelliteNumber;
         it.emergencyContact = entity.emergencyContact;
         it.emergencyNumber = entity.emergencyNumber;
+        it.fcmToken = entity.fcmToken;
 
         return it;
     }

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS account (
     last_name VARCHAR(255),
     selfie_path VARCHAR(255), 
     identity_path VARCHAR(255), 
-    gender ENUM('M', 'F'), 
+    gender ENUM('M', 'F') NOT NULL DEFAULT 'M', 
     dob DATE, 
     addr VARCHAR(255), 
     email VARCHAR(255), 
@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS account (
     mobile_number VARCHAR(255), 
     satellite_number VARCHAR(255), 
     emergency_contact VARCHAR(255), 
-    emergency_number VARCHAR(255)
+    emergency_number VARCHAR(255),
+    fcm_token VARCHAR(255)
 );
 
 INSERT INTO account VALUES
@@ -126,8 +127,8 @@ CREATE TABLE IF NOT EXISTS hikes (
     permit_id INT UNSIGNED,
     guide_name VARCHAR(255), 
     guide_contact VARCHAR(255),
-    guide_contact2 VARCHAR(255), 
-    permit_accepted ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
+    guide_contact2 VARCHAR(255),
+    permit_accepted ENUM('PENDING', 'ACCEPTED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
     accepted_time DATETIME,
     memo VARCHAR(255), 
     hike_started BOOLEAN DEFAULT FALSE, 
@@ -271,7 +272,7 @@ CREATE TABLE IF NOT EXISTS events (
     lngpt DECIMAL(11, 8), 
     radius DECIMAL(5, 2), -- radius in km to broadcast from lat,lng
     reporter INT UNSIGNED, 
-    stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD'),
+    stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD') NOT NULL DEFAULT 'PENDING',
     logtime DATETIME DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),

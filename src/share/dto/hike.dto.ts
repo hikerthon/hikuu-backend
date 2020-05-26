@@ -1,54 +1,52 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { HikeEntity } from '../entity/hike.entity';
+import { HikeEntity, PermitReqStatEnum } from '../entity/hike.entity';
 import { AccountDto } from './account.dto';
 import { TrailDto } from './trail.dto';
-import { TrailEntity } from '../entity/trail.entity';
-import { AccountEntity } from '../entity/account.entity';
 
 export class HikeDto {
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     hikerId: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     hikeStart: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     hikeEnd: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     permitId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     guideName: string;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     guideContact: string;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     guideContact2: string;
 
-    @ApiProperty({enum: ['PENDING', 'ACCEPTED', 'REJECTED']})
+    @ApiProperty({enum: PermitReqStatEnum, default: PermitReqStatEnum.PENDING, description: 'auto generated on create', nullable: true})
     permitAccepted: string;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     acceptedTime: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: true})
     memo: string;
     
-    @ApiProperty()
+    @ApiProperty({default: false, nullable: true})
     hikeStarted: boolean;
     
-    @ApiProperty()
+    @ApiProperty({default: false, nullable: true})
     hikeFinished: boolean;
     
-    @ApiProperty()
+    @ApiProperty({default: false, nullable: true})
     hikeCancelled: boolean;
     
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     logtime: Date;
 
     public static fromEntity(entity: HikeEntity): HikeDto {

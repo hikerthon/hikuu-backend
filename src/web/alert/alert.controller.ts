@@ -12,14 +12,16 @@ export class AlertController {
     }
 
     @Get()
-    @ApiOperation({ summary: 'Get alert list' })
+    @ApiOperation({ summary: 'Get all alerts' })
     @ApiQuery({ name: 'startIndex', type: 'number', required: false })
     @ApiQuery({ name: 'count', type: 'number', required: false })
     @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return list of alert' })
     async getAllAlert(
       @Query('startIndex') startIndex: number,
       @Query('count') count: number): Promise<AlertViewDto[]> {
-        this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`)
+        this._logger.debug(`@Get, startIndex = [${startIndex}], count = [${count}]`)
+        startIndex = (startIndex != null ? startIndex : 0);
+        count = (count != null ? count : 10);
         return this.alertSvc.getAllView(startIndex, count);
     }
 
@@ -37,7 +39,7 @@ export class AlertController {
     @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return detail of alert' })
     async getAlertById(
       @Param('id') id: number): Promise<AlertViewDto> {
-        this._logger.debug(`@Get, id = ${id}`)
+        this._logger.debug(`@Get, id = [${id}]`)
         return this.alertSvc.getViewById(id);
     }
 

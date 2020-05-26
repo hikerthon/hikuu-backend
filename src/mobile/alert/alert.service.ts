@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AlertEntity } from '../../share/entity/alert.entity';
-import { AlertDto } from '../../share/dto/alert.dto';
+import { AlertDto, AlertViewDto } from '../../share/dto/alert.dto';
 
 @Injectable()
 export class AlertService {
@@ -12,9 +12,13 @@ export class AlertService {
     private readonly repo: Repository<AlertEntity>
   ) { }
 
-  async getAll(): Promise<AlertDto[]> {
-    const alerts = await this.repo.find();
-    return alerts.map(alert => AlertDto.fromEntity(alert));
+  async getAllView(): Promise<AlertViewDto[]> {
+    const alerts = await this.repo.find({
+        relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
+        order: { logtime: 'DESC' }
+    });
+
+    return alerts.map(alert => AlertViewDto.fromEntity(alert));
   }
 
 }

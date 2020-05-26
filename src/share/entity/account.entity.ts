@@ -2,6 +2,11 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { HikeEntity } from './hike.entity';
 import { CheckinEntity } from './checkin.entity';
 
+export enum GenderEnum {
+    MALE = 'M',
+    FEMALE = 'F'
+}
+
 @Entity({ name: "account" })
 export class AccountEntity {
     @PrimaryGeneratedColumn()
@@ -25,7 +30,7 @@ export class AccountEntity {
     @Column({name: 'identity_path'})
     identification: string;
     
-    @Column('enum', {enum: ['M', 'F']})
+    @Column({type: 'enum', enum: GenderEnum, default: GenderEnum.MALE})
     gender: string;
     
     @Column()
@@ -57,6 +62,9 @@ export class AccountEntity {
     
     @Column({name: 'emergency_number'})
     emergencyNumber: string;
+    
+    @Column({name: 'fcm_token'})
+    fcmToken: string;
     
     @OneToMany(type => HikeEntity, hike => hike.hiker)
     hikes: HikeEntity[];

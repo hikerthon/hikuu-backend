@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HikeEntity } from '../../share/entity/hike.entity';
 import { HikeViewDto } from '../../share/dto/hike.dto';
-import { doc } from 'prettier';
 
 @Injectable()
 export class HikesService {
@@ -20,7 +19,6 @@ export class HikesService {
       take: count,
       skip: startIndex,
     })
-
 
     return hikes.map(hike => HikeViewDto.fromEntity(hike))
   }

@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Query, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Logger, Get, Query, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { HikeViewDto } from '../../share/dto/hike.dto';
@@ -16,10 +16,11 @@ export class HikesController {
   @ApiQuery({ name: 'startIndex', type: 'number', required: true })
   @ApiQuery({ name: 'count', type: 'number', required: true })
   @ApiResponse({ status: 200, type: HikeViewDto, isArray: true, description: 'Return list of hikes' })
-  getAllHikes(@Query('startIndex') startIndex: number,
-              @Query('count') count: number) {
-              this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`)
-              return this.hikesSvc.getAllHikes(startIndex, count)
+  async getAllHikes(
+    @Query('startIndex') startIndex: number,
+    @Query('count') count: number): Promise<HikeViewDto[]> {
+      this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`)
+      return this.hikesSvc.getAllHikes(startIndex, count)
   }
 
 
@@ -27,7 +28,7 @@ export class HikesController {
   @ApiOperation({ summary: 'Get hikes detail' })
   @ApiParam({ name: 'id', type: 'number' })
   @ApiResponse({ status: 200, type: HikeViewDto, isArray: true, description: 'Return list of hikes' })
-  getById(@Param('id') id: number) {
+  async getById(@Param('id') id: number): Promise<HikeViewDto> {
     this._logger.debug(`@Get hikes, id = ${id}`)
     return this.hikesSvc.getHikes(id);
   }

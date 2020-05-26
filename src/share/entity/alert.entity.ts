@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { AlertlevelEntity } from './alertlevel.entity';
 import { EventtypeEntity } from './eventtype.entity';

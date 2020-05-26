@@ -1,41 +1,41 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EventEntity } from '../entity/event.entity';
+import { EventEntity, EventStatusEnum } from '../entity/event.entity';
 
 export class EventDto {
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventTypeId: number;
   
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     alertLevelId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventInfo: string;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     eventTime: Date;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     hikeId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     latpt: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     lngpt: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     radius: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false})
     reporterId: number;
 
-    @ApiProperty({enum: ['PENDING', 'PROCESSING', 'RESOLVED', 'BAD']})
+    @ApiProperty({enum: EventStatusEnum, default: EventStatusEnum.PENDING, description: 'auto generated on create', nullable: true})
     stat: string;
     
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true})
     logtime: Date;
 
     public toEntity():EventEntity {

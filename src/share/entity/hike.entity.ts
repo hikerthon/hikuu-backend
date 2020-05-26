@@ -12,6 +12,12 @@ import { AccountEntity } from './account.entity';
 import { PermitEntity } from './permit.entity';
 import { TrailEntity } from './trail.entity';
 
+export enum PermitReqStatEnum {
+    PENDING = 'PENDING',
+    ACCEPTED = 'ACCEPTED',
+    REJECTED = 'REJECTED'
+}
+
 @Entity({ name: "hikes" })
 export class HikeEntity {
     @PrimaryGeneratedColumn()
@@ -46,7 +52,7 @@ export class HikeEntity {
     @Column({name: 'guide_contact2'})
     guideContact2: string;
 
-    @Column('enum', {name: 'permit_accepted', enum: ['PENDING', 'ACCEPTED', 'REJECTED']})
+    @Column({name: 'permit_accepted', type: 'enum', enum: PermitReqStatEnum, default: PermitReqStatEnum.PENDING})
     permitAccepted: string;
 
     @Column({name: 'accepted_time'})

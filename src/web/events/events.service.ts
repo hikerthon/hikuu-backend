@@ -64,7 +64,7 @@ export class EventService {
             skip: start
         });
 
-        return events.map(alert => EventViewDto.fromEntity(alert));
+        return events.map(event => EventViewDto.fromEntity(event));
     }
 
     async getCount(): Promise<number> {

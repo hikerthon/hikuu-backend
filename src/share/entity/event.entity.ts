@@ -1,8 +1,16 @@
-import { Entity, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { Entity, Column, ManyToOne, JoinColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { AccountEntity } from './account.entity';
 import { HikeEntity } from './hike.entity';
 import { EventtypeEntity } from './eventtype.entity';
 import { AlertlevelEntity } from './alertlevel.entity';
+
+export enum EventStatusEnum {
+    PENDING = 'PENDING', 
+    PROCESSING = 'PROCESSING', 
+    RESOLVED = 'RESOLVED', 
+    BAD = 'BAD'
+}
 
 @Entity({ name: "events" })
 export class EventEntity {
@@ -52,7 +60,7 @@ export class EventEntity {
     @JoinColumn({name: 'reporter'})
     reporter: AccountEntity;
 
-    @Column('enum', {enum: ['PENDING', 'PROCESSING', 'RESOLVED', 'BAD']})
+    @Column({type: 'enum', enum: EventStatusEnum, default: EventStatusEnum.PENDING})
     stat: string;
     
     @CreateDateColumn()
