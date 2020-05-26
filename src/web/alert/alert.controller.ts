@@ -1,7 +1,7 @@
 import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/common';
 import { AlertService } from './alert.service';
-import { HikooResponse } from '../../share/models/hikoo.model';
+import { HikooResponse } from '../../share/dto/generic.dto';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 
 @ApiTags('alert')

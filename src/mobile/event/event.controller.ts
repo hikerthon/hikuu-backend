@@ -1,12 +1,15 @@
-import { Controller, Get, Post, Body, Logger, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
 import { EventsGateway } from '../../web/events/events.gateway';
-import { HikooResponse } from '../../share/models/hikoo.model';
+import { HikooResponse, ImageUploadResponse } from '../../share/dto/generic.dto';
 import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { InjectS3 } from 'nestjs-s3';
+import { S3 } from 'aws-sdk';
+import { ApiFile, s3UploadAsync } from 'src/share/utils/utils';
 
 @ApiTags('event')
 @Controller('user')
@@ -14,7 +17,8 @@ export class EventController {
   constructor(
     private srv: EventService,
     private eventGateway: EventsGateway,
-    private _logger: Logger
+    private _logger: Logger,
+    @InjectS3() private readonly _s3: S3
   ) { _logger.setContext(EventController.name); }
 
   @Get(':userId/event')
@@ -27,13 +31,12 @@ export class EventController {
     @Param('userId') userId: number,
     @Query('start') start: number,
     @Query('count') count: number): Promise<EventViewDto[]> {
-      this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
-      start = (start != null ? start : 0);
-      count = (count != null ? count : 10);
-      // count must more than 0
-      return this.srv.getByHikeId(userId, start || 0, count || 0);
+    this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
+    start = (start != null ? start : 0);
+    count = (count != null ? count : 10);
+    // count must more than 0
+    return this.srv.getByHikeId(userId, start || 0, count || 0);
   }
-
 
   @Post(':userId/event')
   @ApiOperation({ summary: 'Create new event' })
@@ -43,5 +46,20 @@ export class EventController {
     this._logger.debug(`@Post, userId = [${userId}], info: ${event.eventInfo}`);
     event.stat = EventStatusEnum.PENDING;
     return await this.srv.create(event);
+  }
+
+  @Post('uploadImage')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiFile('file')
+  @ApiResponse({ status: HttpStatus.OK, type: ImageUploadResponse, description: 'Successfully upload the image.' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ImageUploadResponse, description: 'Failed to upload the image.' })
+  async uploadFile(@UploadedFile() file): Promise<ImageUploadResponse> {
+    try {
+      const out = await s3UploadAsync(this._s3, file);
+      return { success: true, imagePath: out.Location };
+    } catch (e) {
+      throw new HttpException({ success: false, errorMessage: e.message }, HttpStatus.BAD_REQUEST);
+    }
   }
 }

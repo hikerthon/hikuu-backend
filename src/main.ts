@@ -3,6 +3,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { MobileappModule } from './mobileapp.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as bodyParser from 'body-parser';
 
 async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,8 @@ async function bootstrapApp() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.use(bodyParser.json({limit: '50mb'}));
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
   await app.listen(3000);
 }
@@ -34,6 +37,9 @@ async function bootstrapMobile() {
 
   mobileApp.useGlobalPipes(new ValidationPipe());
 
+  mobileApp.use(bodyParser.json({limit: '50mb'}));
+  mobileApp.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
   await mobileApp.listen(3001);
 }
 
@@ -41,5 +47,4 @@ async function bootstrap() {
   await bootstrapApp();
   await bootstrapMobile();
 }
-
 bootstrap();

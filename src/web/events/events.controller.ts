@@ -1,7 +1,7 @@
 import { ApiResponse, ApiParam, ApiTags, ApiOperation, ApiQuery, } from '@nestjs/swagger';
 import { Controller, Get, HttpStatus, Logger, Param, Put, Query, Post, Body } from '@nestjs/common';
 import { EventService } from "./events.service";
-import { HikooResponse } from '../../share/models/hikoo.model';
+import { HikooResponse } from '../../share/dto/generic.dto';
 import { EventDto, EventViewDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
 

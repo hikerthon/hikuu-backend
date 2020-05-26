@@ -12,6 +12,7 @@ import { PermitService } from './mobile/permit/permit.service';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as admin from 'firebase-admin';
+import { S3Module } from 'nestjs-s3';
 // import { ConnectionOptionsReader } from 'typeorm';
 
 const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).toString()).mobile;
@@ -30,6 +31,12 @@ const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).
           databaseURL: 'https://bamboo-creek-277702.firebaseio.com'
         };
       }
+    }),
+    S3Module.forRoot({
+      config: {
+        s3ForcePathStyle: true,
+        signatureVersion: 'v4',
+      },
     }),
     TypeOrmModule.forRoot(ormConfig),
     AlertModule,

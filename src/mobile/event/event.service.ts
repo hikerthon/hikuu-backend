@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EventEntity } from 'src/share/entity/event.entity';
 import { Repository } from 'typeorm';
 import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
-import { HikooResponse } from 'src/share/models/hikoo.model';
+import { HikooResponse } from 'src/share/dto/generic.dto';
 
 @Injectable()
 export class EventService {

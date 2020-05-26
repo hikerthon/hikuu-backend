@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Put, Logger, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse, ApiBody, ApiProperty, ApiParam } from '@nestjs/swagger';
-import { HikooResponse } from '../share/models/hikoo.model';
+import { HikooResponse } from '../share/dto/generic.dto';
 import { IsEmail, IsUUID, IsDefined, Max } from 'class-validator';
 import { EventsGateway } from 'src/web/events/events.gateway';
 import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin';

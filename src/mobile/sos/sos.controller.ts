@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { Location } from '../../share/models/location.model';
 import { ApiResponse, ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
-import { HikooResponse } from '../../share/models/hikoo.model';
+import { HikooResponse } from '../../share/dto/generic.dto';
 import { SosService } from './sos.service';
 import { EventDto } from 'src/share/dto/event.dto';
 
@@ -19,7 +19,7 @@ export class SosController {
   @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
   async callSOS(@Body() location: Location): Promise<HikooResponse> {
     this._logger.debug(`@Post callSOS [${location}]`);
-    let sos = new EventDto;
+    const sos = new EventDto;
     sos.eventTypeId = 4;
     sos.alertLevelId = 4;
     sos.reporterId = location.userId;

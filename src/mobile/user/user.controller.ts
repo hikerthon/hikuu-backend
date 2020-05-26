@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param, Logger, Put } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { HikooResponse } from '../../share/models/hikoo.model';
+import { HikooResponse } from '../../share/dto/generic.dto';
 import { Account, LoginData } from '../../share/models/user.model';
 
 

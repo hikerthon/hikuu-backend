@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AlertEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
-import { HikooResponse } from 'src/share/models/hikoo.model';
+import { HikooResponse } from 'src/share/dto/generic.dto';
 
 @Injectable()
 export class AlertService {

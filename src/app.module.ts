@@ -20,7 +20,9 @@ import { AccountModule } from './web/account/account.module';
 import { HikesModule } from './web/hikes/hikes.module';
 import { CheckinModule } from './web/checkin/checkin.module';
 import { DashboardModule } from './web/dashboard/dashboard.module';
+import { S3Module } from 'nestjs-s3';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).toString()).default;
 
 @Module({
@@ -41,6 +43,12 @@ const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).
     TypeOrmModule.forRoot(ormConfig),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static/socketio'),
+    }),
+    S3Module.forRoot({
+      config: {
+        s3ForcePathStyle: true,
+        signatureVersion: 'v4',
+      },
     }),
     EventsModule,
     EventtypeModule,
