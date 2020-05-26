@@ -1,20 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ShelterEntity } from '../entity/shelter.entity';
+import { IsNumber, IsString, Max, Min } from 'class-validator';
 
 export class ShelterDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
+    @IsNumber()
     id: number;
   
     @ApiProperty()
+    @IsString()
     name: string;
 
     @ApiProperty()
+    @IsNumber()
     capacity: number;
 
-    @ApiProperty()
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @IsNumber()
+    @Min(-90)
+    @Max(90)
     latpt: number;
-
-    @ApiProperty()
+    
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @IsNumber()
+    @Min(-180)
+    @Max(180)
     lngpt: number;
 
     public toEntity():ShelterEntity {

@@ -1,32 +1,48 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AlertEntity } from '../entity/alert.entity';
+import { IsNumber, Max, MIN, Min, IsDate } from 'class-validator';
 
 export class AlertDto {
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
+    @IsNumber()
     id: number;
   
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: 1, maximum: 4})
+    @IsNumber()
+    @Min(1)
+    @Max(4)
     eventTypeId: number;
   
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: 1,maximum: 4})
+    @IsNumber()
+    @Min(1)
+    @Max(4)
     alertLevelId: number;
     
     @ApiProperty({nullable: false})
     eventInfo: string;
     
     @ApiProperty({nullable: false})
+    @IsDate()
     eventTime: Date;
     
     @ApiProperty({nullable: false})
+    @IsDate()
     eventEnd: Date;
     
     @ApiProperty({nullable: false})
     permitId: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @IsNumber()
+    @Min(-90)
+    @Max(90)
     latpt: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @IsNumber()
+    @Min(-180)
+    @Max(180)
     lngpt: number;
     
     @ApiProperty({nullable: false})
@@ -38,7 +54,8 @@ export class AlertDto {
     @ApiProperty({description: 'id of the event to be upgraded into alert', nullable: true})
     originEventId: number;
     
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
+    @IsDate()
     logtime: Date;
 
     public toEntity():AlertEntity {

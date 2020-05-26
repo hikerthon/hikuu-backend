@@ -1,11 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { StationEntity } from '../entity/station.entity';
+import { IsNumber, IsString } from 'class-validator';
 
 export class StationDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
+    @IsNumber()
     id: number;
 
     @ApiProperty()
+    @IsString()
     name: string;
 
     public toEntity():StationEntity {

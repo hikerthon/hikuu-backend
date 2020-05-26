@@ -1,14 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TrailEntity } from '../entity/trail.entity';
+import { IsNumber, IsString } from 'class-validator';
 
 export class TrailDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
+    @IsNumber()
     id: number;
   
     @ApiProperty()
+    @IsString()
     name: string;
 
     @ApiProperty()
+    @IsNumber()
     permit: number;
 
     public toEntity():TrailEntity {

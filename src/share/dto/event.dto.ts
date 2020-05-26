@@ -1,41 +1,66 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EventEntity, EventStatusEnum } from '../entity/event.entity';
+import { Max, Min, IsNumber, IsString, IsDataURI, IsDate, IsEnum } from 'class-validator';
 
 export class EventDto {
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+    @ApiProperty({
+        description: 'auto generated on create', 
+        nullable: true, 
+        required: false, 
+        readOnly: true})
+    @IsNumber()
     id: number;
   
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+    @Min(1)
+    @Max(4)
+    @IsNumber()
     eventTypeId: number;
   
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+    @IsNumber()
+    @Min(1)
+    @Max(4)
     alertLevelId: number;
     
     @ApiProperty({nullable: false})
+    @IsString()
     eventInfo: string;
     
     @ApiProperty({nullable: false})
+    @IsDate()
     eventTime: Date;
     
     @ApiProperty({nullable: false})
+    @IsNumber()
     hikeId: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @IsNumber()
+    @Min(-90)
+    @Max(90)
     latpt: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @IsNumber()
+    @Min(-180)
+    @Max(180)
     lngpt: number;
     
     @ApiProperty({nullable: false})
+    @IsNumber()
     radius: number;
     
     @ApiProperty({nullable: false})
+    @IsNumber()
     reporterId: number;
 
     @ApiProperty({enum: EventStatusEnum, default: EventStatusEnum.PENDING, description: 'auto generated on create', nullable: true})
+    @IsEnum(EventStatusEnum)
     stat: string;
     
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
+    @IsDate()
     logtime: Date;
 
     public toEntity():EventEntity {

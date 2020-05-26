@@ -1,33 +1,42 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CheckinTimeByTodayDto } from './checkin.dto';
 import { EventCountDto } from './event.dto';
+import { IsNumber } from 'class-validator';
 
 export class DashboardDto {
   @ApiProperty()
+  @IsNumber()
   hikesCount: number;
 
   @ApiProperty()
+  @IsNumber()
   checkinCount: number;
 
   @ApiProperty({type: CheckinTimeByTodayDto, isArray: true})
   checkinTime: CheckinTimeByTodayDto[];
 
   @ApiProperty()
+  @IsNumber()
   sosCount: number;
 
   @ApiProperty()
+  @IsNumber()
   offTrailHikerCount: number;
 
   @ApiProperty()
+  @IsNumber()
   unResolvedEventCount: number;
 
   @ApiProperty()
+  @IsNumber()
   pendingCount: number;
 
   @ApiProperty()
+  @IsNumber()
   infoCount: number;
 
   @ApiProperty()
+  @IsNumber()
   cautionCount: number;
 
 
