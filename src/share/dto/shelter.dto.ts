@@ -48,3 +48,24 @@ export class ShelterDto {
         return it;
     }
 }
+
+
+export class ShelterAroundMeDto extends ShelterDto {
+  
+    @ApiProperty()
+    @IsString()
+    shelterName: string;
+  
+    @ApiProperty()
+    @IsNumber()
+    @Min(0)
+    @Max(9999999)
+    distanceMeter: number;
+
+    public static convert(entity: any): ShelterAroundMeDto {
+        const it = ShelterDto.fromEntity(entity);
+        (it as ShelterAroundMeDto).shelterName = entity.shelter_name;
+        (it as ShelterAroundMeDto).distanceMeter = entity.distance_mtr;
+        return (it as ShelterAroundMeDto);
+    }
+}

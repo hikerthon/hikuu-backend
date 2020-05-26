@@ -58,24 +58,26 @@ export class AlertDto {
 
     @ApiProperty({description: 'id of the event to be upgraded into alert', nullable: true})
     originEventId: number;
+
+    @ApiProperty()
+    attachments: string[];
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
     logtime: Date;
 
-    public toEntity():AlertEntity {
+    public toEntity(): AlertEntity {
         const it = new AlertEntity();
-        it.id = this.id;
-        it.eventType.id = this.eventTypeId;
-        it.alertLevel.id = this.alertLevelId;
+        it.eventTypeId = this.eventTypeId;
+        it.alertLevelId = this.alertLevelId;
         it.eventInfo = this.eventInfo;
         it.eventTime = this.eventTime;
         it.eventEnd = this.eventEnd;
-        it.permit.id = this.permitId;
+        it.permitId = this.permitId;
         it.latpt = this.latpt;
         it.lngpt = this.lngpt;
         it.radius = this.radius;
-        it.creator.id = this.creatorId;
-        it.originSource.id = this.originEventId;
+        it.creatorId = this.creatorId;
+        it.originSourceId = (this.originEventId ? this.originEventId : null);
         it.logtime = this.logtime;
         
         return it;

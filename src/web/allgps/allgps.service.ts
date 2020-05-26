@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MapGpsEntity } from 'src/share/entity/allgps.entity';
+import { AllGpsEntity } from 'src/share/entity/allgps.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class AllgpsService {
     constructor(
-        @InjectRepository(MapGpsEntity)
-        private readonly repo: Repository<MapGpsEntity>
+        @InjectRepository(AllGpsEntity)
+        private readonly repo: Repository<AllGpsEntity>
     ) { }
 
     getFakeGPS() {
@@ -32,7 +32,7 @@ export class AllgpsService {
         }]
     }
 
-    async getAll(): Promise<MapGpsEntity[]> {
+    async getAll(): Promise<AllGpsEntity[]> {
         const gpsData = await this.repo.find();
         return gpsData;
     }
