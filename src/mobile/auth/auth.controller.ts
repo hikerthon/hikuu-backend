@@ -2,15 +2,19 @@ import { Controller, Request, Get, Post, UseGuards, Logger, Body } from '@nestjs
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { IsDefined } from 'class-validator';
+import { IsDefined, IsEmail, MaxLength, MinLength } from 'class-validator';
 
 export class LoginData {
-  @ApiProperty()
+
+  @ApiProperty({ type: 'email' })
   @IsDefined()
+  @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string', maxLength: 255, minLength: 4 })
   @IsDefined()
+  @MaxLength(255)
+  @MinLength(4)
   password: string;
 }
 
