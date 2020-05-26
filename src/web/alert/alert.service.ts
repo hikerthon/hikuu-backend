@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AlertEntity } from 'src/share/entity/alert.entity';
+import { Repository, getConnection } from 'typeorm';
+import { AlertEntity, AlertAttachmentEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 import { HikooResponse, CountResponseDto } from 'src/share/dto/generic.dto';
 
@@ -80,7 +80,19 @@ export class AlertService {
 
     async create(alert: AlertDto): Promise<HikooResponse> {
         try {
-            await this.repo.save(alert)
+            
+            // save alert
+            const saveThis = Object.assign(new AlertDto(), alert);
+            const newAlert = await this.repo.save(saveThis.toEntity());
+
+            // save attachments
+            alert.attachments.forEach(function (attachment) {
+                const atc = new AlertAttachmentEntity();
+                atc.alert = newAlert;
+                atc.imagePath = attachment;
+                getConnection().getRepository(AlertAttachmentEntity).save(atc);
+            });
+
         } catch (e) {
             return { success: false, errorMessage: e.message };
         }
