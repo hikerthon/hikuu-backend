@@ -7,7 +7,11 @@ import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 @ApiTags('alert')
 @Controller('alert')
 export class AlertController {
-    constructor(private alertSvc: AlertService, private _logger: Logger) {
+    constructor(
+        private alertSvc: AlertService,
+        private _logger: Logger,
+        private _fcm: FirebaseMessagingService
+    ) {
         _logger.setContext(AlertController.name);
     }
 
@@ -17,11 +21,11 @@ export class AlertController {
     @ApiQuery({ name: 'count', type: 'number', required: false })
     @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return list of alert' })
     async getAllAlert(
-      @Query('startIndex') startIndex: number,
-      @Query('count') count: number): Promise<AlertViewDto[]> {
+        @Query('startIndex') startIndex: number,
+        @Query('count') count: number): Promise<AlertViewDto[]> {
         this._logger.debug(`@Get, startIndex = [${startIndex}], count = [${count}]`)
-        startIndex = (startIndex != null ? startIndex : 0);
-        count = (count != null ? count : 10);
+        startIndex = (startIndex !== null ? startIndex : 0);
+        count = (count !== null ? count : 10);
         return this.alertSvc.getAllView(startIndex, count);
     }
 
@@ -38,7 +42,7 @@ export class AlertController {
     @ApiOperation({ summary: 'Get alert detail' })
     @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return detail of alert' })
     async getAlertById(
-      @Param('id') id: number): Promise<AlertViewDto> {
+        @Param('id') id: number): Promise<AlertViewDto> {
         this._logger.debug(`@Get, id = [${id}]`)
         return this.alertSvc.getViewById(id);
     }

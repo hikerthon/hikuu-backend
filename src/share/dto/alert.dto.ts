@@ -2,46 +2,46 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AlertEntity } from '../entity/alert.entity';
 
 export class AlertDto {
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+    @ApiProperty({ description: 'auto generated on create', nullable: true })
     id: number;
-  
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     eventTypeId: number;
-  
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     alertLevelId: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     eventInfo: string;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     eventTime: Date;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     eventEnd: Date;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     permitId: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     latpt: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     lngpt: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     radius: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     creatorId: number;
 
-    @ApiProperty({description: 'id of the event to be upgraded into alert', nullable: true})
+    @ApiProperty({ description: 'id of the event to be upgraded into alert', nullable: true })
     originEventId: number;
-    
-    @ApiProperty({description: 'auto generated on create', nullable: true})
+
+    @ApiProperty({ description: 'auto generated on create', nullable: true })
     logtime: Date;
 
-    public toEntity():AlertEntity {
+    public toEntity(): AlertEntity {
         const it = new AlertEntity();
         it.id = this.id;
         it.eventType.id = this.eventTypeId;
@@ -56,7 +56,7 @@ export class AlertDto {
         it.creator.id = this.creatorId;
         it.originSource.id = this.originEventId;
         it.logtime = this.logtime;
-        
+
         return it;
     }
 
@@ -83,13 +83,13 @@ export class AlertDto {
 export class AlertViewDto extends AlertDto {
     @ApiProperty()
     eventTypeName: string;
-  
+
     @ApiProperty()
     alertLevelName: string;
-    
+
     @ApiProperty()
     permitName: string;
-    
+
     @ApiProperty()
     creatorName: string;
 
