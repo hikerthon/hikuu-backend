@@ -9,6 +9,7 @@ import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import { EventDto } from 'src/share/dto/event.dto';
 
 @WebSocketGateway()
 export class EventsGateway {
@@ -30,9 +31,9 @@ export class EventsGateway {
     return data;
   }
 
-  // newEvent(e: Event) {
-
-  // }
+  newEvent(event: EventDto) {
+    this.server.emit('event', event);
+  }
 
   newTest(message: string): void {
     this.server.emit('test', message);
