@@ -1,66 +1,101 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AccountEntity, GenderEnum } from '../entity/account.entity';
-import { IsEmail, IsUUID, IsDefined, Max, IsNumber, IsDate } from 'class-validator';
+import { IsEmail, IsUUID, IsDefined, Max, IsNumber, IsDate, IsString, IsEnum, MaxLength } from 'class-validator';
 
 export class AccountDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     username: string;
     
-    @ApiProperty()
+    
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     password: string;
 
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsDefined()
+    @IsString()
+    @MaxLength(255)
     firstName: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsDefined()
+    @IsString()
+    @MaxLength(255)
     lastName: string;
 
     @ApiProperty()
     image: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsDefined()
+    @MaxLength(255)
     identification: string;
     
     @ApiProperty({enum: GenderEnum, nullable: false})
+    @IsDefined()
     gender: string;
     
     @ApiProperty()
+    @IsDefined()
     @IsDate()
     dob: Date;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     address: string;
     
+    @ApiProperty({format: 'email'})
+    @IsDefined()
     @IsEmail()
-    @ApiProperty()
+    @MaxLength(255)
     email: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     nationality: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     identificationNumber: string;
 
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     homeNumber: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     mobileNumber: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     satelliteNumber: string;
 
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsDefined()
+    @IsString()
+    @MaxLength(255)
     emergencyContact: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     emergencyNumber: string;
     
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     fcmToken: string;
 
     public toEntity():AccountEntity {

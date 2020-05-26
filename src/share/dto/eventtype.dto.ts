@@ -1,21 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EventtypeEntity } from '../entity/eventtype.entity';
-import { Min, Max, IsNumber, IsString } from 'class-validator';
+import { Min, Max, IsNumber, IsString, MaxLength, maxLength } from 'class-validator';
 
 export class EventTypeDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     name: string;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     description: string;
     
     @ApiProperty({minimum: 1, maximum: 4})
+    @IsNumber()
     @Min(1)
     @Max(4)
     defaultAlert: number;

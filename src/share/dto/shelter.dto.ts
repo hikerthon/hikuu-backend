@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ShelterEntity } from '../entity/shelter.entity';
-import { IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsNumber, IsString, Max, Min, MaxLength } from 'class-validator';
 
 export class ShelterDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     name: string;
 
     @ApiProperty()
@@ -46,5 +46,26 @@ export class ShelterDto {
         it.lngpt = entity.lngpt;
 
         return it;
+    }
+}
+
+
+export class ShelterAroundMeDto extends ShelterDto {
+  
+    @ApiProperty()
+    @IsString()
+    shelterName: string;
+  
+    @ApiProperty()
+    @IsNumber()
+    @Min(0)
+    @Max(9999999)
+    distanceMeter: number;
+
+    public static convert(entity: any): ShelterAroundMeDto {
+        const it = ShelterDto.fromEntity(entity);
+        (it as ShelterAroundMeDto).shelterName = entity.shelter_name;
+        (it as ShelterAroundMeDto).distanceMeter = entity.distance_mtr;
+        return (it as ShelterAroundMeDto);
     }
 }

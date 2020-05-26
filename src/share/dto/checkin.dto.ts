@@ -4,7 +4,6 @@ import { IsNumber, IsDate } from 'class-validator';
 
 export class CheckinDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
 
     @ApiProperty()
@@ -16,7 +15,6 @@ export class CheckinDto {
     hikeId: number;
 
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsDate()
     checkinTime: Date;
 
     public static fromEntity(entity: CheckinEntity): CheckinDto {

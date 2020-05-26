@@ -11,8 +11,6 @@ import { CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 import { EventCountDto } from '../../share/dto/event.dto';
 import { EventsGateway } from '../events/events.gateway';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { EventListeners } from 'aws-sdk';
-import Core = EventListeners.Core;
 
 
 @Injectable()
