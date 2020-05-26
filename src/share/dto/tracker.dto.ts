@@ -41,11 +41,9 @@ export class TrackerDto {
     network: number;
     
     @ApiProperty()
-    @IsDate()
     elapsedTime: Date;
     
     @ApiProperty()
-    @IsDate()
     logtime: Date;
 
     public toEntity():TrackerEntity {

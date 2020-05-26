@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { HikeEntity, PermitReqStatEnum } from '../entity/hike.entity';
 import { AccountDto } from './account.dto';
 import { TrailDto } from './trail.dto';
-import { IsNumber, IsDate, IsString, IsEnum } from 'class-validator';
+import { IsNumber, IsDate, IsString, IsEnum, MaxLength, Max, IsDateString } from 'class-validator';
 
 export class HikeDto {
     @ApiProperty(
@@ -16,26 +16,29 @@ export class HikeDto {
     hikerId: number;
   
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     hikeStart: Date;
     
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     hikeEnd: Date;
     
     @ApiProperty({nullable: false})
     permitId: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({maxLength: 255, nullable: false})
     @IsString()
+    @MaxLength(255)
     guideName: string;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({maxLength: 255, nullable: false})
     @IsString()
+    @MaxLength(255)
     guideContact: string;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({maxLength: 255, nullable: false})
     @IsString()
+    @MaxLength(255)
     guideContact2: string;
 
     @ApiProperty({enum: PermitReqStatEnum, default: PermitReqStatEnum.PENDING, description: 'auto generated on create', nullable: true})
@@ -43,11 +46,12 @@ export class HikeDto {
     permitAccepted: string;
     
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     acceptedTime: Date;
     
-    @ApiProperty({nullable: true})
+    @ApiProperty({maxLength: 255, nullable: true})
     @IsString()
+    @MaxLength(255)
     memo: string;
     
     @ApiProperty({default: false, nullable: true})
@@ -60,7 +64,6 @@ export class HikeDto {
     hikeCancelled: boolean;
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsDate()
     logtime: Date;
 
     public static fromEntity(entity: HikeEntity): HikeDto {

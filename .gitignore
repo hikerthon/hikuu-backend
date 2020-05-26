@@ -40,4 +40,4 @@ lerna-debug.log*
 ormconfig.json
 
 # jwt constants
-constants.ts
+jwt.conf.json

@@ -1,11 +1,11 @@
 import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { Location } from '../../share/models/location.model';
-import { ApiResponse, ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { HikooResponse } from '../../share/dto/generic.dto';
 import { SosService } from './sos.service';
 import { EventDto } from 'src/share/dto/event.dto';
 
-
+@ApiBearerAuth()
 @ApiTags("sos")
 @Controller('sos')
 export class SosController {

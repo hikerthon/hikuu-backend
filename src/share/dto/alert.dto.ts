@@ -1,61 +1,65 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AlertEntity } from '../entity/alert.entity';
-import { IsNumber, Max, MIN, Min, IsDate } from 'class-validator';
+import { IsNumber, Max, MIN, Min, IsDate, MaxLength, IsString, IsDateString } from 'class-validator';
 
 export class AlertDto {
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsNumber()
     id: number;
   
-    @ApiProperty({nullable: false, minimum: 1, maximum: 4})
+    @ApiProperty({nullable: false, minimum: 1, maximum: 4, example: 1})
     @IsNumber()
     @Min(1)
     @Max(4)
     eventTypeId: number;
   
-    @ApiProperty({nullable: false, minimum: 1,maximum: 4})
+    @ApiProperty({nullable: false, minimum: 1,maximum: 4, example: 1})
     @IsNumber()
     @Min(1)
     @Max(4)
     alertLevelId: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({maxLength: 255,nullable: false, example: 'This is eventInfo'})
+    @MaxLength(255)
+    @IsString()
     eventInfo: string;
     
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     eventTime: Date;
     
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     eventEnd: Date;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, example: 1})
     permitId: number;
     
-    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90, example: 24.769752})
     @IsNumber()
     @Min(-90)
     @Max(90)
     latpt: number;
     
-    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180, example: 120.9993924})
     @IsNumber()
     @Min(-180)
     @Max(180)
     lngpt: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({minimum: 0, maximum: 100, nullable: false, example: 5})
+    @IsNumber()
+    @Min(0)
+    @Max(100)
     radius: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, example: 1})
+    @IsNumber()
     creatorId: number;
 
     @ApiProperty({description: 'id of the event to be upgraded into alert', nullable: true})
     originEventId: number;
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsDate()
     logtime: Date;
 
     public toEntity():AlertEntity {

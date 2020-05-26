@@ -1,13 +1,21 @@
-import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/common';
+import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam, ApiConsumes } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Logger, Query, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException } from '@nestjs/common';
 import { AlertService } from './alert.service';
-import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
+import { HikooResponse, CountResponseDto, ImageUploadResponse } from '../../share/dto/generic.dto';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiFile, s3UploadAsync } from 'src/share/utils/utils';
+import { InjectS3 } from 'nestjs-s3';
+import { S3 } from 'aws-sdk';
 
 @ApiTags('alert')
 @Controller('alert')
 export class AlertController {
-    constructor(private alertSvc: AlertService, private _logger: Logger) {
+    constructor(
+        private alertSvc: AlertService,
+        private _logger: Logger,
+        @InjectS3() private readonly _s3: S3
+    ) {
         _logger.setContext(AlertController.name);
     }
 
@@ -49,5 +57,20 @@ export class AlertController {
     async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
         this._logger.debug(`@Post, info: ${alert.eventInfo}`);
         return await this.alertSvc.create(alert);
+    }
+
+    @Post('uploadImage')
+    @UseInterceptors(FileInterceptor('file'))
+    @ApiConsumes('multipart/form-data')
+    @ApiFile('file')
+    @ApiResponse({ status: HttpStatus.OK, type: ImageUploadResponse, description: 'Successfully upload the image.' })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ImageUploadResponse, description: 'Failed to upload the image.' })
+    async uploadFile(@UploadedFile() file): Promise<ImageUploadResponse> {
+        try {
+            const out = await s3UploadAsync(this._s3, file);
+            return { success: true, imagePath: out.Location };
+        } catch (e) {
+            throw new HttpException({ success: false, errorMessage: e.message }, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EventEntity, EventStatusEnum } from '../entity/event.entity';
-import { Max, Min, IsNumber, IsString, IsDataURI, IsDate, IsEnum } from 'class-validator';
+import { Max, Min, IsNumber, IsString, IsDataURI, IsDate, IsEnum, MaxLength, min, IsDateString } from 'class-validator';
 
 export class EventDto {
     @ApiProperty({
@@ -8,50 +8,53 @@ export class EventDto {
         nullable: true, 
         required: false, 
         readOnly: true})
-    @IsNumber()
     id: number;
-  
-    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+
+
+    @ApiProperty({nullable: false, minimum: 1, maximum:4, example: 1})
     @Min(1)
     @Max(4)
     @IsNumber()
     eventTypeId: number;
-  
-    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+
+    @ApiProperty({nullable: false, minimum: 1, maximum:4, example: 1})
     @IsNumber()
     @Min(1)
     @Max(4)
     alertLevelId: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({maxLength: 255,nullable: false, example: "This is eventInfo"})
     @IsString()
+    @MaxLength(255)
     eventInfo: string;
     
     @ApiProperty({nullable: false})
-    @IsDate()
+    @IsDateString()
     eventTime: Date;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, example: 1})
     @IsNumber()
     hikeId: number;
     
-    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90, example: 24.769752})
     @IsNumber()
     @Min(-90)
     @Max(90)
     latpt: number;
     
-    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180, example: 120.9993924})
     @IsNumber()
     @Min(-180)
     @Max(180)
     lngpt: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({minimum: 0, maximum: 100, nullable: false, default: 5})
     @IsNumber()
+    @Min(0)
+    @Max(100)
     radius: number;
     
-    @ApiProperty({nullable: false})
+    @ApiProperty({nullable: false, example: 1})
     @IsNumber()
     reporterId: number;
 
@@ -60,7 +63,6 @@ export class EventDto {
     stat: string;
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsDate()
     logtime: Date;
 
     public toEntity():EventEntity {

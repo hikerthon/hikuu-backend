@@ -1,6 +1,8 @@
 import { ApiBody } from "@nestjs/swagger";
 import { ManagedUpload } from "aws-sdk/clients/s3";
 import { S3 } from "nestjs-s3";
+import { join } from 'path';
+import { readFileSync } from 'fs';
 
 export const ApiFile = (fileName = 'file'): MethodDecorator => (
   target: any,
@@ -35,4 +37,10 @@ export function s3UploadAsync(s3: S3, file, bucket = 'hikoo', acl = 'public-read
       resolve(data);
     });
   });
+}
+
+export function loadJWTSecret(): { secret: string } {
+  const raw = readFileSync(join(process.cwd(), 'jwt.conf.json'));
+
+  return JSON.parse(raw.toString());
 }

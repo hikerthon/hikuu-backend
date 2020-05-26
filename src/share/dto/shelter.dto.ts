@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ShelterEntity } from '../entity/shelter.entity';
-import { IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsNumber, IsString, Max, Min, MaxLength } from 'class-validator';
 
 export class ShelterDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
     @IsString()
+    @MaxLength(255)
     name: string;
 
     @ApiProperty()

@@ -1,17 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AlertlevelEntity } from '../entity/alertlevel.entity';
+import { IsString, Max, MaxLength, IsNumber, Min } from 'class-validator';
 
 export class AlertLevelDto {
     @ApiProperty({readOnly: true})
     id: number;
   
-    @ApiProperty()
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     name: string;
   
     @ApiProperty()
+    @IsNumber()
     ttl: number;
     
-    @ApiProperty()
+    @ApiProperty({minimum: 0, maximum: 100})
+    @IsNumber()
+    @Min(0)
+    @Max(100)
     radius: number;
 
     public toEntity():AlertlevelEntity {
