@@ -7,6 +7,7 @@ import { LocationModule } from './mobile/location/location.module';
 import { SosModule } from './mobile/sos/sos.module';
 import { ShelterModule } from './mobile/shelter/shelter.module';
 import { PermitModule } from './mobile/permit/permit.module';
+import { AuthModule } from './mobile/auth/auth.module';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as admin from 'firebase-admin';
@@ -39,6 +40,7 @@ const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).
     }),
     TypeOrmModule.forRoot(ormConfig),
     AlertModule,
+    AuthModule,
     EventModule,
     LocationModule,
     SosModule,
