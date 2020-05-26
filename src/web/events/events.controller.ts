@@ -26,8 +26,8 @@ export class EventsController {
         @Query('startIndex') startIndex: number,
         @Query('count') count: number): Promise<EventViewDto[]> {
         this._logger.debug(`@Get, startIndex = [${startIndex}], count = [${count}]`)
-        startIndex = (startIndex != null ? startIndex : 0);
-        count = (count != null ? count : 10);
+        startIndex = (startIndex !== null ? startIndex : 0);
+        count = (count !== null ? count : 10);
         return this.eventSvc.getAllView(startIndex, count);
     }
 
@@ -61,7 +61,7 @@ export class EventsController {
     onNotifyEvent(@Req() request, @Body() event: EventDto): HikooResponse {
         console.log(`sourceIp = ${request.ip} ${request.connection.remoteAddress}`);
         const ip = request.ip || request.connection.remoteAddress;
-        if (typeof (ip) !== 'string' || ip.indexOf('127.0.0.1') < 0) {
+        if (typeof (ip) !=== 'string' || ip.indexOf('127.0.0.1') < 0) {
             throw new HttpException({
                 success: false,
                 errorMessage: 'notify can only be call by localhost'

@@ -26,8 +26,8 @@ export class PermitController {
   ): Promise<HikeViewDto[]> {
 
     this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, start: ${start}, count: ${count}`);
-    start = (start != null ? start : 0)
-    count = (count != null ? count : 10)
+    start = (start !== null ? start : 0)
+    count = (count !== null ? count : 10)
     // count need more than 0
 
     return await this.srv.getByHikerId(userId, start, count)

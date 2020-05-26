@@ -31,8 +31,8 @@ export class EventController {
     @Query('start') start: number,
     @Query('count') count: number): Promise<EventViewDto[]> {
     this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
-    start = (start != null ? start : 0);
-    count = (count != null ? count : 10);
+    start = (start !== null ? start : 0);
+    count = (count !== null ? count : 10);
     // count must more than 0
     return this.srv.getByHikeId(userId, start || 0, count || 0);
   }
