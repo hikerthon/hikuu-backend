@@ -2,14 +2,15 @@ import { Controller, Request, Get, Post, UseGuards, Logger, Body } from '@nestjs
 import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-
+import { IsDefined } from 'class-validator';
 
 export class LoginData {
   @ApiProperty()
+  @IsDefined()
   email: string;
 
   @ApiProperty()
+  @IsDefined()
   password: string;
 }
 
@@ -25,7 +26,6 @@ export class AuthController {
     private srv: AuthService,
     private _logger: Logger
   ) { _logger.setContext(AuthController.name); }
-
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

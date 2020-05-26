@@ -4,66 +4,67 @@ import { Max, Min, IsNumber, IsString, IsDataURI, IsDate, IsEnum } from 'class-v
 
 export class EventDto {
     @ApiProperty({
-        description: 'auto generated on create', 
-        nullable: true, 
-        required: false, 
-        readOnly: true})
+        description: 'auto generated on create',
+        nullable: true,
+        required: false,
+        readOnly: true
+    })
     @IsNumber()
     id: number;
-  
-    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+
+    @ApiProperty({ nullable: false, minimum: 1, maximum: 4 })
     @Min(1)
     @Max(4)
     @IsNumber()
     eventTypeId: number;
-  
-    @ApiProperty({nullable: false, minimum: 1, maximum:4})
+
+    @ApiProperty({ nullable: false, minimum: 1, maximum: 4 })
     @IsNumber()
     @Min(1)
     @Max(4)
     alertLevelId: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     @IsString()
     eventInfo: string;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     @IsDate()
     eventTime: Date;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     @IsNumber()
     hikeId: number;
-    
-    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+
+    @ApiProperty({ nullable: false, minimum: -90, maximum: 90 })
     @IsNumber()
     @Min(-90)
     @Max(90)
     latpt: number;
-    
-    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+
+    @ApiProperty({ nullable: false, minimum: -180, maximum: 180 })
     @IsNumber()
     @Min(-180)
     @Max(180)
     lngpt: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     @IsNumber()
     radius: number;
-    
-    @ApiProperty({nullable: false})
+
+    @ApiProperty({ nullable: false })
     @IsNumber()
     reporterId: number;
 
-    @ApiProperty({enum: EventStatusEnum, default: EventStatusEnum.PENDING, description: 'auto generated on create', nullable: true})
+    @ApiProperty({ enum: EventStatusEnum, default: EventStatusEnum.PENDING, description: 'auto generated on create', nullable: true })
     @IsEnum(EventStatusEnum)
     stat: string;
-    
-    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
+
+    @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
     @IsDate()
     logtime: Date;
 
-    public toEntity():EventEntity {
+    public toEntity(): EventEntity {
         const it = new EventEntity();
         it.id = this.id;
         it.eventTypeId = this.eventTypeId;
@@ -100,13 +101,13 @@ export class EventDto {
 }
 
 export class EventViewDto extends EventDto {
-  
+
     @ApiProperty()
     eventTypeName: string;
-  
+
     @ApiProperty()
     alertLevelName: string;
-    
+
     @ApiProperty()
     reporterName: string;
 
@@ -134,16 +135,16 @@ export class EventViewDto extends EventDto {
 
 export class EventCountDto {
 
-    @ApiProperty({type: Number, default: 0})
+    @ApiProperty({ type: Number, default: 0 })
     pendingCount: number;
 
-    @ApiProperty({type: Number, default: 0})
+    @ApiProperty({ type: Number, default: 0 })
     processingCount: number;
 
-    @ApiProperty({type: Number, default: 0})
+    @ApiProperty({ type: Number, default: 0 })
     resolved: number;
 
-    @ApiProperty({type: Number, default: 0})
+    @ApiProperty({ type: Number, default: 0 })
     bad: number;
 
     constructor(pendingCount: number, processingCount: number, resolved: number, bad: number) {
