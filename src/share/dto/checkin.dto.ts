@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CheckinEntity } from '../entity/checkin.entity';
-import { IsNumber, IsDate } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class CheckinDto {
     @ApiProperty({readOnly: true})
@@ -16,6 +16,15 @@ export class CheckinDto {
 
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
     checkinTime: Date;
+
+    public toEntity(): CheckinEntity {
+        const it = new CheckinEntity();
+        it.hikerId = this.hikerId;
+        it.hikeId = this.hikeId;
+        it.checkinTime = this.checkinTime;
+
+        return it;
+    }
 
     public static fromEntity(entity: CheckinEntity): CheckinDto {
         const it = new CheckinDto();
