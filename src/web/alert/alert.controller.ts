@@ -3,6 +3,7 @@ import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/commo
 import { AlertService } from './alert.service';
 import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
+import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin';
 
 @ApiTags('alert')
 @Controller('alert')
