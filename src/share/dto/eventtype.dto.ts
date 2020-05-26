@@ -4,7 +4,6 @@ import { Min, Max, IsNumber, IsString, MaxLength, maxLength } from 'class-valida
 
 export class EventTypeDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
   
     @ApiProperty({maxLength: 255})

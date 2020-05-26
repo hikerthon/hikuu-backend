@@ -4,7 +4,6 @@ import { IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class PermitDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
     
     @ApiProperty({maxLength: 255})

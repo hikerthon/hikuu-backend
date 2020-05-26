@@ -4,7 +4,6 @@ import { IsNumber, IsString, Max, Min, MaxLength } from 'class-validator';
 
 export class ShelterDto {
     @ApiProperty({readOnly: true})
-    @IsNumber()
     id: number;
   
     @ApiProperty({maxLength: 255})

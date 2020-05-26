@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, Min, Max, IsString } from 'class-validator';
 
 export class AroundMeDto {
     @ApiProperty({description: 'point info, either alert or event (SOS is an event!)'})
@@ -13,10 +14,16 @@ export class AroundMeDto {
     @ApiProperty({name: 'event_info'})
     eventInfo: string;
 
-    @ApiProperty()
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90, example: 24.769752})
+    @IsNumber()
+    @Min(-90)
+    @Max(90)
     latpt: number;
-
-    @ApiProperty()
+    
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180, example: 120.9993924})
+    @IsNumber()
+    @Min(-180)
+    @Max(180)
     lngpt: number;
 
     @ApiProperty()

@@ -4,8 +4,6 @@ import { IsEmail, IsUUID, IsDefined, Max, IsNumber, IsDate, IsString, IsEnum, Ma
 
 export class AccountDto {
     @ApiProperty({readOnly: true})
-    @IsDefined()
-    @IsNumber()
     id: number;
     
     @ApiProperty({maxLength: 255})
