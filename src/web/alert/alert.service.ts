@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AlertEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
-import { HikooResponse } from 'src/share/dto/generic.dto';
+import { HikooResponse, CountResponseDto } from 'src/share/dto/generic.dto';
 
 @Injectable()
 export class AlertService {
@@ -52,9 +52,21 @@ export class AlertService {
         return alerts.map(alert => AlertViewDto.fromEntity(alert));
     }
 
-    async getCount(): Promise<number> {
-        const count = await this.repo.count();
-        return count;
+    async getCount(): Promise<CountResponseDto> {
+        try {
+            const count = await this.repo.count();
+            return {
+                success: true,
+                count: count,
+                errorMessage: null
+            }
+        } catch(e) {
+            return {
+                success: false,
+                count: 0,
+                errorMessage: e.message
+            }
+        }
     }
 
     async getViewById(id: number): Promise<AlertViewDto> {

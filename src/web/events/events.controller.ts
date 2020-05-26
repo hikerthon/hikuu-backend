@@ -1,7 +1,7 @@
 import { ApiResponse, ApiParam, ApiTags, ApiOperation, ApiQuery, } from '@nestjs/swagger';
 import { Controller, Get, HttpStatus, Logger, Param, Put, Query, Post, Body, Req, HttpException } from '@nestjs/common';
 import { EventService } from "./events.service";
-import { HikooResponse } from '../../share/dto/generic.dto';
+import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
 import { EventDto, EventViewDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
 import { EventsGateway } from './events.gateway';
@@ -19,8 +19,8 @@ export class EventsController {
 
     @Get()
     @ApiOperation({ summary: 'Get event list' })
-    @ApiQuery({ name: 'startIndex', type: 'number', required: false })
-    @ApiQuery({ name: 'count', type: 'number', required: false })
+    @ApiQuery({ name: 'startIndex', type: 'number', required: true })
+    @ApiQuery({ name: 'count', type: 'number', required: true })
     @ApiResponse({ status: HttpStatus.OK, type: EventViewDto, isArray: true, description: 'Return list of event' })
     async getAllEvent(
         @Query('startIndex') startIndex: number,
@@ -33,8 +33,8 @@ export class EventsController {
 
     @Get('count')
     @ApiOperation({ summary: 'Get event count ' })
-    @ApiResponse({ status: HttpStatus.OK, type: Number, description: 'Return count of event' })
-    async getAllEventCount(): Promise<number> {
+    @ApiResponse({ status: HttpStatus.OK, type: CountResponseDto, description: 'Return count of event' })
+    async getAllEventCount(): Promise<CountResponseDto> {
         this._logger.debug(`@Get count`)
         return this.eventSvc.getCount();
     }

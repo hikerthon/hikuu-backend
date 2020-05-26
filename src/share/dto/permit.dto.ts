@@ -1,11 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PermitEntity } from '../entity/permit.entity';
+import { IsNumber, IsString } from 'class-validator';
 
 export class PermitDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
+    @IsNumber()
     id: number;
-  
+    
     @ApiProperty()
+    @IsString()
     name: string;
 
     public toEntity(): PermitEntity {

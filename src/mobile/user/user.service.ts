@@ -1,54 +1,67 @@
-import { Injectable } from '@nestjs/common';
-import { Account, LoginData } from '../../share/models/user.model';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AccountEntity } from '../../share/entity/account.entity';
+import { AccountDto } from '../../share/dto/account.dto';
+import { HikooResponse } from '../../share/dto/generic.dto';
 
+export type User = any;
 
 @Injectable()
 export class UserService {
-  account: Account = {
-    userId: 1,
-    userPwd: 'iliketopoo',
-    firstName: 'Tony',
-    lastName: 'Lin',
-    gender: 'M',
-    dob: '2000-01-01',
-    address: 'aoyuan, St.Somewhere No.99',
-    email: 'tonylsn@gmail.com',
-    serPwd: '0965-123-4567',
-    nationality: 'Taiwan',
-    idNumber: 'AB12345',
-    mobileNumber: '0965-123-4567',
-    satelliteNumber: '0965-123-4567',
-    emergencyContact: 'Annice',
-    emergencyNumber: '0965-123-4567',
-  };
+  constructor(
+    @InjectRepository(AccountEntity, 'mobile')
+    private readonly repo: Repository<AccountEntity>,
+    private _logger: Logger
+  ) { }
 
-  getUser(userId: number) {
-    return this.account;
+  async getAll(): Promise<AccountDto[]> {
+    const accounts = await this.repo.find();
+
+    return accounts.map(account => AccountDto.fromEntity(account));
   }
 
-  createUser(account: Account) {
-    // create user
-    return true;
+  async getById(id: number): Promise<AccountDto> {
+    const account = await this.repo.findOne(
+      { where: { id: id } }
+    );
+
+    return AccountDto.fromEntity(account);
   }
 
-  login(loginData: LoginData) {
-    // login
-    return true;
+  async findOneByEmail(email: string): Promise<AccountDto> {
+    const account = await this.repo.findOne(
+      {
+        where: { email: email },
+        order: { id: 'ASC' }
+      }
+    );
+
+    for (const queryKey of Object.keys(account)) {
+      this._logger.debug(`${queryKey}: ${account[queryKey]}`);
+    }
+
+    return AccountDto.fromEntity(account);
   }
 
-  logout() {
-    // logout
-    return true;
+  async create(account: AccountDto): Promise<HikooResponse> {
+    try {
+      await this.repo.save(account)
+    } catch (e) {
+      return { success: false, errorMessage: e.message };
+    }
+
+    return { success: true }
   }
 
-  updateUser(userId: number, account: Account) {
-    // update user
-    const newAccount = this.account;
-    newAccount.gender = 'F';
-    return newAccount;
+  async update(account: AccountDto): Promise<HikooResponse> {
+    try {
+      await this.repo.save(account)
+    } catch (e) {
+      return { success: false, errorMessage: e.message };
+    }
+
+    return { success: true }
   }
-
-
-
-
 }
+

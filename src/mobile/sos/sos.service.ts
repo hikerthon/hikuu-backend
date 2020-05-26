@@ -25,8 +25,6 @@ export class SosService {
         .orderBy('hike_start', 'DESC')
         .getRawOne();
 
-      console.log(exist);
-
       if (!exist) {
         return new HikooResponse(false, 'User doesnt have active hiking permit');
       }

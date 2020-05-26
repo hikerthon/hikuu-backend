@@ -1,7 +1,7 @@
 import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Logger, Query, Param } from '@nestjs/common';
 import { AlertService } from './alert.service';
-import { HikooResponse } from '../../share/dto/generic.dto';
+import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 
 @ApiTags('alert')
@@ -17,8 +17,8 @@ export class AlertController {
 
     @Get()
     @ApiOperation({ summary: 'Get all alerts' })
-    @ApiQuery({ name: 'startIndex', type: 'number', required: false })
-    @ApiQuery({ name: 'count', type: 'number', required: false })
+    @ApiQuery({ name: 'startIndex', type: 'number', required: true })
+    @ApiQuery({ name: 'count', type: 'number', required: true })
     @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return list of alert' })
     async getAllAlert(
         @Query('startIndex') startIndex: number,
@@ -31,8 +31,8 @@ export class AlertController {
 
     @Get('count')
     @ApiOperation({ summary: 'Get alert count' })
-    @ApiResponse({ status: 200, type: Number, description: 'Return count of alert' })
-    async allAlertCount(): Promise<number> {
+    @ApiResponse({ status: 200, type: CountResponseDto, description: 'Return count of alert' })
+    async allAlertCount(): Promise<CountResponseDto> {
         this._logger.debug(`@Get count`)
         return this.alertSvc.getCount();
     }

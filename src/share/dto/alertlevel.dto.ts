@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AlertlevelEntity } from '../entity/alertlevel.entity';
 
 export class AlertLevelDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
     id: number;
   
     @ApiProperty()

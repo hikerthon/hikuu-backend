@@ -46,6 +46,14 @@ example
 }
 ```
 
+### Step 4
+add jwt.conf.json to project root
+```json
+{
+  "secret": "victoria's secret"
+}
+```
+
 ## Running the app
 
 ```bash

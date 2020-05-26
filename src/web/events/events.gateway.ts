@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
 import { EventDto } from 'src/share/dto/event.dto';
+import { DashboardDto } from '../../share/dto/dashboard.dto';
 
 @WebSocketGateway()
 export class EventsGateway {
@@ -37,5 +38,8 @@ export class EventsGateway {
 
   newTest(message: string): void {
     this.server.emit('test', message);
+  }
+  newDashboard(dashboard: DashboardDto) {
+    this.server.emit('dashboard', dashboard);
   }
 }

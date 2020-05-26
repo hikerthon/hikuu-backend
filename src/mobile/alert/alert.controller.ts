@@ -1,9 +1,10 @@
-import { Controller, Get, Logger } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AlertService } from './alert.service'
-import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
+import { AlertViewDto } from 'src/share/dto/alert.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-
+@ApiBearerAuth()
 @ApiTags('alert')
 @Controller('alert')
 export class AlertController {
@@ -11,6 +12,7 @@ export class AlertController {
     _logger.setContext(AlertController.name);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @ApiOperation({ summary: 'Get all alerts' })
   @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'successful operation' })

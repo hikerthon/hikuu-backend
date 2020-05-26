@@ -1,10 +1,11 @@
-import { Controller, Post, Body, Get, Param, Logger, Put } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiBody } from '@nestjs/swagger';
+import { Controller, Request, Post, Body, Get, Param, Logger, Put, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { HikooResponse } from '../../share/dto/generic.dto';
-import { Account, LoginData } from '../../share/models/user.model';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AccountDto } from 'src/share/dto/account.dto';
 
-
+@ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -13,66 +14,39 @@ export class UserController {
     private _logger: Logger,
   ) { _logger.setContext(UserController.name) }
 
-
-  @Get(':userId')
-  @ApiOperation({ summary: 'Find user information by user id' })
-  @ApiParam({ name: 'userId', type: 'number' })
-  @ApiResponse({ status: 200, type: Account, isArray: false, description: 'successful operation' })
-  getUser(@Param('userId') userId: number): Account {
-    this._logger.debug(`Find user infromation by user id [${userId}]`);
-    return this.srv.getUser(userId);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiOperation({ summary: 'Create a user' })
-  @ApiBody({ type: Account })
   @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  createUser(@Body() account: Account): HikooResponse {
-    this._logger.debug(`account [${account}]`);
-    const r = this.srv.createUser(account);
-    if (r) {
-      return { success: true };
-    } else {
-      return { success: false, errorMessage: 'Fail to create user' };
-    }
+  async createUser(
+    @Body() account: AccountDto
+  ): Promise<HikooResponse> {
+    this._logger.debug(`Post Account info ${account.email}`);
+    return await this.srv.create(account);
   }
 
-  @Post('login')
-  @ApiOperation({ summary: 'User login' })
-  @ApiBody({ type: LoginData })
-  @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  login(@Body() loginData: LoginData): HikooResponse {
-    this._logger.debug(`Login data [${loginData}]`);
-    const r = this.srv.login(loginData);
-    if (r) {
-      return { success: true };
-    } else {
-      return { success: false, errorMessage: 'Fail to login' };
-    }
-  }
-
-  @Post('logout')
-  @ApiOperation({ summary: 'User logout' })
-  @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  logout(): HikooResponse {
-    const r = this.srv.logout();
-    if (r) {
-      return { success: true };
-    } else {
-      return { success: false, errorMessage: 'Fail to logout' };
-    }
-  }
-
-  @Put(':userId')
+  @UseGuards(JwtAuthGuard)
+  @Put()
   @ApiOperation({ summary: 'Update user info' })
-  @ApiParam({ name: 'userId', type: 'number' })
-  @ApiBody({ type: Account })
-  @ApiResponse({ status: 200, type: Account, description: 'successful operation' })
-  updateUser(@Body() account: Account, @Param('userId') userId: number): Account {
-    this._logger.debug(`data need be updated [${account}]`);
-    const newAccount = this.srv.updateUser(userId, account);
-    return newAccount;
+  @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
+  async updateUser(
+    @Request() req,
+    @Body() account: AccountDto,
+  ): Promise<HikooResponse> {
+    this._logger.debug(`update user info, userID ${account.id}`);
+    // need check user permission
+    return this.srv.update(account);
     // need handle error response
+  }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  @ApiOperation({ summary: 'Get user profile' })
+  @ApiResponse({ status: 200, type: AccountDto, isArray: false, description: 'successful operation' })
+  async getUser(
+    @Request() req
+  ): Promise<AccountDto> {
+    this._logger.debug('Find user infromation');
+    return this.srv.getById(req.user.userId)
   }
 }

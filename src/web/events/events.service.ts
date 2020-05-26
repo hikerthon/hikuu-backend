@@ -3,7 +3,7 @@ import { EventDto, EventViewDto } from 'src/share/dto/event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEntity } from 'src/share/entity/event.entity';
-import { HikooResponse } from 'src/share/dto/generic.dto';
+import { HikooResponse, CountResponseDto } from 'src/share/dto/generic.dto';
 
 @Injectable()
 export class EventService {
@@ -67,9 +67,21 @@ export class EventService {
         return events.map(event => EventViewDto.fromEntity(event));
     }
 
-    async getCount(): Promise<number> {
-        const count = await this.repo.count();
-        return count;
+    async getCount(): Promise<CountResponseDto> {
+        try {
+            const count = await this.repo.count();
+            return {
+                success: true,
+                count: count,
+                errorMessage: null
+            }
+        } catch(e) {
+            return {
+                success: false,
+                count: 0,
+                errorMessage: e.message
+            }
+        }
     }
 
     async getViewById(id: number): Promise<EventViewDto> {

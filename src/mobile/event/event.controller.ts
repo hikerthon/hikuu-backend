@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes } from '@nestjs/swagger';
+import { Controller, Request, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
 import { HikooResponse, ImageUploadResponse } from '../../share/dto/generic.dto';
@@ -9,9 +9,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { InjectS3 } from 'nestjs-s3';
 import { S3 } from 'aws-sdk';
 import { ApiFile, s3UploadAsync } from 'src/share/utils/utils';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('event')
-@Controller('user')
+@Controller('event')
 export class EventController {
   constructor(
     private srv: EventService,
@@ -20,16 +22,18 @@ export class EventController {
     @InjectS3() private readonly _s3: S3
   ) { _logger.setContext(EventController.name); }
 
-  @Get(':userId/event')
+  @UseGuards(JwtAuthGuard)
+  @Get()
   @ApiOperation({ summary: 'Find events by user id' })
-  @ApiParam({ name: 'userId', type: 'number' })
   @ApiQuery({ name: 'start', type: 'number', required: false })
   @ApiQuery({ name: 'count', type: 'number', required: false })
   @ApiResponse({ status: 200, type: Event, isArray: true, description: 'successful operation' })
   async getEventsByHikeId(
-    @Param('userId') userId: number,
+    @Request() req,
     @Query('start') start: number,
     @Query('count') count: number): Promise<EventViewDto[]> {
+    const userId = req.user.userId;
+
     this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
     start = (start !== null ? start : 0);
     count = (count !== null ? count : 10);
@@ -37,12 +41,22 @@ export class EventController {
     return this.srv.getByHikeId(userId, start || 0, count || 0);
   }
 
-  @Post(':userId/event')
+  @UseGuards(JwtAuthGuard)
+  @Post()
   @ApiOperation({ summary: 'Create new event' })
-  @ApiParam({ name: 'userId', type: 'number' })
   @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
-  async createEvent(@Body() event: EventDto, @Param('userId') userId: number): Promise<HikooResponse> {
+  async createEvent(
+    @Request() req,
+    @Body() event: EventDto,
+  ): Promise<HikooResponse> {
+    const userId = req.user.userId;
+
     this._logger.debug(`@Post, userId = [${userId}], info: ${event.eventInfo}`);
+
+    if (userId !== event.hikeId) {
+      return { success: false, errorMessage: 'Fail to create new event' };
+    }
+
     event.stat = EventStatusEnum.PENDING;
     this._http
       .post<HikooResponse>('http://0.0.0.0:3000/event/notify', event)
@@ -54,6 +68,7 @@ export class EventController {
     return await this.srv.create(event);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('uploadImage')
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')

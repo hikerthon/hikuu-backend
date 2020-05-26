@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AccountEntity, GenderEnum } from '../entity/account.entity';
+import { IsEmail, IsUUID, IsDefined, Max, IsNumber, IsDate } from 'class-validator';
 
 export class AccountDto {
-    @ApiProperty()
+    @ApiProperty({readOnly: true})
+    @IsNumber()
     id: number;
     
     @ApiProperty()
@@ -27,11 +29,13 @@ export class AccountDto {
     gender: string;
     
     @ApiProperty()
+    @IsDate()
     dob: Date;
     
     @ApiProperty()
     address: string;
     
+    @IsEmail()
     @ApiProperty()
     email: string;
     

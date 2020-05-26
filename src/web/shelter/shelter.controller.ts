@@ -1,7 +1,7 @@
 import { Controller, Logger, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ShelterService } from './shelter.service';
-import { ShelterDto } from 'src/share/dto/shelter.dto';
+import { ShelterDto } from '../../share/dto/shelter.dto';
 
 
 @ApiTags('shelter')
