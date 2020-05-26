@@ -37,7 +37,10 @@ export class AlertService {
     }
 
     async getById(id: number): Promise<AlertDto> {
-        const one = await this.repo.findOne({ where: { id: id } });
+        const one = await this.repo.findOne({
+            relations: ['attachments'],
+         where: { id: id } });
+         console.log(one)
         return AlertDto.fromEntity(one);
     }
 
@@ -71,7 +74,7 @@ export class AlertService {
 
     async getViewById(id: number): Promise<AlertViewDto> {
         const alert = await this.repo.findOne({
-            relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
+            relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource', 'attachments'],
             order: { logtime: 'DESC' },
             where: { id }
         });

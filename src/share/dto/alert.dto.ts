@@ -1,6 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AlertEntity } from '../entity/alert.entity';
+import { AlertEntity, AlertAttachmentEntity } from '../entity/alert.entity';
 import { IsNumber, Max, MIN, Min, IsDate, MaxLength, IsString, IsDateString } from 'class-validator';
+
+export class AlertAttachmentDto {
+    @ApiProperty()
+    id: number;
+
+    @ApiProperty()
+    alertId: number;
+
+    @ApiProperty({isArray: true})
+    imagePath: string[]
+
+
+    public static fromEntity(entity: AlertAttachmentEntity[]): AlertAttachmentDto {
+        const it = new AlertAttachmentDto();
+        it.imagePath = []
+        entity.forEach(element => {
+            it.imagePath.push(element.imagePath)
+        });
+        return it;
+    }
+}
 
 export class AlertDto {
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
@@ -118,6 +139,7 @@ export class AlertViewDto extends AlertDto {
 
     public static fromEntity(entity: AlertEntity): AlertViewDto {
         const it = new AlertViewDto();
+        const imagePaths = AlertAttachmentDto.fromEntity(entity.attachments)
         it.id = entity.id;
         it.eventTypeId = entity.eventTypeId;
         it.eventTypeName = entity.eventType.name;
@@ -134,7 +156,7 @@ export class AlertViewDto extends AlertDto {
         it.creatorName = entity.creator.name;
         it.originEventId = entity.originSourceId;
         it.logtime = entity.logtime;
-
+        it.attachments = imagePaths.imagePath
         return it;
     }
 }
