@@ -3,6 +3,7 @@ import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/
 
 import { HikeViewDto } from '../../share/dto/hike.dto';
 import { HikesService } from './hikes.service'
+import { CountResponseDto } from '../../share/dto/generic.dto'
 
 @ApiTags('hikes')
 @Controller('hikes')
@@ -21,6 +22,14 @@ export class HikesController {
     @Query('count') count: number): Promise<HikeViewDto[]> {
       this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`)
       return this.hikesSvc.getAllHikes(startIndex, count)
+  }
+
+  @Get('/count')
+  @ApiOperation({ summary: 'Get hikes count' })
+  @ApiResponse({ status: 200, type: CountResponseDto, isArray: true, description: 'Return count of hikes' })
+  async getAllHikesCount (): Promise<CountResponseDto> {
+      this._logger.debug(`@Get, getAllHikesCount`)
+      return this.hikesSvc.getAllHikesCount()
   }
 
 

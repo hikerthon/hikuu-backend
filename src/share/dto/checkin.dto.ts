@@ -37,8 +37,8 @@ export class CheckinTimeByTodayDto {
 
     public static fromEntity(entity: any): CheckinTimeByTodayDto {
         const it = new CheckinTimeByTodayDto();
-        it.hour = entity['hour(checkin_time)']
-        it.count = entity['count(*)']
+        it.hour = String(entity['hour(checkin_time)'])
+        it.count = Number(entity['count(*)'])
         return it;
     }
 }

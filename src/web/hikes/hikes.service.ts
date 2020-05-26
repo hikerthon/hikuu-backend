@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HikeEntity } from '../../share/entity/hike.entity';
 import { HikeViewDto } from '../../share/dto/hike.dto';
+import { CountResponseDto } from '../../share/dto/generic.dto'
 
 @Injectable()
 export class HikesService {
@@ -23,6 +24,23 @@ export class HikesService {
     return hikes.map(hike => HikeViewDto.fromEntity(hike))
   }
 
+  async getAllHikesCount(): Promise<CountResponseDto> {
+    try {
+      const hikesCount = await this.repo.count()
+      return {
+        success: true,
+        count: hikesCount,
+        errorMessage: null
+      }
+    } catch(e) {
+      return {
+        success: false,
+        count: 0,
+        errorMessage: e.message
+      }
+    }
+  }
+
   async getHikes(id: number): Promise<HikeViewDto> {
     const hikes = await this.repo.findOne({
       relations: ['hiker', 'permit', 'trails'],
@@ -32,4 +50,5 @@ export class HikesService {
 
     return HikeViewDto.fromEntity(hikes)
   }
+
 }
