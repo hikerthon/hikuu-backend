@@ -20,8 +20,8 @@ export class AlertController {
       @Query('startIndex') startIndex: number,
       @Query('count') count: number): Promise<AlertViewDto[]> {
         this._logger.debug(`@Get, startIndex = [${startIndex}], count = [${count}]`)
-        startIndex = (startIndex != null ? startIndex : 0);
-        count = (count != null ? count : 10);
+        startIndex = (startIndex !== null ? startIndex : 0);
+        count = (count !== null ? count : 10);
         return this.alertSvc.getAllView(startIndex, count);
     }
 
