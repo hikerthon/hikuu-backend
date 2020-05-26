@@ -18,8 +18,8 @@ async function bootstrapApp() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.use(bodyParser.json({limit: '50mb'}));
-  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   await app.listen(3000);
 }
@@ -27,6 +27,7 @@ async function bootstrapApp() {
 async function bootstrapMobile() {
   const mobileApp = await NestFactory.create(MobileappModule);
   const mOptions = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Hikoo Mobile')
     .setDescription('Hikoo Mobile API')
     .setVersion('1.0')
@@ -37,8 +38,8 @@ async function bootstrapMobile() {
 
   mobileApp.useGlobalPipes(new ValidationPipe());
 
-  mobileApp.use(bodyParser.json({limit: '50mb'}));
-  mobileApp.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+  mobileApp.use(bodyParser.json({ limit: '50mb' }));
+  mobileApp.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   await mobileApp.listen(3001);
 }

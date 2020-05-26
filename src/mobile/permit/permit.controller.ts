@@ -1,10 +1,11 @@
 import { Controller, Request, Logger, Param, Get, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiParam, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiParam, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { PermitService } from './permit.service';
 import { DataTypeRole } from '../../share/models/permit.model';
 import { HikeViewDto } from 'src/share/dto/hike.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('permit')
 @Controller('permit')
 export class PermitController {
