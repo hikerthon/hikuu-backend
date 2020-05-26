@@ -1,10 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Account, LoginData } from '../../share/models/user.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AccountEntity } from '../../share/entity/account.entity';
 import { AccountDto } from '../../share/dto/account.dto';
-import { HikooResponse } from 'src/share/models/hikoo.model';
+import { HikooResponse } from '../../share/dto/generic.dto';
 
 export type User = any;
 
