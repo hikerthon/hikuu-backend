@@ -1,4 +1,4 @@
-import { Module, Logger } from '@nestjs/common';
+import { Module, Logger, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventController } from './event.controller'
 import { EventService } from './event.service';
@@ -7,7 +7,10 @@ import { EventEntity } from 'src/share/entity/event.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EventEntity], 'mobile')],
+  imports: [
+    TypeOrmModule.forFeature([EventEntity], 'mobile'),
+    HttpModule
+  ],
   controllers: [EventController],
   providers: [Logger, EventsGateway, EventService]
 })

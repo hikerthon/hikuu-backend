@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
-import { EventsGateway } from '../../web/events/events.gateway';
 import { HikooResponse, ImageUploadResponse } from '../../share/dto/generic.dto';
 import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
@@ -16,8 +15,8 @@ import { ApiFile, s3UploadAsync } from 'src/share/utils/utils';
 export class EventController {
   constructor(
     private srv: EventService,
-    private eventGateway: EventsGateway,
     private _logger: Logger,
+    private _http: HttpService,
     @InjectS3() private readonly _s3: S3
   ) { _logger.setContext(EventController.name); }
 
@@ -45,6 +44,13 @@ export class EventController {
   async createEvent(@Body() event: EventDto, @Param('userId') userId: number): Promise<HikooResponse> {
     this._logger.debug(`@Post, userId = [${userId}], info: ${event.eventInfo}`);
     event.stat = EventStatusEnum.PENDING;
+    this._http
+      .post<HikooResponse>('http://0.0.0.0:3000/event/notify', event)
+      .subscribe(() => {
+        this._logger.error(`Successfully notify platform`);
+      }, err => {
+        this._logger.error(`Failed to notify platform - ${err.errorMessage}`);
+      });
     return await this.srv.create(event);
   }
 
