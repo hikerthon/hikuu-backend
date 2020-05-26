@@ -30,7 +30,7 @@ export class SosService {
       }
 
       sos.hikeId = exist.hike_id;
-      await this.repo.save(sos);
+      await this.repo.save(sos.toEntity());
     } catch (e) {
       return new HikooResponse(false, e.message);
     }

@@ -39,6 +39,14 @@ export class DashboardDto {
   @IsNumber()
   cautionCount: number;
 
+  @ApiProperty()
+  @IsNumber()
+  dangerCount: number;
+
+  @ApiProperty()
+  @IsNumber()
+  emergencyCount: number;
+
 
   public static fromEntity(hikeCount: number,
                            checkinCount: number,
@@ -58,7 +66,9 @@ export class DashboardDto {
     it.unResolvedEventCount = eventCount.resolved;
     it.pendingCount = eventCount.pendingCount;
     it.infoCount = alertCount.infoCount;
-    it.cautionCount = alertCount.cautionCount
+    it.cautionCount = alertCount.cautionCount;
+    it.dangerCount = alertCount.dangerCount;
+    it.emergencyCount = alertCount.emergencyCount;
     return it;
   }
 

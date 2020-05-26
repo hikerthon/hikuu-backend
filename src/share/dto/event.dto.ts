@@ -30,7 +30,7 @@ export class EventDto {
     eventInfo: string;
 
     @ApiProperty({ nullable: false })
-    @IsDateString()
+    // @IsDateString()
     eventTime: Date;
 
     @ApiProperty({ nullable: false, example: 1 })
@@ -65,6 +65,9 @@ export class EventDto {
 
     @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
     logtime: Date;
+
+    @ApiProperty()
+    attachments: string[];
 
     public toEntity(): EventEntity {
         const it = new EventEntity();
