@@ -20,7 +20,10 @@ export class LoginData {
 
 export class JwtData {
   @ApiProperty()
-  accessToken: string
+  access_token: string
+
+  @ApiProperty()
+  refresh_token: string
 }
 
 @ApiTags('auth')

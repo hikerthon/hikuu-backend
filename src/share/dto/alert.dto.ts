@@ -74,7 +74,7 @@ export class AlertDto {
     @ApiProperty({minimum: 0, maximum: 100, nullable: true, example: 5, required: false})
     radius: number;
     
-    @ApiProperty({nullable: false, example: 1})
+    @ApiProperty({description: 'station id', nullable: false, example: 1})
     @IsNumber()
     creatorId: number;
 
