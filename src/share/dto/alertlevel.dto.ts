@@ -34,9 +34,8 @@ export class AlertLevelDto {
         const it = new AlertLevelDto();
         it.id = entity.id;
         it.name = entity.name;
-        it.ttl = entity.ttl;
-        it.radius = entity.radius;
-
+        it.ttl = Number(entity.ttl);
+        it.radius = Number(entity.radius);
         return it;
     }
 }

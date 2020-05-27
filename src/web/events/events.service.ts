@@ -58,7 +58,7 @@ export class EventService {
 
     async getAllView(start: number, count: number): Promise<EventViewDto[]> {
         const events = await this.repo.find({
-            relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
+            relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
             order: { logtime: 'DESC' },
             take: count,
             skip: start
@@ -86,7 +86,7 @@ export class EventService {
 
     async getViewById(id: number): Promise<EventViewDto> {
         const event = await this.repo.findOne({
-            relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
+            relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
             order: { logtime: 'DESC' },
             where: { id: id }
         });

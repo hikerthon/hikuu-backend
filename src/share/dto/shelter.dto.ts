@@ -41,9 +41,9 @@ export class ShelterDto {
         const it = new ShelterDto();
         it.id = entity.id;
         it.name = entity.name;
-        it.capacity = entity.capacity;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
+        it.capacity = Number(entity.capacity);
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
 
         return it;
     }

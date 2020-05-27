@@ -29,9 +29,9 @@ export class EventDto {
     @MaxLength(255)
     eventInfo: string;
 
-    @ApiProperty({ nullable: false })
-    // @IsDateString()
-    eventTime: Date;
+    @ApiProperty({ nullable: false, example: 1590486778000 })
+    @IsNumber()
+    eventTime: number;
 
     @ApiProperty({ nullable: false, example: 1 })
     @IsNumber()
@@ -49,7 +49,7 @@ export class EventDto {
     @Max(180)
     lngpt: number;
 
-    @ApiProperty({ minimum: 0, maximum: 100, nullable: false, default: 5 })
+    @ApiProperty({ minimum: 0, maximum: 100, nullable: false, default: 5, required: false })
     @IsNumber()
     @Min(0)
     @Max(100)
@@ -64,7 +64,7 @@ export class EventDto {
     stat: string;
 
     @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
-    logtime: Date;
+    logtime: number;
 
     @ApiProperty()
     attachments: string[];
@@ -75,14 +75,14 @@ export class EventDto {
         it.eventTypeId = this.eventTypeId;
         it.alertLevelId = this.alertLevelId;
         it.eventInfo = this.eventInfo;
-        it.eventTime = this.eventTime;
+        it.eventTime = new Date(this.eventTime);
         it.hikeId = this.hikeId;
         it.latpt = this.latpt;
         it.lngpt = this.lngpt;
         it.radius = this.radius;
         it.reporterId = this.reporterId;
         it.stat = this.stat;
-        it.logtime = this.logtime;
+        it.logtime = new Date(this.logtime);
         return it;
     }
 
@@ -92,15 +92,14 @@ export class EventDto {
         it.eventTypeId = entity.eventTypeId;
         it.alertLevelId = entity.alertLevelId;
         it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
+        it.eventTime = new Date(entity.eventTime).getTime();
         it.hikeId = entity.hikeId;
         it.latpt = entity.latpt;
         it.lngpt = entity.lngpt;
         it.radius = entity.radius;
         it.reporterId = entity.reporterId;
         it.stat = entity.stat;
-        it.logtime = entity.logtime;
-
+        it.logtime = new Date(entity.logtime).getTime();;
         return it;
     }
 }
@@ -108,32 +107,28 @@ export class EventDto {
 export class EventViewDto extends EventDto {
 
     @ApiProperty()
-    eventTypeName: string;
-
-    @ApiProperty()
-    alertLevelName: string;
-
-    @ApiProperty()
     reporterName: string;
 
     public static fromEntity(entity: EventEntity): EventViewDto {
         const it = new EventViewDto();
+        let attachments = []
+        entity.attachments.forEach(element=> {
+            attachments.push(element.imagePath)
+        })
         it.id = entity.id;
         it.eventTypeId = entity.eventTypeId;
-        it.eventTypeName = entity.eventType.name;
         it.alertLevelId = entity.alertLevelId;
-        it.alertLevelName = entity.alertLevel.name;
         it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
+        it.eventTime = new Date(entity.eventTime).getTime();
         it.hikeId = entity.hikeId;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
-        it.radius = entity.radius;
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
+        it.radius = Number(entity.radius);
         it.reporterId = entity.reporterId;
         it.reporterName = entity.reporter.firstName;
         it.stat = entity.stat;
-        it.logtime = entity.logtime;
-
+        it.logtime = new Date(entity.logtime).getTime();
+        it.attachments = attachments
         return it;
     }
 }

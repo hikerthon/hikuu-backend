@@ -12,9 +12,6 @@ export class EventtypeEntity {
     @Column({name: 'event_type_desc'})
     description: string;
 
-    @Column({name: 'default_alert', nullable:true})
-    defaultAlertId: number;
-
     @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.eventTypes)
     @JoinColumn({name: 'default_alert'})
     defaultAlert: AlertlevelEntity;

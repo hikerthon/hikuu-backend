@@ -16,9 +16,13 @@ export class AlertAttachmentDto {
     public static fromEntity(entity: AlertAttachmentEntity[]): AlertAttachmentDto {
         const it = new AlertAttachmentDto();
         it.imagePath = []
-        entity.forEach(element => {
-            it.imagePath.push(element.imagePath)
-        });
+        if (entity) {
+            entity.forEach(element => {
+                it.imagePath.push(element.imagePath)
+            });
+        }
+        // console.log(entity)
+        
         return it;
     }
 }
@@ -44,13 +48,13 @@ export class AlertDto {
     @IsString()
     eventInfo: string;
     
-    @ApiProperty({nullable: false})
-    @IsDateString()
-    eventTime: Date;
+    @ApiProperty({nullable: false, example: 1590551269000})
+    @IsNumber()
+    eventTime: number;
     
-    @ApiProperty({nullable: false})
-    @IsDateString()
-    eventEnd: Date;
+    @ApiProperty({nullable: false, example: 1590551269000})
+    @IsNumber()
+    eventEnd: number;
     
     @ApiProperty({nullable: false, example: 1})
     permitId: number;
@@ -67,10 +71,7 @@ export class AlertDto {
     @Max(180)
     lngpt: number;
     
-    @ApiProperty({minimum: 0, maximum: 100, nullable: false, example: 5})
-    @IsNumber()
-    @Min(0)
-    @Max(100)
+    @ApiProperty({minimum: 0, maximum: 100, nullable: true, example: 5, required: false})
     radius: number;
     
     @ApiProperty({nullable: false, example: 1})
@@ -84,22 +85,22 @@ export class AlertDto {
     attachments: string[];
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    logtime: Date;
+    logtime: number;
 
     public toEntity(): AlertEntity {
         const it = new AlertEntity();
         it.eventTypeId = this.eventTypeId;
         it.alertLevelId = this.alertLevelId;
         it.eventInfo = this.eventInfo;
-        it.eventTime = this.eventTime;
-        it.eventEnd = this.eventEnd;
+        it.eventTime = new Date(this.eventTime);
+        it.eventEnd = new Date(this.eventEnd);
         it.permitId = this.permitId;
         it.latpt = this.latpt;
         it.lngpt = this.lngpt;
         it.radius = this.radius;
         it.creatorId = this.creatorId;
         it.originSourceId = (this.originEventId ? this.originEventId : null);
-        it.logtime = this.logtime;
+        it.logtime = new Date(this.logtime);
         
         return it;
     }
@@ -110,15 +111,15 @@ export class AlertDto {
         it.eventTypeId = entity.eventTypeId;
         it.alertLevelId = entity.alertLevelId;
         it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
-        it.eventEnd = entity.eventEnd;
+        it.eventTime = new Date(entity.eventTime).getTime();
+        it.eventEnd = new Date(entity.eventEnd).getTime();
         it.permitId = entity.permitId;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
-        it.radius = entity.radius;
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
+        it.radius = Number(entity.radius);
         it.creatorId = entity.creatorId;
         it.originEventId = entity.originSourceId;
-        it.logtime = entity.logtime;
+        it.logtime = new Date(entity.logtime).getTime();
 
         return it;
     }
@@ -127,9 +128,6 @@ export class AlertDto {
 export class AlertViewDto extends AlertDto {
     @ApiProperty()
     eventTypeName: string;
-  
-    @ApiProperty()
-    alertLevelName: string;
     
     @ApiProperty()
     permitName: string;
@@ -139,23 +137,23 @@ export class AlertViewDto extends AlertDto {
 
     public static fromEntity(entity: AlertEntity): AlertViewDto {
         const it = new AlertViewDto();
+        console.log(entity.attachments)
         const imagePaths = AlertAttachmentDto.fromEntity(entity.attachments)
         it.id = entity.id;
         it.eventTypeId = entity.eventTypeId;
         it.eventTypeName = entity.eventType.name;
         it.alertLevelId = entity.alertLevelId;
-        it.alertLevelName = entity.alertLevel.name;
         it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
-        it.eventEnd = entity.eventEnd;
+        it.eventTime = new Date(entity.eventTime).getTime();
+        it.eventEnd = new Date(entity.eventEnd).getTime();
         it.permitId = entity.permit.id;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
-        it.radius = entity.radius;
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
+        it.radius = Number(entity.radius);
         it.creatorId = entity.creatorId;
         it.creatorName = entity.creator.name;
         it.originEventId = entity.originSourceId;
-        it.logtime = entity.logtime;
+        it.logtime = new Date(entity.logtime).getTime();
         it.attachments = imagePaths.imagePath
         return it;
     }

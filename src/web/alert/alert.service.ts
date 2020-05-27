@@ -46,7 +46,7 @@ export class AlertService {
 
     async getAllView(start: number, count: number): Promise<AlertViewDto[]> {
         const alerts = await this.repo.find({
-            relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
+            relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource', 'attachments'],
             order: { logtime: 'DESC' },
             take: count,
             skip: start

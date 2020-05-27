@@ -12,8 +12,8 @@ export class TrackerDto {
     hikeId: number;
     
     @ApiProperty()
-    @IsDate()
-    recordTime: Date;
+    @IsNumber()
+    recordTime: number;
     
     @ApiProperty({nullable: false, minimum: -90, maximum: 90})
     @IsNumber()
@@ -41,23 +41,25 @@ export class TrackerDto {
     network: number;
     
     @ApiProperty()
-    elapsedTime: Date;
+    @IsNumber()
+    elapsedTime: number;
     
     @ApiProperty()
-    logtime: Date;
+    @IsNumber()
+    logtime: number;
 
     public toEntity():TrackerEntity {
         const it = new TrackerEntity();
         it.hiker.id = this.hikerId;
         it.hike.id = this.hikeId;
-        it.recordTime = this.recordTime;
+        it.recordTime = new Date(this.recordTime);
         it.latpt = this.latpt;
         it.lngpt = this.lngpt;
         it.elevation = this.elevation;
         it.battery = this.battery;
         it.network = this.network;
-        it.elapsedTime = this.elapsedTime;
-        it.logtime = this.logtime;
+        it.elapsedTime = new Date(this.elapsedTime);
+        it.logtime = new Date(this.logtime);
         return it;
     }
 
@@ -65,14 +67,14 @@ export class TrackerDto {
         const it = new TrackerDto();
         it.hikerId = entity.hiker.id;
         it.hikeId = entity.hike.id;
-        it.recordTime = entity.recordTime;
+        it.recordTime = new Date(entity.recordTime).getTime();
         it.latpt = entity.latpt;
         it.lngpt = entity.lngpt;
         it.elevation = entity.elevation;
-        it.battery = entity.battery;
-        it.network = entity.network;
-        it.elapsedTime = entity.elapsedTime;
-        it.logtime = entity.logtime;
+        it.battery = Number(entity.battery);
+        it.network = Number(entity.network);
+        it.elapsedTime = new Date(entity.elapsedTime).getTime();
+        it.logtime = new Date(entity.logtime).getTime();
 
         return it;
     }

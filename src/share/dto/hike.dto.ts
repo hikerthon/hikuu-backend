@@ -3,6 +3,7 @@ import { HikeEntity, PermitReqStatEnum } from '../entity/hike.entity';
 import { AccountDto } from './account.dto';
 import { TrailDto } from './trail.dto';
 import { IsNumber, IsDate, IsString, IsEnum, MaxLength, Max, IsDateString } from 'class-validator';
+import { Example } from 'src/example/example.controller';
 
 export class HikeDto {
     @ApiProperty(
@@ -15,13 +16,13 @@ export class HikeDto {
     @IsNumber()
     hikerId: number;
   
-    @ApiProperty({nullable: false})
-    @IsDateString()
-    hikeStart: Date;
+    @ApiProperty({nullable: false, example: 1590361200000})
+    @IsNumber()
+    hikeStart: number;
     
-    @ApiProperty({nullable: false})
-    @IsDateString()
-    hikeEnd: Date;
+    @ApiProperty({nullable: false, example: 1590361200000})
+    @IsNumber()
+    hikeEnd: number;
     
     @ApiProperty({nullable: false})
     permitId: number;
@@ -45,9 +46,9 @@ export class HikeDto {
     @IsEnum(PermitReqStatEnum)
     permitAccepted: string;
     
-    @ApiProperty({nullable: false})
-    @IsDateString()
-    acceptedTime: Date;
+    @ApiProperty({nullable: false, example: 1590361200000})
+    @IsNumber()
+    acceptedTime: number;
     
     @ApiProperty({maxLength: 255, nullable: true})
     @IsString()
@@ -64,25 +65,26 @@ export class HikeDto {
     hikeCancelled: boolean;
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    logtime: Date;
+    @IsNumber()
+    logtime: number;
 
     public static fromEntity(entity: HikeEntity): HikeDto {
         const it = new HikeDto();
         it.id = entity.id;
         it.hikerId = entity.hiker.id;
-        it.hikeStart = entity.hikeStart;
-        it.hikeEnd = entity.hikeEnd;
+        it.hikeStart = new Date(entity.hikeStart).getTime();
+        it.hikeEnd = new Date(entity.hikeEnd).getTime();
         it.permitId = entity.permit.id;
         it.guideName = entity.guideName;
         it.guideContact = entity.guideContact;
         it.guideContact2 = entity.guideContact2;
         it.permitAccepted = entity.permitAccepted;
-        it.acceptedTime = entity.acceptedTime;
+        it.acceptedTime = new Date(entity.acceptedTime).getTime();
         it.memo = entity.memo;
         it.hikeStarted = entity.hikeStarted;
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;
-        it.logtime = entity.logtime;
+        it.logtime = new Date(entity.logtime).getTime();
 
         return it;
     }
@@ -102,19 +104,19 @@ export class HikeViewDto extends HikeDto {
         const hikerInfo = AccountDto.fromEntity(entity.hiker)
         it.hikerInfo = hikerInfo;
         it.id = entity.id
-        it.hikeStart = entity.hikeStart;
-        it.hikeEnd = entity.hikeEnd;
+        it.hikeStart = new Date(entity.hikeStart).getTime();
+        it.hikeEnd = new Date(entity.hikeEnd).getTime();
         it.permitId = entity.permit.id;
         it.guideName = entity.guideName;
         it.guideContact = entity.guideContact;
         it.guideContact2 = entity.guideContact2;
         it.permitAccepted = entity.permitAccepted;
-        it.acceptedTime = entity.acceptedTime;
+        it.acceptedTime = new Date(entity.acceptedTime).getTime();
         it.memo = entity.memo;
         it.hikeStarted = entity.hikeStarted;
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;
-        it.logtime = entity.logtime;
+        it.logtime = new Date(entity.logtime).getTime();
         it.trails = trails;
         return it;
     }

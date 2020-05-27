@@ -41,10 +41,10 @@ export class AccountDto {
     @IsDefined()
     gender: string;
     
-    @ApiProperty()
+    @ApiProperty({example: 1590361200000})
     @IsDefined()
-    @IsDate()
-    dob: Date;
+    @IsNumber()
+    dob: number;
     
     @ApiProperty({maxLength: 255})
     @IsString()
@@ -108,7 +108,7 @@ export class AccountDto {
         it.image = this.image;
         it.identification = this.identification;
         it.gender = this.gender;
-        it.dob = this.dob;
+        it.dob = new Date(this.dob);
         it.address = this.address;
         it.email = this.email;
         it.nationality = this.nationality;
@@ -132,7 +132,7 @@ export class AccountDto {
         it.image = entity.image;
         it.identification = entity.identification;
         it.gender = entity.gender;
-        it.dob = entity.dob;
+        it.dob = new Date(entity.dob).getTime();
         it.address = entity.address;
         it.email = entity.email;
         it.nationality = entity.nationality;

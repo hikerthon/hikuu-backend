@@ -28,7 +28,7 @@ export class SosController {
     sos.radius = 10;
     sos.stat = 'PROCESSING';
     sos.eventInfo = 'HELP';
-    sos.eventTime = new Date();
+    sos.eventTime = new Date().getTime();
 
     return await this.srv.create(sos)
   }
