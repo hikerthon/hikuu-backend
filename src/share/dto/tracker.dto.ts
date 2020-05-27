@@ -3,47 +3,47 @@ import { TrackerEntity } from '../entity/tracker.entity';
 import { IsNumber, IsDataURI, IsDate, Max, Min } from 'class-validator';
 
 export class TrackerDto {
-    @ApiProperty({readOnly: true})
+    @ApiProperty({nullable: false, example: 1})
     @IsNumber()
     hikerId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false, example: 1})
     @IsNumber()
     hikeId: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false, description: 'creation time in mobile phone before pushing to backend'})
     @IsDate()
     recordTime: Date;
     
-    @ApiProperty({nullable: false, minimum: -90, maximum: 90})
+    @ApiProperty({nullable: false, minimum: -90, maximum: 90, example: 24.1177877})
     @IsNumber()
     @Min(-90)
     @Max(90)
     latpt: number;
     
-    @ApiProperty({nullable: false, minimum: -180, maximum: 180})
+    @ApiProperty({nullable: false, minimum: -180, maximum: 180, example: 121.3103961})
     @IsNumber()
     @Min(-180)
     @Max(180)
     lngpt: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false, example: 2500})
     @IsNumber()
     elevation: number;
     
-    @ApiProperty({minimum:0, maximum: 100})
+    @ApiProperty({nullable: false, minimum:0, maximum: 100, example: 80})
     @IsNumber()
     @Min(0)
     @Max(100)
     battery: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false, example: -60})
     network: number;
     
-    @ApiProperty()
+    @ApiProperty({nullable: false, example: '00:30:00'})
     elapsedTime: Date;
     
-    @ApiProperty()
+    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
     logtime: Date;
 
     public toEntity():TrackerEntity {

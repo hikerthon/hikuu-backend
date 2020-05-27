@@ -20,7 +20,7 @@ export class CheckInController {
   // TODO correct response
   @ApiResponse({ status: 200, type: HikooResponse, isArray: false, description: 'successful operation' })
   async sendCheckIn(@Body() checkin: CheckinDto): Promise<HikooResponse> {
-    this._logger.debug(checkin);
+    this._logger.debug(`@Post CheckIn, hiker=[${checkin.hikerId}], hike=[${checkin.hikeId}]`);
     return this.srv.sendCheckIn(checkin);
   }
 }
