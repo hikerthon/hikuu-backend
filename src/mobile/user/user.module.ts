@@ -1,13 +1,14 @@
 import { Module, Logger } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccountEntity } from 'src/share/entity/account.entity';
+import { AccountEntity } from '../../share/entity/account.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AccountEntity], 'mobile')],
   controllers: [UserController],
   providers: [Logger, UserService],
-  exports: [UserService]
+  exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {
+}
