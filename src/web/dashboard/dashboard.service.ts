@@ -11,6 +11,8 @@ import { CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 import { EventCountDto } from '../../share/dto/event.dto';
 import { EventsGateway } from '../events/events.gateway';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { AllGpsEntity } from '../../share/entity/allgps.entity';
+import { AllGPSDto } from '../../share/dto/allgps.dto'
 
 
 @Injectable()
@@ -21,6 +23,7 @@ export class DashboardService {
     @InjectRepository(EventEntity)  private readonly repoEvent: Repository<EventEntity>,
     @InjectRepository(CheckinEntity)  private readonly repoCheckin: Repository<CheckinEntity>,
     @InjectRepository(AlertEntity)  private readonly repoAlert: Repository<AlertEntity>,
+    @InjectRepository(AllGpsEntity) private readonly repoAllgps: Repository<AllGpsEntity>,
     private _eventGateway: EventsGateway,
   ) {}
 
@@ -45,6 +48,8 @@ export class DashboardService {
       .select('alert_level_id, count(*)')
       .groupBy('alert_level_id')
       .getRawMany()
+    const gpsData = await this.repoAllgps.find();
+       
     return DashboardDto.fromEntity(
       hikeCount,
       checkinCount,
@@ -52,6 +57,7 @@ export class DashboardService {
       0,
       0,
       EventCountDto.fromEntity(eventCount),
-      AlertCountDto.fromEntity(alertCount));
+      AlertCountDto.fromEntity(alertCount),
+      gpsData.map(gps => AllGPSDto.fromEntity(gps)));
   }
 }

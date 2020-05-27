@@ -25,8 +25,8 @@ export class AllGPSDto {
     @ApiProperty()
     eventName: number;
 
-    @ApiProperty()
-    radius: number;
+    // @ApiProperty()
+    // radius: number;
 
     @ApiProperty()
     logtime: number
@@ -34,11 +34,11 @@ export class AllGPSDto {
     public static fromEntity(entity: AllGpsEntity): AllGPSDto {
         const it = new AllGPSDto();
         it.ptinfo = entity.ptinfo;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
         it.alertName = entity.alevel;
         it.eventName = entity.etype;
-        it.radius = Number(entity.radius);
+        // it.radius = Number(entity.radius);
         it.logtime = new Date(entity.logtime).getTime()
         return it;
     }

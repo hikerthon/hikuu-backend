@@ -13,11 +13,11 @@ export class CheckinService {
   ) { }
 
 
-  async getCheckinRecordById(hikerId: number): Promise<CheckinDto[]> {
+  async getCheckinRecordById(hikeId: number): Promise<CheckinDto[]> {
 
     const records = await this.repo.find({
       relations: ['hiker', 'hike'],
-      where: {hikerId}
+      where: {hikeId}
     })
 
     return records.map(record => CheckinDto.fromEntity(record))
