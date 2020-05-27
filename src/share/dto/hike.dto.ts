@@ -123,9 +123,9 @@ export class HikeViewDto extends HikeDto {
 }
 
 export class HikeViewModifyDto {
-    @ApiProperty()
+    @ApiProperty({type: Number, example: 1})
     hikeId: number
 
-    @ApiProperty()
+    @ApiProperty({type: String, example: 'This is memo example'})
     memo: string
 }

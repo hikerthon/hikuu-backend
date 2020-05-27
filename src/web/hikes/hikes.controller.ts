@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Query, Param, Put, Body } from '@nestjs/common';
+import { Controller, Logger, Get, Query, Param, Put, Body, HttpCode } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 
 import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
@@ -45,7 +45,8 @@ export class HikesController {
 
   @Put(':id')
   @ApiOperation({ summary: 'modify memo context' })
-  @ApiParam({ name: 'id', type: 'number' })
+  @ApiParam({ name: 'id', type: 'number', example: 1 })
+  @HttpCode(200)
   @ApiBody({ type: HikeViewModifyDto })
   @ApiResponse({ status: 200, type: HikooResponse})
   async modifyById(

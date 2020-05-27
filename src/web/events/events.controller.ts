@@ -1,8 +1,8 @@
-import { ApiResponse, ApiParam, ApiTags, ApiOperation, ApiQuery, } from '@nestjs/swagger';
-import { Controller, Get, HttpStatus, Logger, Param, Put, Query, Post, Body, Req, HttpException } from '@nestjs/common';
+import { ApiResponse, ApiParam, ApiTags, ApiOperation, ApiQuery, ApiBody, } from '@nestjs/swagger';
+import { Controller, Get, HttpStatus, Logger, Param, Put, Query, Post, Body, Req, HttpException, HttpCode } from '@nestjs/common';
 import { EventService } from "./events.service";
 import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
-import { EventDto, EventViewDto } from 'src/share/dto/event.dto';
+import { EventDto, EventViewDto, ModifyEventDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
 import { EventsGateway } from './events.gateway';
 
@@ -48,16 +48,41 @@ export class EventsController {
         return this.eventSvc.getViewById(id)
     }
 
-    @Post()
-    @ApiOperation({ summary: 'Create new Event' })
-    @ApiResponse({ status: 200, type: HikooResponse })
-    async createEvent(@Body() event: EventDto): Promise<HikooResponse> {
-        this._logger.debug(`@Post, info: ${event.eventInfo}`);
-        event.stat = EventStatusEnum.PENDING;
-        return await this.eventSvc.create(event);
+    // @Post()
+    // @HttpCode(200)
+    // @ApiOperation({ summary: 'Create new Event' })
+    // @ApiResponse({ status: 200, type: HikooResponse })
+    // async createEvent(@Body() event: EventDto): Promise<HikooResponse> {
+    //     this._logger.debug(`@Post, info: ${event.eventInfo}`);
+    //     event.stat = EventStatusEnum.PENDING;
+    //     return await this.eventSvc.create(event);
+    // }
+
+    @Put()
+    @HttpCode(200)
+    @ApiOperation({summary: 'Modify more event detail'})
+    @ApiBody({ type: ModifyEventDto, isArray: true })
+    @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
+    async modifyEvent(@Body() data: ModifyEventDto[]): Promise<HikooResponse> {
+        this._logger.debug(`@Put event`)
+        return this.eventSvc.modify(data)
+    }
+
+
+    @Put(':id')
+    @HttpCode(200)
+    @ApiOperation({summary: 'Modify events detail'})
+    @ApiBody({ type: ModifyEventDto, isArray: false })
+    @ApiResponse({ status: HttpStatus.OK, type: HikooResponse})
+    async modifyEventbyId(
+        @Param('id') id: number,
+        @Body() data: ModifyEventDto): Promise<HikooResponse> {
+        this._logger.debug(`@Put event`)
+        return this.eventSvc.modify([data])
     }
 
     @Post('notify')
+    @HttpCode(200)
     onNotifyEvent(@Req() request, @Body() event: EventDto): HikooResponse {
         console.log(`sourceIp = ${request.ip} ${request.connection.remoteAddress}`);
         const ip = request.ip || request.connection.remoteAddress;
@@ -67,9 +92,7 @@ export class EventsController {
                 errorMessage: 'notify can only be call by localhost'
             }, HttpStatus.BAD_REQUEST);
         }
-
         this._eventGateway.newEvent(event);
-
         return { success: true };
     }
 }

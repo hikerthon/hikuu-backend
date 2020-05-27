@@ -179,3 +179,17 @@ export class EventCountDto {
         return it;
     }
 }
+
+export class ModifyEventDto {
+
+    @ApiProperty({ type: Number, example: 1 })
+    id: number;
+
+    @ApiProperty({type: Number, example: 1})
+    alertId: number
+
+    @ApiProperty({ enum: EventStatusEnum ,example: EventStatusEnum.RESOLVED})
+    @IsEnum(EventStatusEnum)
+    stat: string;
+
+}
