@@ -1,5 +1,6 @@
 import { Module, Logger } from '@nestjs/common';
 import { CheckInController } from './checkin.controller';
+import { CheckOutController } from './checkout.controller';
 import { CheckInService } from './checkin.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CheckinEntity } from 'src/share/entity/checkin.entity';
@@ -8,7 +9,7 @@ import { CheckinEntity } from 'src/share/entity/checkin.entity';
   imports: [
     TypeOrmModule.forFeature([CheckinEntity], 'mobile'),
   ],
-  controllers: [CheckInController],
+  controllers: [CheckInController, CheckOutController],
   providers: [CheckInService, Logger]
 })
 
