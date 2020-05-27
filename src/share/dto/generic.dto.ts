@@ -10,13 +10,26 @@ export class HikooResponse {
   @IsString()
   errorMessage?: string;
 
-  constructor(success: boolean, message: string){
-      this.success = success;
-      this.errorMessage = message;
+  constructor(success: boolean, message: string) {
+    this.success = success;
+    this.errorMessage = message;
   }
 }
 
-export class ImageUploadResponse extends HikooResponse{
+export class HikooBadReqResponse {
+  @ApiProperty({ readOnly: true, default: 400, example: 400 })
+  statusCode: number
+
+  @ApiProperty({ isArray: true })
+  @IsString()
+  message: string
+
+  @ApiProperty({ example: 'Bad Request' })
+  @IsString()
+  error: string
+}
+
+export class ImageUploadResponse extends HikooResponse {
   @ApiProperty()
   @IsString()
   imagePath?: string;

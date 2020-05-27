@@ -1,30 +1,10 @@
-import { Controller, Request, Get, Post, UseGuards, Logger, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
+import { Controller, Request, Post, UseGuards, Logger, Body, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { IsDefined, IsEmail, MaxLength, MinLength } from 'class-validator';
+import { LoginDataDto, JwtDataDto } from '../../share/dto/logindata.dto';
+import { HikooBadReqResponse } from 'src/share/dto/generic.dto';
 
-export class LoginData {
-
-  @ApiProperty({ type: 'email' })
-  @IsDefined()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty({ type: 'string', maxLength: 255, minLength: 4 })
-  @IsDefined()
-  @MaxLength(255)
-  @MinLength(4)
-  password: string;
-}
-
-export class JwtData {
-  @ApiProperty()
-  access_token: string
-
-  @ApiProperty()
-  refresh_token: string
-}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -36,13 +16,23 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: HttpStatus.OK, type: JwtDataDto, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid username/ password supplied' })
   async login(
     @Request() req,
-    @Body() loginData: LoginData
-  ): Promise<JwtData> {
-    // return req.user;
-    this._logger.debug(`Post auth login email ${req.user.email}`);
-    return this.srv.login(req.user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() loginData: LoginDataDto
+  ): Promise<JwtDataDto> {
+    try {
+      this._logger.debug(`Post auth login email ${req.user.email}`);
+      return await this.srv.login(req.user);
+    } catch (e) {
+      throw new HttpException(
+        { success: false, errorMessage: e.message },
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 }

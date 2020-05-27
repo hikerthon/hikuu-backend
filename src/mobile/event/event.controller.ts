@@ -1,8 +1,8 @@
-import { Controller, Request, Get, Post, Body, Logger, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation, ApiParam, ApiQuery, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Request, Get, Post, Body, Logger, UseInterceptors, HttpStatus, UploadedFile, HttpException, Query, HttpService, UseGuards, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiOperation, ApiQuery, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
 import { Event } from '../../share/models/event.model';
 import { EventService } from './event.service';
-import { HikooResponse, ImageUploadResponse } from '../../share/dto/generic.dto';
+import { HikooResponse, ImageUploadResponse, HikooBadReqResponse } from '../../share/dto/generic.dto';
 import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
 import { EventStatusEnum } from 'src/share/entity/event.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -27,24 +27,38 @@ export class EventController {
   @ApiOperation({ summary: 'Find events by user id' })
   @ApiQuery({ name: 'start', type: 'number', required: false })
   @ApiQuery({ name: 'count', type: 'number', required: false })
-  @ApiResponse({ status: 200, type: Event, isArray: true, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.OK, type: Event, isArray: true, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid start / count supplied' })
   async getEventsByHikeId(
     @Request() req,
     @Query('start') start: number,
     @Query('count') count: number): Promise<EventViewDto[]> {
-    const userId = req.user.userId;
 
-    this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
-    start = (start !== null ? start : 0);
-    count = (count !== null ? count : 10);
-    // count must more than 0
-    return this.srv.getByHikeId(userId, start || 0, count || 0);
+    try {
+      const userId = req.user.userId;
+      this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`)
+      start = (start !== null ? start : 0);
+      count = (count !== null ? count : 10);
+      // count must more than 0
+      return this.srv.getByHikeId(userId, start || 0, count || 0);
+    } catch (e) {
+      throw new HttpException(
+        { success: false, errorMessage: e.message },
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create new event' })
-  @ApiResponse({ status: 200, type: HikooResponse, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.OK, type: HikooResponse, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid event input' })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: HikooResponse, description: 'Fail to create event' })
   async createEvent(
     @Request() req,
     @Body() event: EventDto,
@@ -53,10 +67,7 @@ export class EventController {
 
     this._logger.debug(`@Post, userId = [${userId}], info: ${event.eventInfo}`);
 
-    if (userId !== event.hikeId) {
-      return { success: false, errorMessage: 'Fail to create new event' };
-    }
-
+    // notify platform
     event.stat = EventStatusEnum.PENDING;
     this._http
       .post<HikooResponse>('http://0.0.0.0:3000/event/notify', event)
@@ -64,16 +75,31 @@ export class EventController {
         this._logger.error(`Successfully notify platform`);
       }, err => {
         this._logger.error(`Failed to notify platform - ${err.errorMessage}`);
+        throw new HttpException(
+          { success: false, errorMessage: `Failed to notify platform - ${err.errorMessage}` },
+          HttpStatus.FORBIDDEN
+        );
       });
-    return await this.srv.create(event);
+
+    // save to db
+    try {
+      return await this.srv.create(event);
+    } catch (e) {
+      throw new HttpException(
+        { success: false, errorMessage: e.message },
+        HttpStatus.FORBIDDEN
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('uploadImage')
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiFile('file')
   @ApiResponse({ status: HttpStatus.OK, type: ImageUploadResponse, description: 'Successfully upload the image.' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ImageUploadResponse, description: 'Failed to upload the image.' })
   async uploadFile(@UploadedFile() file): Promise<ImageUploadResponse> {
     try {

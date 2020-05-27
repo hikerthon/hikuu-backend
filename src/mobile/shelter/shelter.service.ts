@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ShelterAroundMeDto } from 'src/share/dto/shelter.dto';
-import { Location } from '../../share/models/location.model';
-import { AccountEntity } from 'src/share/entity/account.entity';
+import { ShelterAroundMeDto } from '../../share/dto/shelter.dto';
+import { UserLocationDto } from '../../share/dto/location.dto'
+import { AccountEntity } from '../../share/entity/account.entity';
 import { getConnection, getManager } from 'typeorm';
 
 @Injectable()
 export class ShelterService {
 
-  async getNearbyShelters(loc: Location): Promise<ShelterAroundMeDto[]> {
+  async getNearbyShelters(loc: UserLocationDto): Promise<ShelterAroundMeDto[]> {
     const user = await getConnection()
       .createQueryBuilder()
       .select('user.id')
@@ -22,7 +22,7 @@ export class ShelterService {
     return await getManager()
       .query(`SELECT id, shelter_name, capacity, latpt, lngpt, 
       ST_Distance_Sphere(POINT(lngpt, latpt), POINT(?, ?)) distance_mtr 
-      FROM shelters ORDER BY distance_mtr ASC LIMIT 0, 5;`, [loc.lng, loc.lat])
-      .then( rows => rows.map( row => ShelterAroundMeDto.convert(row)));
+      FROM shelters ORDER BY distance_mtr ASC LIMIT 0, 5;`, [loc.lngpt, loc.latpt])
+      .then(rows => rows.map(row => ShelterAroundMeDto.convert(row)));
   }
 }

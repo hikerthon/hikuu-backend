@@ -19,7 +19,7 @@ export class LocationService {
       // But typeORM doesnt support this feature with query builder
 
       await getManager()
-      .query(`
+        .query(`
         INSERT INTO tracker(hiker_id, hike_id, record_time, latpt, lngpt, elevation, battery, network, elapsed_time) VALUES
         (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE 
