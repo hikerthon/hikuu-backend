@@ -73,7 +73,7 @@ export class AlertDto {
     @Max(100)
     radius: number;
     
-    @ApiProperty({nullable: false, example: 1})
+    @ApiProperty({description: 'station id', nullable: false, example: 1})
     @IsNumber()
     creatorId: number;
 

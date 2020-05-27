@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS hikes (
     hike_started BOOLEAN DEFAULT FALSE,
     hike_finished BOOLEAN DEFAULT FALSE,
     hike_cancelled BOOLEAN DEFAULT FALSE,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id)
 );
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS track_history (
     battery TINYINT,
     network SMALLINT,
     elapsed_time TIME,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (hike_id, hiker_id, record_time),
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS tracker (
     battery TINYINT,
     network SMALLINT,
     elapsed_time TIME,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, -- time this record is inserted to db
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- time this record is inserted to db
     PRIMARY KEY (hiker_id),
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS events (
     radius DECIMAL(5, 2), -- radius in km to broadcast from lat,lng
     reporter INT UNSIGNED,
     stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD') NOT NULL DEFAULT 'PENDING',
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS alerts (
     radius DECIMAL(5, 2), -- if value = -1, to be broadcasted to everyone who have the same permit_id
     creator INT UNSIGNED,
     origin_source INT UNSIGNED DEFAULT NULL, -- event_id if alert came from event
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id),
@@ -329,20 +329,3 @@ CREATE TABLE IF NOT EXISTS alert_attachment (
     image_path VARCHAR(255),
     FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
-
-DROP VIEW IF EXISTS AllGpsMaps;
-CREATE VIEW AllGpsMaps AS
-    SELECT 'hiker' ptinfo, '-' etype, 'Information' alevel, latpt, lngpt, 0 radius, record_time logtime FROM tracker a 
-    INNER JOIN hikes b ON a.hike_id=b.id 
-    WHERE b.hike_finished=0
-    -- AND logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
-    UNION ALL
-    SELECT 'alert' ptinfo, b.event_type_name etype, c.alert_name alevel, latpt, lngpt, radius, event_time logtime FROM alerts a
-    INNER JOIN event_type b ON a.event_type_id=b.id
-    INNER JOIN alert_level c ON a.alert_level_id=c.id
-    -- WHERE event_end >= NOW()
-    UNION ALL 
-    SELECT 'event' ptinfo, b.event_type_name etype, c.alert_name alevel, latpt, lngpt, radius, event_time logtime FROM events a
-    INNER JOIN event_type b ON a.event_type_id=b.id
-    INNER JOIN alert_level c ON a.alert_level_id=c.id;
-    -- WHERE stat IN ('PENDING', 'PROCESSING');
