@@ -107,6 +107,9 @@ export class EventDto {
 export class EventViewDto extends EventDto {
 
     @ApiProperty()
+    eventTypeName: string;
+
+    @ApiProperty()
     reporterName: string;
 
     public static fromEntity(entity: EventEntity): EventViewDto {
@@ -117,6 +120,7 @@ export class EventViewDto extends EventDto {
         })
         it.id = entity.id;
         it.eventTypeId = entity.eventTypeId;
+        it.eventTypeName = entity.eventType.name;
         it.alertLevelId = entity.alertLevelId;
         it.eventInfo = entity.eventInfo;
         it.eventTime = new Date(entity.eventTime).getTime();
