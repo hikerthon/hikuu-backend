@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS account (
     satellite_number VARCHAR(255),
     emergency_contact VARCHAR(255),
     emergency_number VARCHAR(255),
+    emergency_mobile_number VARCHAR(255),
+    watch_status ENUM('NORMAL', 'WATCHLIST', 'BLACKLIST') NOT NULL DEFAULT 'NORMAL',
     fcm_token VARCHAR(255)
 );
 
@@ -159,7 +161,7 @@ CREATE TABLE IF NOT EXISTS hike_destination (
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
-INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2);
+INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2),(5, 1),(5, 2),(6, 1),(6, 2),(7, 1),(7, 2),(8, 1),(8, 2);
 
 CREATE TABLE IF NOT EXISTS checkin (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

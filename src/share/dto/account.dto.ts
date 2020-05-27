@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AccountEntity, GenderEnum } from '../entity/account.entity';
+import { AccountEntity, GenderEnum, WatchStatusEnum } from '../entity/account.entity';
 import { IsEmail, IsUUID, IsDefined, Max, IsNumber, IsDate, IsString, IsEnum, MaxLength } from 'class-validator';
 
 export class AccountDto {
@@ -96,6 +96,15 @@ export class AccountDto {
     @ApiProperty({maxLength: 255})
     @IsString()
     @MaxLength(255)
+    emergencyMobile: string;
+    
+    @ApiProperty({enum: WatchStatusEnum, nullable: false})
+    @IsDefined()
+    watchStatus: string;
+    
+    @ApiProperty({maxLength: 255})
+    @IsString()
+    @MaxLength(255)
     fcmToken: string;
 
     public toEntity():AccountEntity {
@@ -118,6 +127,8 @@ export class AccountDto {
         it.satelliteNumber = this.satelliteNumber;
         it.emergencyContact = this.emergencyContact;
         it.emergencyNumber = this.emergencyNumber;
+        it.emergencyMobile = this.emergencyMobile;
+        it.watchStatus = this.watchStatus;
         it.fcmToken = this.fcmToken;
         return it;
     }
@@ -142,6 +153,8 @@ export class AccountDto {
         it.satelliteNumber = entity.satelliteNumber;
         it.emergencyContact = entity.emergencyContact;
         it.emergencyNumber = entity.emergencyNumber;
+        it.emergencyMobile = entity.emergencyMobile;
+        it.watchStatus = entity.watchStatus;
         it.fcmToken = entity.fcmToken;
 
         return it;

@@ -7,6 +7,12 @@ export enum GenderEnum {
     FEMALE = 'F'
 }
 
+export enum WatchStatusEnum {
+    NORMAL = 'NORMAL', 
+    WATCHLIST = 'WATCHLIST', 
+    BLACKLIST = 'BLACKLIST'
+}
+
 @Entity({ name: "account" })
 export class AccountEntity {
     @PrimaryGeneratedColumn()
@@ -62,6 +68,12 @@ export class AccountEntity {
     
     @Column({name: 'emergency_number'})
     emergencyNumber: string;
+    
+    @Column({name: 'emergency_mobile_number'})
+    emergencyMobile: string;
+    
+    @Column({type: 'enum', name: 'watch_status', enum: WatchStatusEnum, default: WatchStatusEnum.NORMAL})
+    watchStatus: string;
     
     @Column({name: 'fcm_token'})
     fcmToken: string;
