@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AllGpsEntity } from 'src/share/entity/allgps.entity';
 import { Repository } from 'typeorm';
+import { AllGPSDto } from 'src/share/dto/allgps.dto';
 
 @Injectable()
 export class AllgpsService {
@@ -32,8 +33,8 @@ export class AllgpsService {
         }]
     }
 
-    async getAll(): Promise<AllGpsEntity[]> {
+    async getAll(): Promise<AllGPSDto[]> {
         const gpsData = await this.repo.find();
-        return gpsData;
+        return gpsData.map(gps => AllGPSDto.fromEntity(gps));
     }
 }

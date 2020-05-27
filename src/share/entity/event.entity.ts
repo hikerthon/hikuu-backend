@@ -44,13 +44,13 @@ export class EventEntity {
     @JoinColumn({ name: 'hike_id' })
     hike: HikeEntity;
 
-    @Column()
+    @Column({name: 'latpt', type: 'decimal'})
     latpt: number;
 
-    @Column()
+    @Column({name: 'lngpt'})
     lngpt: number;
 
-    @Column()
+    @Column({name: 'radius'})
     radius: number;
 
     @Column({ name: 'reporter' })

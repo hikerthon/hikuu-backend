@@ -14,14 +14,15 @@ export class CheckinDto {
     @IsNumber()
     hikeId: number;
 
-    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    checkinTime: Date;
+    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true, example: 1590361200000})
+    @IsNumber()
+    checkinTime: number;
 
     public toEntity(): CheckinEntity {
         const it = new CheckinEntity();
         it.hikerId = this.hikerId;
         it.hikeId = this.hikeId;
-        it.checkinTime = this.checkinTime;
+        it.checkinTime = new Date(this.checkinTime);
 
         return it;
     }
@@ -31,7 +32,7 @@ export class CheckinDto {
         it.id = entity.id;
         it.hikerId = entity.hikerId;
         it.hikeId = entity.hikeId;
-        it.checkinTime = entity.checkinTime;
+        it.checkinTime = new Date(entity.checkinTime).getTime();
 
         return it;
     }

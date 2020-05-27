@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { EventDto, EventViewDto } from 'src/share/dto/event.dto';
+import { EventDto, EventViewDto, ModifyEventDto } from 'src/share/dto/event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, getConnection } from 'typeorm';
 import { EventEntity } from 'src/share/entity/event.entity';
 import { HikooResponse, CountResponseDto } from 'src/share/dto/generic.dto';
+import { AlertAttachmentEntity } from 'src/share/entity/alert.entity';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Injectable()
 export class EventService {
@@ -58,7 +60,7 @@ export class EventService {
 
     async getAllView(start: number, count: number): Promise<EventViewDto[]> {
         const events = await this.repo.find({
-            relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
+            relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
             order: { logtime: 'DESC' },
             take: count,
             skip: start
@@ -86,7 +88,7 @@ export class EventService {
 
     async getViewById(id: number): Promise<EventViewDto> {
         const event = await this.repo.findOne({
-            relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
+            relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
             order: { logtime: 'DESC' },
             where: { id: id }
         });
@@ -103,4 +105,76 @@ export class EventService {
 
         return { success: true }
     }
+
+
+    async modify(event: ModifyEventDto[]): Promise<HikooResponse> {
+        try {
+            event.forEach(async (element) => {
+                await this.repo.update(
+                    element.id,
+                    {
+                        stat: element.stat,
+                        alertLevelId: element.alertId
+                    }
+                )
+            });
+            return {
+                success: true,
+                errorMessage: null
+            }
+        } catch(e) {
+            return {
+                success: false,
+                errorMessage: e.errorMessage
+            }
+        }
+    }
 }
+
+// async modifyHikes(data: HikeViewModifyDto): Promise<HikooResponse> {
+//     try {
+//       await this.repo.update(
+//         data.hikeId,
+//         {
+//           memo: data.memo
+//         }
+//       )
+  
+//       return {
+//         success: true,
+//         errorMessage: null
+//       }
+//     } catch (e) {
+//       return {
+//         success: false,
+//         errorMessage: e.errorMessage
+//       }
+//     } 
+//   }
+// }
+
+
+// async create(alert: AlertDto): Promise<HikooResponse> {
+//     try {
+        
+//         // save alert
+//         const saveThis = Object.assign(new AlertDto(), alert);
+//         const newAlert = await this.repo.save(saveThis.toEntity());
+
+//         // save attachments
+//         alert.attachments.forEach(function (attachment) {
+//             const atc = new AlertAttachmentEntity();
+//             atc.alert = newAlert;
+//             atc.imagePath = attachment;
+//             getConnection().getRepository(AlertAttachmentEntity).save(atc);
+//         });
+
+//     } catch (e) {
+//         return { success: false, errorMessage: e.message };
+//     }
+
+//     return { success: true }
+// }
+
+// // createFromEvent --> need to update Events stat into RESOLVED
+// }

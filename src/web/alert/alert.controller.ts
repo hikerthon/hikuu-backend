@@ -1,5 +1,5 @@
 import { ApiResponse, ApiTags, ApiOperation, ApiQuery, ApiParam, ApiConsumes } from '@nestjs/swagger';
-import { Controller, Get, Post, Body, Logger, Query, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Logger, Query, Param, UseInterceptors, HttpStatus, UploadedFile, HttpException, HttpCode } from '@nestjs/common';
 import { AlertService } from './alert.service';
 import { HikooResponse, CountResponseDto, ImageUploadResponse } from '../../share/dto/generic.dto';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
@@ -35,7 +35,7 @@ export class AlertController {
 
     @Get('count')
     @ApiOperation({ summary: 'Get alert count' })
-    @ApiResponse({ status: 200, type: CountResponseDto, description: 'Return count of alert' })
+    @ApiResponse({ status: HttpStatus.OK, type: CountResponseDto, description: 'Return count of alert' })
     async allAlertCount(): Promise<CountResponseDto> {
         this._logger.debug(`@Get count`)
         return this.alertSvc.getCount();
@@ -44,7 +44,7 @@ export class AlertController {
     @Get(':id')
     @ApiParam({ name: 'id', type: 'number' })
     @ApiOperation({ summary: 'Get alert detail' })
-    @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return detail of alert' })
+    @ApiResponse({ status: HttpStatus.OK, type: AlertViewDto, isArray: true, description: 'Return detail of alert' })
     async getAlertById(
       @Param('id') id: number): Promise<AlertViewDto> {
         this._logger.debug(`@Get, id = [${id}]`)
@@ -52,8 +52,9 @@ export class AlertController {
     }
 
     @Post()
+    @HttpCode(200)
     @ApiOperation({ summary: 'Create new Alert' })
-    @ApiResponse({ status: 200, type: HikooResponse })
+    @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
     async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
         this._logger.debug(`@Post, info: ${alert.eventInfo}`);
         return await this.alertSvc.create(alert);

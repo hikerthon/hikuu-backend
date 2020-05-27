@@ -21,7 +21,9 @@ export class EventtypeService {
     }
 
     async getAll(): Promise<EventTypeDto[]> {
-        const ets = await this.repo.find();
+        const ets = await this.repo.find({
+            relations: ['defaultAlert']
+        });
         return ets.map( et => EventTypeDto.fromEntity(et) );
     }
 }

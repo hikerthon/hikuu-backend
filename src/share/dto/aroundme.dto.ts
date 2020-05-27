@@ -30,7 +30,7 @@ export class AroundMeDto {
     distanceMeter: number;
 
     @ApiProperty()
-    logtime: Date;
+    logtime: number;
 
 
     public static fromEntity(entity: any): AroundMeDto {
@@ -39,10 +39,10 @@ export class AroundMeDto {
         it.eventTypeName = entity.event_type_name;
         it.alertLevelName = entity.alert_level_name;
         it.eventInfo = entity.event_info;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
+        it.latpt = Number(entity.latpt);
+        it.lngpt = Number(entity.lngpt);
         it.distanceMeter = entity.distance_mtr;
-        it.logtime = entity.logtime;
+        it.logtime = new Date(entity.logtime).getTime();
 
         return it;
     }
