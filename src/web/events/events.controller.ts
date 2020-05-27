@@ -78,6 +78,7 @@ export class EventsController {
         @Param('id') id: number,
         @Body() data: ModifyEventDto): Promise<HikooResponse> {
         this._logger.debug(`@Put event`)
+        console.log(data)
         return this.eventSvc.modify([data])
     }
 

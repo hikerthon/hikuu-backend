@@ -5,13 +5,16 @@ import { HikeEntity } from '../../share/entity/hike.entity';
 import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
 import { CountResponseDto } from '../../share/dto/generic.dto'
 import { HikooResponse } from '../../share/dto/generic.dto';
+import { AccountEntity } from 'src/share/entity/account.entity';
 
 @Injectable()
 export class HikesService {
 
   constructor(
     @InjectRepository(HikeEntity)
-    private readonly repo: Repository<HikeEntity>
+    private readonly repo: Repository<HikeEntity>,
+    @InjectRepository(AccountEntity)
+    private readonly repoAccount: Repository<AccountEntity>
   ) { }
 
   async getAllHikes(startIndex: number, count: number): Promise<HikeViewDto[]> {
@@ -53,15 +56,28 @@ export class HikesService {
   }
 
 
-  async modifyHikes(data: HikeViewModifyDto): Promise<HikooResponse> {
+  async modifyHikes(data: HikeViewModifyDto[]): Promise<HikooResponse> {
+
     try {
-      await this.repo.update(
-        data.hikeId,
-        {
-          memo: data.memo
+      data.forEach(async(element) => {
+        if (element.memo) {
+          await this.repo.update(
+            element.hikeId,
+            {
+              memo: element.memo,
+            }
+          )
+          }
+        if (element.watchStatus) {
+          console.log(element.watchStatus)
+          await this.repoAccount.update(
+            element.hikerId,
+            {
+              watchStatus: element.watchStatus
+            }
+          )
         }
-      )
-  
+      });
       return {
         success: true,
         errorMessage: null

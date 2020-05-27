@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { HikeEntity, PermitReqStatEnum } from '../entity/hike.entity';
-import { AccountDto } from './account.dto';
 import { TrailDto } from './trail.dto';
-import { IsNumber, IsDate, IsString, IsEnum, MaxLength, Max, IsDateString } from 'class-validator';
-import { Example } from 'src/example/example.controller';
+import { IsNumber, IsString, IsEnum, MaxLength } from 'class-validator';
+import { AccountDto } from './account.dto';
+import { WatchStatusEnum } from '../entity/account.entity';
 
 export class HikeDto {
     @ApiProperty(
@@ -92,8 +92,8 @@ export class HikeDto {
 
 export class HikeViewDto extends HikeDto {
 
-    @ApiProperty()
-    hikerName: string;
+    @ApiProperty({type: AccountDto})
+    hikerInfo: AccountDto;
 
     @ApiProperty()
     permitName: string;
@@ -105,7 +105,6 @@ export class HikeViewDto extends HikeDto {
         const it = new HikeViewDto();
         it.id = entity.id
         it.hikerId = entity.hikerId;
-        it.hikerName = entity.hiker.lastName;
         it.hikeStart = new Date(entity.hikeStart).getTime();
         it.hikeEnd = new Date(entity.hikeEnd).getTime();
         it.permitId = entity.permit.id;
@@ -120,18 +119,33 @@ export class HikeViewDto extends HikeDto {
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;
         it.logtime = new Date(entity.logtime).getTime();
-        
+        const hikerInfo = AccountDto.fromEntity(entity.hiker)
         const trails = entity.trails.map(trail => TrailDto.fromEntity(trail))
         it.trails = trails;
-
+        it.hikerInfo = hikerInfo;
         return it;
     }
 }
 
 export class HikeViewModifyDto {
+
     @ApiProperty({type: Number, example: 1})
-    hikeId: number
+    hikeId: number;
+
+    @ApiProperty({type: Number, example: 1})
+    hikerId: number;
 
     @ApiProperty({type: String, example: 'This is memo example'})
-    memo: string
+    memo: string;
+
+    @ApiProperty()
+    @IsEnum(WatchStatusEnum)
+    watchStatus: string;
+
+    // @ApiProperty({ enum: WatchStatusEnum ,example: EventStatusEnum.RESOLVED})
+    // @IsEnum(WatchStatusEnum)
+    // stat: string;
+
+
+
 }

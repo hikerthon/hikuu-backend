@@ -53,6 +53,17 @@ export class HikesController {
     @Param('id') id: number,
     @Body() data: HikeViewModifyDto): Promise<HikooResponse> {
     this._logger.debug(`@Put hikes, id = ${id}, data = ${data}`)
+    return this.hikesSvc.modifyHikes([data]);
+  }
+
+  @Put()
+  @ApiOperation({ summary: 'modify memo context' })
+  @HttpCode(200)
+  @ApiBody({ type: HikeViewModifyDto, isArray: true })
+  @ApiResponse({ status: 200, type: HikooResponse})
+  async modifyHike(
+    @Body() data: HikeViewModifyDto[]): Promise<HikooResponse> {
+    this._logger.debug(`@Put, data = ${data}`)
     return this.hikesSvc.modifyHikes(data);
   }
 }

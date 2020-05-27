@@ -48,11 +48,11 @@ export class AlertDto {
     @IsString()
     eventInfo: string;
     
-    @ApiProperty({nullable: false, example: 1590551269000})
+    @ApiProperty({description: 'The time of the event happens',nullable: false, example: 1590551269000})
     @IsNumber()
     eventTime: number;
-    
-    @ApiProperty({nullable: false, example: 1590551269000})
+
+    @ApiProperty({description: 'The time the event is considered finish (not shown in map anymore)', nullable: false, example: 1590551269000})
     @IsNumber()
     eventEnd: number;
     
@@ -84,7 +84,7 @@ export class AlertDto {
     @ApiProperty()
     attachments: string[];
     
-    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
+    @ApiProperty({description: 'Broadcast time. auto generated on create', nullable: true, readOnly: true})
     logtime: number = new Date().getTime();
 
     public toEntity(): AlertEntity {

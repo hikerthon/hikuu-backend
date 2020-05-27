@@ -11,12 +11,12 @@ export class CheckinController {
     _logger.setContext(CheckinController.name);
   }
 
-  @Get(':hikerId')
+  @Get(':hikeId')
   @ApiOperation({ summary: 'Get checkin-record by hikerId' })
-  @ApiParam({ name: 'hikerId', type: 'number' })
+  @ApiParam({ name: 'hikeId', type: 'number' })
   @ApiResponse({ status: 200, type: CheckinDto, isArray: true, description: 'Return list of checkin-record' })
-  getById(@Param('hikerId') hikerId: number) {
-    this._logger.debug(`@Get hikes, id = ${hikerId}`)
-    return this.hikesSvc.getCheckinRecordById(hikerId);
+  getById(@Param('hikeId') hikeId: number) {
+    this._logger.debug(`@Get hikes, id = ${hikeId}`)
+    return this.hikesSvc.getCheckinRecordById(hikeId);
   }
 }
