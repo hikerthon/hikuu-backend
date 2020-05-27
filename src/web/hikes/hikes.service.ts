@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HikeEntity } from '../../share/entity/hike.entity';
-import { HikeViewDto } from '../../share/dto/hike.dto';
+import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
 import { CountResponseDto } from '../../share/dto/generic.dto'
+import { HikooResponse } from '../../share/dto/generic.dto';
 
 @Injectable()
 export class HikesService {
@@ -51,4 +52,25 @@ export class HikesService {
     return HikeViewDto.fromEntity(hikes)
   }
 
+
+  async modifyHikes(data: HikeViewModifyDto): Promise<HikooResponse> {
+    try {
+      await this.repo.update(
+        data.hikeId,
+        {
+          memo: data.memo
+        }
+      )
+  
+      return {
+        success: true,
+        errorMessage: null
+      }
+    } catch (e) {
+      return {
+        success: false,
+        errorMessage: e.errorMessage
+      }
+    } 
+  }
 }

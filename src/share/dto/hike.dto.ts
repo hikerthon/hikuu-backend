@@ -121,3 +121,11 @@ export class HikeViewDto extends HikeDto {
         return it;
     }
 }
+
+export class HikeViewModifyDto {
+    @ApiProperty()
+    hikeId: number
+
+    @ApiProperty()
+    memo: string
+}

@@ -85,7 +85,7 @@ export class AlertDto {
     attachments: string[];
     
     @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    logtime: number;
+    logtime: number = new Date().getTime();
 
     public toEntity(): AlertEntity {
         const it = new AlertEntity();
@@ -101,7 +101,7 @@ export class AlertDto {
         it.creatorId = this.creatorId;
         it.originSourceId = (this.originEventId ? this.originEventId : null);
         it.logtime = new Date(this.logtime);
-        
+
         return it;
     }
 
@@ -137,7 +137,6 @@ export class AlertViewDto extends AlertDto {
 
     public static fromEntity(entity: AlertEntity): AlertViewDto {
         const it = new AlertViewDto();
-        console.log(entity.attachments)
         const imagePaths = AlertAttachmentDto.fromEntity(entity.attachments)
         it.id = entity.id;
         it.eventTypeId = entity.eventTypeId;

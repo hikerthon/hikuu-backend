@@ -40,7 +40,6 @@ export class AlertService {
         const one = await this.repo.findOne({
             relations: ['attachments'],
          where: { id: id } });
-         console.log(one)
         return AlertDto.fromEntity(one);
     }
 
