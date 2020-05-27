@@ -67,7 +67,7 @@ export class AlertEntity {
     @CreateDateColumn()
     logtime: Date;
     
-    @OneToMany(type => AlertAttachmentEntity, attachment => attachment.alert)
+    @OneToMany(type => AlertAttachmentEntity, attachment => attachment.alert, {eager: true})
     attachments: AlertAttachmentEntity[];
 }
 

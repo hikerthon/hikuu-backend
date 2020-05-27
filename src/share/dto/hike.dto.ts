@@ -90,21 +90,24 @@ export class HikeDto {
 
 export class HikeViewDto extends HikeDto {
 
-    @ApiProperty({type: AccountDto})
-    hikerInfo: AccountDto;
+    @ApiProperty()
+    hikerName: string;
+
+    @ApiProperty()
+    permitName: string;
 
     @ApiProperty({type: [TrailDto]})
     trails: TrailDto[];
 
     public static fromEntity(entity: HikeEntity): HikeViewDto {
         const it = new HikeViewDto();
-        const trails = entity.trails.map(trail => TrailDto.fromEntity(trail))
-        const hikerInfo = AccountDto.fromEntity(entity.hiker)
-        it.hikerInfo = hikerInfo;
         it.id = entity.id
+        it.hikerId = entity.hikerId;
+        it.hikerName = entity.hiker.lastName;
         it.hikeStart = entity.hikeStart;
         it.hikeEnd = entity.hikeEnd;
         it.permitId = entity.permit.id;
+        it.permitName = entity.permit.name;
         it.guideName = entity.guideName;
         it.guideContact = entity.guideContact;
         it.guideContact2 = entity.guideContact2;
@@ -115,7 +118,10 @@ export class HikeViewDto extends HikeDto {
         it.hikeFinished = entity.hikeFinished;
         it.hikeCancelled = entity.hikeCancelled;
         it.logtime = entity.logtime;
+
+        const trails = entity.trails.map(trail => TrailDto.fromEntity(trail))
         it.trails = trails;
+
         return it;
     }
 }

@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { DataTypeRole } from 'src/share/models/permit.model';
-import { PermitDto } from 'src/share/dto/permit.dto';
 import { HikeViewDto } from 'src/share/dto/hike.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HikeEntity } from 'src/share/entity/hike.entity';
@@ -27,7 +25,7 @@ export class PermitService {
   async getByHikerId(hikerId: number, start: number, count: number): Promise<HikeViewDto[]> {
     const hikes = await this.repo.find({
       relations: ['hiker', 'permit', 'trails'],
-      where: { hikerId: hikerId },
+      where: { hiker: hikerId },
       order: { logtime: 'DESC' },
       skip: start,
       take: count,
@@ -36,12 +34,16 @@ export class PermitService {
     return hikes.map(hike => HikeViewDto.fromEntity(hike));
   }
 
-  async FindOneByIds(hikerId: number, permitId: number): Promise<HikeViewDto> {
+  async FindOneByIds(hikerId: number, hikeId: number): Promise<HikeViewDto> {
     const hike = await this.repo.findOne({
       relations: ['hiker', 'permit', 'trails'],
-      where: { hikerId: hikerId, permitId: permitId },
+      where: { hikerId: hikerId, id: hikeId },
       order: { logtime: 'DESC' },
     });
+    
+    if ( !hike ) {
+      return null;
+    }
 
     return HikeViewDto.fromEntity(hike);
   }

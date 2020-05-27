@@ -73,7 +73,7 @@ export class HikeEntity {
     @CreateDateColumn()
     logtime: Date;
     
-    @ManyToMany(type => TrailEntity)
+    @ManyToMany(type => TrailEntity, {eager: true})
     @JoinTable({
         name: 'hike_destination', 
         joinColumn: {name: 'hike_id'}, 

@@ -15,7 +15,7 @@ export class PermitController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  @ApiOperation({ summary: 'Find user permits' })
+  @ApiOperation({ summary: 'Find this user hiking plans' })
   @ApiQuery({ name: 'type', enum: DataTypeRole, required: false })
   @ApiQuery({ name: 'start', type: 'number', required: false })
   @ApiQuery({ name: 'count', type: 'number', required: false })
@@ -38,22 +38,22 @@ export class PermitController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':permitId')
-  @ApiOperation({ summary: 'Find permit by id' })
-  @ApiParam({ name: 'permitId', type: 'number' })
+  @Get(':hikeId')
+  @ApiOperation({ summary: 'Get hiking plan detail by id' })
+  @ApiParam({ name: 'hikeId', type: 'number' })
   @ApiQuery({ name: 'type', enum: DataTypeRole, required: true })
   @ApiResponse({ status: 200, type: HikeViewDto, isArray: false, description: 'successful operation' })
   async getPermit(
     @Request() req,
-    @Param('permitId') permitId: number,
+    @Param('hikeId') hikeId: number,
     @Param('type') dataType: DataTypeRole
   ): Promise<HikeViewDto> {
     const userId = req.user.userId;
 
-    this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, permitId: ${permitId}`);
+    this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, hikeId: ${hikeId}`);
 
-    return await this.srv.FindOneByIds(userId, permitId);
     // Todo: filter by dataType
+    return await this.srv.FindOneByIds(userId, hikeId);
   }
 
 }
