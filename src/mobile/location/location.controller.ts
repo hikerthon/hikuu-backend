@@ -1,8 +1,18 @@
-import { Controller, Request, Post, Logger, Body, HttpCode, HttpStatus, UseGuards, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  Logger,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  HttpException,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { HikooResponse } from '../../share/dto/generic.dto';
 import { LocationService } from './location.service';
-import { TrackerDto } from 'src/share/dto/tracker.dto';
+import { TrackerDto } from '../../share/dto/tracker.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
@@ -19,10 +29,14 @@ export class LocationController {
   @ApiOperation({ summary: 'Send hiker location to backend server' })
   @ApiResponse({ status: HttpStatus.OK, type: TrackerDto, isArray: false, description: 'successful operation' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: HikooResponse, description: 'Fail to send hiker location to backend server' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    type: HikooResponse,
+    description: 'Fail to send hiker location to backend server',
+  })
   async sendLocation(
     @Request() req,
-    @Body() location: TrackerDto
+    @Body() location: TrackerDto,
   ): Promise<HikooResponse> {
     location.hikerId = req.user.userId;
     this._logger.debug(`@Post location ${location}`);
@@ -30,7 +44,7 @@ export class LocationController {
     if (!result.success) {
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },
-        HttpStatus.FORBIDDEN
+        HttpStatus.FORBIDDEN,
       );
     }
     return result;

@@ -12,7 +12,7 @@ export class AroundMeService {
       .createQueryBuilder()
       .select('user.id')
       .from(AccountEntity, 'user')
-      .where("id=:id", { id: loc.userId })
+      .where('id=:id', { id: loc.userId })
       .getRawOne();
 
     if (!user) {

@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 import { IsBase64, IsDefined, IsEmail, MaxLength, MinLength } from 'class-validator';
 
 export class LoginDataDto {
@@ -18,10 +18,10 @@ export class JwtDataDto {
   @ApiProperty({ type: 'string', format: 'byte', readOnly: true })
   @IsDefined()
   @IsBase64()
-  access_token: string
+  access_token: string;
 
   @ApiProperty({ type: 'string', format: 'byte', readOnly: true })
   @IsDefined()
   @IsBase64()
-  refresh_token: string
+  refresh_token: string;
 }

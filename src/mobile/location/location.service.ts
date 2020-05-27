@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { TrackerDto } from 'src/share/dto/tracker.dto';
-import { TrackerEntity } from 'src/share/entity/tracker.entity';
 import { Repository, getManager } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HikooResponse } from 'src/share/dto/generic.dto';
+import { TrackerDto } from '../../share/dto/tracker.dto';
+import { TrackerEntity } from '../../share/entity/tracker.entity';
+import { HikooResponse } from '../../share/dto/generic.dto';
 
 @Injectable()
 export class LocationService {
 
   constructor(
     @InjectRepository(TrackerEntity, 'mobile')
-    private readonly repo: Repository<TrackerEntity>
-  ) { }
+    private readonly repo: Repository<TrackerEntity>,
+  ) {
+  }
 
   async sendLocation(track: TrackerDto): Promise<HikooResponse> {
     try {
@@ -32,7 +33,7 @@ export class LocationService {
           network=VALUES(network),
           elapsed_time=VALUES(elapsed_time),
           logtime=NOW();`, [
-          track.hikerId, track.hikeId, track.recordTime, track.latpt, track.lngpt, track.elevation, track.battery, track.network, track.elapsedTime
+          track.hikerId, track.hikeId, track.recordTime, track.latpt, track.lngpt, track.elevation, track.battery, track.network, track.elapsedTime,
         ]);
     } catch (e) {
       return new HikooResponse(false, e.message);

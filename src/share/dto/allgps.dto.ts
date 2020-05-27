@@ -1,45 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AllGpsEntity } from '../entity/allgps.entity'
 import { Max, IsNumber, Min } from 'class-validator';
+import { AllGpsEntity } from '../entity/allgps.entity';
 
 export class AllGPSDto {
 
-    @ApiProperty()
-    ptinfo: string;
+  @ApiProperty()
+  ptinfo: string;
 
-    @ApiProperty({nullable: false, minimum: -90, maximum: 90, example: 24.769752})
-    @IsNumber()
-    @Min(-90)
-    @Max(90)
-    latpt: number;
-    
-    @ApiProperty({nullable: false, minimum: -180, maximum: 180, example: 120.9993924})
-    @IsNumber()
-    @Min(-180)
-    @Max(180)
-    lngpt: number;
+  @ApiProperty({ nullable: false, minimum: -90, maximum: 90, example: 24.769752 })
+  @IsNumber()
+  @Min(-90)
+  @Max(90)
+  latpt: number;
 
-    @ApiProperty()
-    alertName: number;
+  @ApiProperty({ nullable: false, minimum: -180, maximum: 180, example: 120.9993924 })
+  @IsNumber()
+  @Min(-180)
+  @Max(180)
+  lngpt: number;
 
-    @ApiProperty()
-    eventName: number;
+  @ApiProperty()
+  alertName: number;
 
-    // @ApiProperty()
-    // radius: number;
+  @ApiProperty()
+  eventName: number;
 
-    @ApiProperty()
-    logtime: number
+  // @ApiProperty()
+  // radius: number;
 
-    public static fromEntity(entity: AllGpsEntity): AllGPSDto {
-        const it = new AllGPSDto();
-        it.ptinfo = entity.ptinfo;
-        it.latpt = Number(entity.latpt);
-        it.lngpt = Number(entity.lngpt);
-        it.alertName = entity.alevel;
-        it.eventName = entity.etype;
-        // it.radius = Number(entity.radius);
-        it.logtime = new Date(entity.logtime).getTime()
-        return it;
-    }
+  @ApiProperty()
+  logtime: number;
+
+  public static fromEntity(entity: AllGpsEntity): AllGPSDto {
+    const it = new AllGPSDto();
+    it.ptinfo = entity.ptinfo;
+    it.latpt = Number(entity.latpt);
+    it.lngpt = Number(entity.lngpt);
+    it.alertName = entity.alevel;
+    it.eventName = entity.etype;
+    // it.radius = Number(entity.radius);
+    it.logtime = new Date(entity.logtime).getTime();
+    return it;
+  }
 }

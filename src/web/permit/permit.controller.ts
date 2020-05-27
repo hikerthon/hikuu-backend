@@ -1,7 +1,7 @@
 import { Controller, Logger, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PermitService } from './permit.service';
-import { PermitDto } from 'src/share/dto/permit.dto';
+import { PermitDto } from '../../share/dto/permit.dto';
 
 @ApiTags('permit')
 @Controller('permit')

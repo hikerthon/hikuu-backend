@@ -10,4 +10,5 @@ import { EventtypeEntity } from '../../share/entity/eventtype.entity';
   providers: [EventtypeService],
 })
 
-export class EventtypeModule { }
+export class EventtypeModule {
+}

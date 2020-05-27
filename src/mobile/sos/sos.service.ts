@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
-import { EventEntity } from 'src/share/entity/event.entity';
-import { EventDto } from 'src/share/dto/event.dto';
-import { HikooResponse } from 'src/share/dto/generic.dto';
-import { HikeEntity } from 'src/share/entity/hike.entity';
+import { EventEntity } from '../../share/entity/event.entity';
+import { EventDto } from '../../share/dto/event.dto';
+import { HikooResponse } from '../../share/dto/generic.dto';
+import { HikeEntity } from '../../share/entity/hike.entity';
 
 @Injectable()
 export class SosService {
   constructor(
     @InjectRepository(EventEntity, 'mobile')
-    private readonly repo: Repository<EventEntity>
-  ) { }
+    private readonly repo: Repository<EventEntity>,
+  ) {
+  }
 
   async create(sos: EventDto): Promise<HikooResponse> {
     try {
@@ -19,7 +20,7 @@ export class SosService {
         .createQueryBuilder()
         .select('hike.id')
         .from(HikeEntity, 'hike')
-        .where("hiker_id=:id", { id: sos.reporterId })
+        .where('hiker_id=:id', { id: sos.reporterId })
         .andWhere('hike_started=1')
         .andWhere('hike_finished=0')
         .orderBy('hike_start', 'DESC')
@@ -35,6 +36,6 @@ export class SosService {
       return new HikooResponse(false, e.message);
     }
 
-    return { success: true }
+    return { success: true };
   }
 }

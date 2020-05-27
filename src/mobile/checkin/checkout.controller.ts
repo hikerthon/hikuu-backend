@@ -1,4 +1,14 @@
-import { Controller, Request, Param, Post, Logger, UseGuards, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Param,
+  Post,
+  Logger,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOperation, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { HikooResponse, HikooBadReqResponse } from '../../share/dto/generic.dto';
 import { CheckInService } from './checkin.service';
@@ -22,7 +32,7 @@ export class CheckOutController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid hikeId supplied' })
   async sendCheckOut(
     @Request() req,
-    @Param('hikeId') hikeId: number
+    @Param('hikeId') hikeId: number,
   ): Promise<HikooResponse> {
     const userId = req.user.userId;
     this._logger.debug(`@Post CheckOut, hiker=[${userId}], hike=[${hikeId}]`);
@@ -32,7 +42,7 @@ export class CheckOutController {
     if (!result.success) {
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
     return result;

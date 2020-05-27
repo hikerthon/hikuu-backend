@@ -8,6 +8,7 @@ import { AccountEntity } from '../../share/entity/account.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([HikeEntity, AccountEntity])],
   providers: [Logger, HikesService],
-  controllers: [HikesController]
+  controllers: [HikesController],
 })
-export class HikesModule {}
+export class HikesModule {
+}

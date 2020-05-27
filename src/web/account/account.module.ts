@@ -7,6 +7,7 @@ import { AccountEntity } from 'src/share/entity/account.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([AccountEntity])],
   providers: [Logger, AccountService],
-  controllers: [AccountController]
+  controllers: [AccountController],
 })
-export class AccountModule {}
+export class AccountModule {
+}

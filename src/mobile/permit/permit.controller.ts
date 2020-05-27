@@ -2,9 +2,9 @@ import { Controller, Request, Logger, Param, Get, Query, UseGuards, HttpStatus, 
 import { ApiTags, ApiOperation, ApiParam, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { PermitService } from './permit.service';
 import { DataTypeRole } from '../../share/models/permit.model';
-import { HikeViewDto } from 'src/share/dto/hike.dto';
+import { HikeViewDto } from '../../share/dto/hike.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { HikooResponse, HikooBadReqResponse } from 'src/share/dto/generic.dto';
+import { HikooResponse, HikooBadReqResponse } from '../../share/dto/generic.dto';
 
 @ApiBearerAuth()
 @ApiTags('permit')
@@ -22,7 +22,11 @@ export class PermitController {
   @ApiQuery({ name: 'count', type: 'number', required: false })
   @ApiResponse({ status: HttpStatus.OK, type: HikeViewDto, isArray: true, description: 'successful operation' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid start / count supplied' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: HikooBadReqResponse,
+    description: 'Invalid start / count supplied',
+  })
   async getPermitsByUser(
     @Request() req,
     @Query('type') dataType: DataTypeRole,
@@ -31,16 +35,16 @@ export class PermitController {
   ): Promise<HikeViewDto[]> {
     const userId = req.user.userId;
     this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, start: ${start}, count: ${count}`);
-    start = (start !== null ? start : 0)
-    count = (count !== null ? count : 10)
+    start = (start !== null ? start : 0);
+    count = (count !== null ? count : 10);
     // count need more than 0
     try {
       // Todo: filter by dataType
-      return await this.srv.getByHikerId(userId, start, count)
+      return await this.srv.getByHikerId(userId, start, count);
     } catch (e) {
       throw new HttpException(
         { success: false, errorMessage: e.errorMessage },
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
   }
@@ -56,7 +60,7 @@ export class PermitController {
   async getPermit(
     @Request() req,
     @Param('hikeId') hikeId: number,
-    @Param('type') dataType: DataTypeRole
+    @Param('type') dataType: DataTypeRole,
   ): Promise<HikeViewDto> {
     const userId = req.user.userId;
 
@@ -68,7 +72,7 @@ export class PermitController {
     } catch (e) {
       throw new HttpException(
         { success: false, errorMessage: e.errorMessage },
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
   }

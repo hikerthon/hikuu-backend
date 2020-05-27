@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: "stations" })
+@Entity({ name: 'stations' })
 export class StationEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({name: 'station_name'})
-    name: string;
+  @Column({ name: 'station_name' })
+  name: string;
 }

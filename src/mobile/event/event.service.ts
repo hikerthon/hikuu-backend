@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EventEntity, EventAttachmentEntity } from 'src/share/entity/event.entity';
 import { Repository, getConnection } from 'typeorm';
-import { EventViewDto, EventDto } from 'src/share/dto/event.dto';
-import { HikooResponse } from 'src/share/dto/generic.dto';
+import { EventEntity, EventAttachmentEntity } from '../../share/entity/event.entity';
+import { EventViewDto, EventDto } from '../../share/dto/event.dto';
+import { HikooResponse } from '../../share/dto/generic.dto';
 
 @Injectable()
 export class EventService {
 
   constructor(
     @InjectRepository(EventEntity, 'mobile')
-    private readonly repo: Repository<EventEntity>
-  ) { }
+    private readonly repo: Repository<EventEntity>,
+  ) {
+  }
 
   async getByHikeId(hikeId: number, start: number, count: number): Promise<EventViewDto[]> {
     const events = await this.repo.find({
@@ -19,7 +20,7 @@ export class EventService {
       where: { hikeId: hikeId },
       order: { logtime: 'DESC' },
       skip: start,
-      take: count
+      take: count,
 
     });
 
@@ -34,18 +35,18 @@ export class EventService {
 
       // save attachments
       event.attachments.forEach(
-        function (attachment) {
+        function(attachment) {
           const atc = new EventAttachmentEntity();
           atc.event = newEvent;
           atc.imagePath = attachment;
           getConnection('mobile').getRepository(EventAttachmentEntity).save(atc);
-        }
-      )
+        },
+      );
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }
 
-    return { success: true }
+    return { success: true };
   }
 
 }

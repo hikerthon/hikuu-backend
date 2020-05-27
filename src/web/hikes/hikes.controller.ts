@@ -2,8 +2,8 @@ import { Controller, Logger, Get, Query, Param, Put, Body, HttpCode } from '@nes
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 
 import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
-import { HikesService } from './hikes.service'
-import { CountResponseDto, HikooResponse } from '../../share/dto/generic.dto'
+import { HikesService } from './hikes.service';
+import { CountResponseDto, HikooResponse } from '../../share/dto/generic.dto';
 
 @ApiTags('hikes')
 @Controller('hikes')
@@ -20,16 +20,16 @@ export class HikesController {
   async getAllHikes(
     @Query('startIndex') startIndex: number,
     @Query('count') count: number): Promise<HikeViewDto[]> {
-      this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`)
-      return this.hikesSvc.getAllHikes(startIndex, count)
+    this._logger.debug(`@Get, startIndex = ${startIndex}, count = ${count}`);
+    return this.hikesSvc.getAllHikes(startIndex, count);
   }
 
   @Get('/count')
   @ApiOperation({ summary: 'Get hikes count' })
   @ApiResponse({ status: 200, type: CountResponseDto, isArray: true, description: 'Return count of hikes' })
-  async getAllHikesCount (): Promise<CountResponseDto> {
-      this._logger.debug(`@Get, getAllHikesCount`)
-      return this.hikesSvc.getAllHikesCount()
+  async getAllHikesCount(): Promise<CountResponseDto> {
+    this._logger.debug(`@Get, getAllHikesCount`);
+    return this.hikesSvc.getAllHikesCount();
   }
 
 
@@ -38,7 +38,7 @@ export class HikesController {
   @ApiParam({ name: 'id', type: 'number' })
   @ApiResponse({ status: 200, type: HikeViewDto, isArray: true, description: 'Return list of hikes' })
   async getById(@Param('id') id: number): Promise<HikeViewDto> {
-    this._logger.debug(`@Get hikes, id = ${id}`)
+    this._logger.debug(`@Get hikes, id = ${id}`);
     return this.hikesSvc.getHikes(id);
   }
 
@@ -48,11 +48,11 @@ export class HikesController {
   @ApiParam({ name: 'id', type: 'number', example: 1 })
   @HttpCode(200)
   @ApiBody({ type: HikeViewModifyDto })
-  @ApiResponse({ status: 200, type: HikooResponse})
+  @ApiResponse({ status: 200, type: HikooResponse })
   async modifyById(
     @Param('id') id: number,
     @Body() data: HikeViewModifyDto): Promise<HikooResponse> {
-    this._logger.debug(`@Put hikes, id = ${id}, data = ${data}`)
+    this._logger.debug(`@Put hikes, id = ${id}, data = ${data}`);
     return this.hikesSvc.modifyHikes([data]);
   }
 
@@ -60,10 +60,10 @@ export class HikesController {
   @ApiOperation({ summary: 'modify memo context' })
   @HttpCode(200)
   @ApiBody({ type: HikeViewModifyDto, isArray: true })
-  @ApiResponse({ status: 200, type: HikooResponse})
+  @ApiResponse({ status: 200, type: HikooResponse })
   async modifyHike(
     @Body() data: HikeViewModifyDto[]): Promise<HikooResponse> {
-    this._logger.debug(`@Put, data = ${data}`)
+    this._logger.debug(`@Put, data = ${data}`);
     return this.hikesSvc.modifyHikes(data);
   }
 }

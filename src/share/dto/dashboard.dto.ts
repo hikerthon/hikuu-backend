@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CheckinTimeByTodayDto } from './checkin.dto';
 import { EventCountDto } from './event.dto';
-import { AllGPSDto } from '../dto/allgps.dto';
+import { AllGPSDto } from './allgps.dto';
 import { IsNumber } from 'class-validator';
 
 export class DashboardDto {
@@ -74,7 +74,6 @@ export class DashboardDto {
     it.cautionCount = alertCount.cautionCount;
     it.dangerCount = alertCount.dangerCount;
     it.emergencyCount = alertCount.emergencyCount;
-    console.log(allgps)
     it.allGps = allgps
     return it;
   }

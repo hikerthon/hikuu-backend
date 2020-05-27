@@ -7,6 +7,7 @@ import { AlertlevelEntity } from 'src/share/entity/alertlevel.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([AlertlevelEntity])],
   providers: [Logger, AlertlevelService],
-  controllers: [AlertlevelController]
+  controllers: [AlertlevelController],
 })
-export class AlertlevelModule {}
+export class AlertlevelModule {
+}

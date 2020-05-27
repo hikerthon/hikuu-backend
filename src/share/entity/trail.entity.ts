@@ -1,18 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { PermitEntity } from './permit.entity';
 
-@Entity({ name: "trails" })
+@Entity({ name: 'trails' })
 export class TrailEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({name: 'trail_name'})
-    name: string;
+  @Column({ name: 'trail_name' })
+  name: string;
 
-    @Column({name: 'permit', nullable:true})
-    permitId: number;
+  @Column({ name: 'permit', nullable: true })
+  permitId: number;
 
-    @ManyToOne(type => PermitEntity, permit => permit.trails)
-    @JoinColumn({name:'permit'})
-    permit: PermitEntity;
+  @ManyToOne(type => PermitEntity, permit => permit.trails)
+  @JoinColumn({ name: 'permit' })
+  permit: PermitEntity;
 }

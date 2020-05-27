@@ -1,6 +1,6 @@
-import { ApiBody } from "@nestjs/swagger";
-import { ManagedUpload } from "aws-sdk/clients/s3";
-import { S3 } from "nestjs-s3";
+import { ApiBody } from '@nestjs/swagger';
+import { ManagedUpload } from 'aws-sdk/clients/s3';
+import { S3 } from 'nestjs-s3';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 
@@ -28,7 +28,7 @@ export function s3UploadAsync(s3: S3, file, bucket = 'hikoo', acl = 'public-read
       ACL: acl,
       Body: file.buffer,
       Bucket: bucket,
-      Key: file.originalname
+      Key: file.originalname,
     }, (err, data) => {
       if (err) {
         reject(err);

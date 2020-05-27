@@ -6,83 +6,83 @@ import { PermitEntity } from './permit.entity';
 import { AccountEntity } from './account.entity';
 import { StationEntity } from './station.entity';
 
-@Entity({ name: "alerts" })
+@Entity({ name: 'alerts' })
 export class AlertEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({name: 'event_type_id', nullable:true})
-    eventTypeId: number;
+  @Column({ name: 'event_type_id', nullable: true })
+  eventTypeId: number;
 
-    @ManyToOne(type => EventtypeEntity, entType => entType.id, {nullable: false})
-    @JoinColumn({name: 'event_type_id'})
-    eventType: EventtypeEntity;
+  @ManyToOne(type => EventtypeEntity, entType => entType.id, { nullable: false })
+  @JoinColumn({ name: 'event_type_id' })
+  eventType: EventtypeEntity;
 
-    @Column({name: 'alert_level_id', nullable:true})
-    alertLevelId: number;
+  @Column({ name: 'alert_level_id', nullable: true })
+  alertLevelId: number;
 
-    @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, {nullable: false})
-    @JoinColumn({name: 'alert_level_id'})
-    alertLevel: AlertlevelEntity;
+  @ManyToOne(type => AlertlevelEntity, alertLvl => alertLvl.id, { nullable: false })
+  @JoinColumn({ name: 'alert_level_id' })
+  alertLevel: AlertlevelEntity;
 
-    @Column({name: 'event_info'})
-    eventInfo: string;
+  @Column({ name: 'event_info' })
+  eventInfo: string;
 
-    @Column({name: 'event_time'})
-    eventTime: Date;
+  @Column({ name: 'event_time' })
+  eventTime: Date;
 
-    @Column({name: 'event_end'})
-    eventEnd: Date;
+  @Column({ name: 'event_end' })
+  eventEnd: Date;
 
-    @Column({name: 'permit_id', nullable:true})
-    permitId: number;
+  @Column({ name: 'permit_id', nullable: true })
+  permitId: number;
 
-    @ManyToOne(type => PermitEntity, permit => permit.id, {nullable: false})
-    @JoinColumn({name: 'permit_id'})
-    permit: PermitEntity;
+  @ManyToOne(type => PermitEntity, permit => permit.id, { nullable: false })
+  @JoinColumn({ name: 'permit_id' })
+  permit: PermitEntity;
 
-    @Column()
-    latpt: number;
+  @Column()
+  latpt: number;
 
-    @Column()
-    lngpt: number;
+  @Column()
+  lngpt: number;
 
-    @Column()
-    radius: number;
+  @Column()
+  radius: number;
 
-    @Column({name: 'creator', nullable:true})
-    creatorId: number;
+  @Column({ name: 'creator', nullable: true })
+  creatorId: number;
 
-    @ManyToOne(type => StationEntity, station => station.id, {nullable: true})
-    @JoinColumn({name: 'creator'})
-    creator: StationEntity;
+  @ManyToOne(type => StationEntity, station => station.id, { nullable: true })
+  @JoinColumn({ name: 'creator' })
+  creator: StationEntity;
 
-    @Column({name: 'origin_source', nullable:true})
-    originSourceId: number;
+  @Column({ name: 'origin_source', nullable: true })
+  originSourceId: number;
 
-    @ManyToOne(type => AccountEntity, entType => entType.id, {nullable: true})
-    @JoinColumn({name: 'origin_source'})
-    originSource: AccountEntity;
+  @ManyToOne(type => AccountEntity, entType => entType.id, { nullable: true })
+  @JoinColumn({ name: 'origin_source' })
+  originSource: AccountEntity;
 
-    @CreateDateColumn()
-    logtime: Date;
-    
-    @OneToMany(type => AlertAttachmentEntity, attachment => attachment.alert, {eager: true})
-    attachments: AlertAttachmentEntity[];
+  @CreateDateColumn()
+  logtime: Date;
+
+  @OneToMany(type => AlertAttachmentEntity, attachment => attachment.alert, { eager: true })
+  attachments: AlertAttachmentEntity[];
 }
 
-@Entity({name: 'alert_attachment'})
+@Entity({ name: 'alert_attachment' })
 export class AlertAttachmentEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-    
-    @Column({name: 'alert_id'})
-    alertId: number;
-    
-    @ManyToOne(type => AlertEntity, alert => alert.id, {nullable: false})
-    @JoinColumn({name: 'alert_id'})
-    alert: AlertEntity;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({name: 'image_path'})
-    imagePath: string;
+  @Column({ name: 'alert_id' })
+  alertId: number;
+
+  @ManyToOne(type => AlertEntity, alert => alert.id, { nullable: false })
+  @JoinColumn({ name: 'alert_id' })
+  alert: AlertEntity;
+
+  @Column({ name: 'image_path' })
+  imagePath: string;
 }

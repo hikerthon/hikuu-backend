@@ -16,7 +16,7 @@ export class CheckinController {
   @ApiParam({ name: 'hikeId', type: 'number' })
   @ApiResponse({ status: 200, type: CheckinDto, isArray: true, description: 'Return list of checkin-record' })
   getById(@Param('hikeId') hikeId: number) {
-    this._logger.debug(`@Get hikes, id = ${hikeId}`)
+    this._logger.debug(`@Get hikes, id = ${hikeId}`);
     return this.hikesSvc.getCheckinRecordById(hikeId);
   }
 }

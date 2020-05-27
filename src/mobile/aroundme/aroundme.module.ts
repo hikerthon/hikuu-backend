@@ -8,4 +8,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [Logger, AroundMeService],
   controllers: [AroundMeController],
 })
-export class AroundMeModule { }
+export class AroundMeModule {
+}

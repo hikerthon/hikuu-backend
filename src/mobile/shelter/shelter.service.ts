@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ShelterAroundMeDto } from '../../share/dto/shelter.dto';
-import { UserLocationDto } from '../../share/dto/location.dto'
-import { AccountEntity } from '../../share/entity/account.entity';
 import { getConnection, getManager } from 'typeorm';
+import { ShelterAroundMeDto } from '../../share/dto/shelter.dto';
+import { UserLocationDto } from '../../share/dto/location.dto';
+import { AccountEntity } from '../../share/entity/account.entity';
 
 @Injectable()
 export class ShelterService {
@@ -12,7 +12,7 @@ export class ShelterService {
       .createQueryBuilder()
       .select('user.id')
       .from(AccountEntity, 'user')
-      .where("id=:id", { id: loc.userId })
+      .where('id=:id', { id: loc.userId })
       .getRawOne();
 
     if (!user) {

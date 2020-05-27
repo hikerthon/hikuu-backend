@@ -9,13 +9,14 @@ export class AlertService {
 
   constructor(
     @InjectRepository(AlertEntity, 'mobile')
-    private readonly repo: Repository<AlertEntity>
-  ) { }
+    private readonly repo: Repository<AlertEntity>,
+  ) {
+  }
 
   async getAllView(): Promise<AlertViewDto[]> {
     const alerts = await this.repo.find({
       relations: ['eventType', 'alertLevel', 'permit', 'creator', 'originSource'],
-      order: { id: 'ASC' }
+      order: { id: 'ASC' },
     });
 
     return alerts.map(alert => AlertViewDto.fromEntity(alert));

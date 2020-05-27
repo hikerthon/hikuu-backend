@@ -1,13 +1,23 @@
-import { Controller, Request, Post, Body, Logger, HttpStatus, HttpCode, HttpException, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  Body,
+  Logger,
+  HttpStatus,
+  HttpCode,
+  HttpException,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { HikooResponse } from '../../share/dto/generic.dto';
 import { SosService } from './sos.service';
 import { EventDto } from '../../share/dto/event.dto';
-import { LocationDto } from '../../share/dto/location.dto'
+import { LocationDto } from '../../share/dto/location.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiBearerAuth()
-@ApiTags("sos")
+@ApiTags('sos')
 @Controller('sos')
 export class SosController {
   constructor(private srv: SosService, private _logger: Logger) {
@@ -20,10 +30,14 @@ export class SosController {
   @ApiOperation({ summary: 'Call for SOS (event) to be pushed to stations' })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse, description: 'successful operation' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
-  @ApiResponse({ status: HttpStatus.FORBIDDEN, type: HikooResponse, description: 'Fail to call SOS (event) to be pushed to stations' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    type: HikooResponse,
+    description: 'Fail to call SOS (event) to be pushed to stations',
+  })
   async callSOS(
     @Request() req,
-    @Body() location: LocationDto
+    @Body() location: LocationDto,
   ): Promise<HikooResponse> {
     this._logger.debug(`@Post callSOS [${location}]`);
     const sos = new EventDto;
@@ -41,7 +55,7 @@ export class SosController {
     if (!result.success) {
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },
-        HttpStatus.FORBIDDEN
+        HttpStatus.FORBIDDEN,
       );
     }
     return result;

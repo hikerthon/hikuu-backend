@@ -1,27 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { TrailEntity } from 'src/share/entity/trail.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TrailDto } from 'src/share/dto/trail.dto';
+import { TrailEntity } from '../../share/entity/trail.entity';
+import { TrailDto } from '../../share/dto/trail.dto';
 
 @Injectable()
 export class TrailService {
-    constructor(
-      @InjectRepository(TrailEntity)
-      private readonly repo: Repository<TrailEntity>,
-    ) {}
+  constructor(
+    @InjectRepository(TrailEntity)
+    private readonly repo: Repository<TrailEntity>,
+  ) {
+  }
 
-    getFakeData(){
-        return []
-    }
+  async getAll(): Promise<TrailDto[]> {
+    const permits = await this.repo.find();
+    return permits.map(permit => TrailDto.fromEntity(permit));
+  }
 
-    async getAll(): Promise<TrailDto[]> {
-        const permits = await this.repo.find();
-        return permits.map( permit => TrailDto.fromEntity(permit) );
-    }
-
-    async getById(id: number): Promise<TrailDto> {
-        const one = await this.repo.findOne({where: {id: id}});
-        return TrailDto.fromEntity(one);
-    }
+  async getById(id: number): Promise<TrailDto> {
+    const one = await this.repo.findOne({ where: { id: id } });
+    return TrailDto.fromEntity(one);
+  }
 }

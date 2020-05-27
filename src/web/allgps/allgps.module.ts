@@ -7,7 +7,7 @@ import { AllGpsEntity } from 'src/share/entity/allgps.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([AllGpsEntity])],
   providers: [Logger, AllgpsService],
-  controllers: [AllgpsController]
+  controllers: [AllgpsController],
 })
 export class AllgpsModule {
 

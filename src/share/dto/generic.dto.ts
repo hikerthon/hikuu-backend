@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsString, IsNumber } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsString, IsNumber } from 'class-validator';
 
 export class HikooResponse {
   @ApiProperty()
@@ -18,15 +18,15 @@ export class HikooResponse {
 
 export class HikooBadReqResponse {
   @ApiProperty({ readOnly: true, default: 400, example: 400 })
-  statusCode: number
+  statusCode: number;
 
   @ApiProperty({ isArray: true })
   @IsString()
-  message: string
+  message: string;
 
   @ApiProperty({ example: 'Bad Request' })
   @IsString()
-  error: string
+  error: string;
 }
 
 export class ImageUploadResponse extends HikooResponse {
