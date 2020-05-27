@@ -7,19 +7,34 @@ import { AccountDto } from '../../share/dto/account.dto';
 
 @Injectable()
 export class AccountService {
-  constructor(
-    @InjectRepository(AccountEntity)
-    private readonly repo: Repository<AccountEntity>,
-  ) {
-  }
+    constructor(
+        @InjectRepository(AccountEntity)
+        private readonly repo: Repository<AccountEntity>,
+    ) { }
 
-  async getAll(): Promise<AccountDto[]> {
-    const accounts = await this.repo.find();
-    return accounts.map(account => AccountDto.fromEntity(account));
-  }
+    getFakeData() {
+        return []
+    }
 
-  async getById(id: number): Promise<AccountDto> {
-    const one = await this.repo.findOne({ where: { id: id } });
-    return AccountDto.fromEntity(one);
-  }
+    async getAll(): Promise<AccountDto[]> {
+        const accounts = await this.repo.find();
+        return accounts.map(account => AccountDto.fromEntity(account));
+    }
+
+    async getById(id: number): Promise<AccountDto | null> {
+        const one = await this.repo.findOne({ where: { id: id } });
+        if (!one) {
+            return null;
+        }
+
+        return AccountDto.fromEntity(one);
+    }
+
+    async getByEmail(email: string): Promise<AccountDto | null> {
+        const one = await this.repo.findOne({ where: { email } });
+        if (!one) {
+            return null;
+        }
+        return AccountDto.fromEntity(one);
+    }
 }
