@@ -24,6 +24,7 @@ import { AccountModule } from './web/account/account.module';
 import { HikesModule } from './web/hikes/hikes.module';
 import { CheckinModule } from './web/checkin/checkin.module';
 import { DashboardModule } from './web/dashboard/dashboard.module';
+import { StatisticModule } from './web/statistic/statistic.module';
 
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -67,6 +68,7 @@ const ormConfig = JSON.parse(readFileSync(join(__dirname, '../ormconfig.json')).
     HikesModule,
     CheckinModule,
     DashboardModule,
+    StatisticModule,
   ],
   controllers: [
     AppController,
