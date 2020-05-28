@@ -9,7 +9,7 @@ export class PermitService {
 
   constructor(
     @InjectRepository(HikeEntity, 'mobile')
-    private readonly repo: Repository<HikeEntity>,
+    private readonly repo: Repository<HikeEntity>
   ) {
   }
 
@@ -25,8 +25,8 @@ export class PermitService {
   async getByHikerId(hikerId: number, start: number, count: number): Promise<HikeViewDto[]> {
     const hikes = await this.repo.find({
       relations: ['hiker', 'permit', 'trails'],
-      where: { hiker: hikerId },
-      order: { logtime: 'DESC' },
+      where: { hikerId: hikerId },
+      order: { hikeStart: 'ASC' },
       skip: start,
       take: count,
     });

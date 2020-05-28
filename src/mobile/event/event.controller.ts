@@ -55,7 +55,7 @@ export class EventController {
 
     try {
       const userId = req.user.userId;
-      const startNum = parseInt(start, 10) || 1;
+      const startNum = parseInt(start, 10) || 0;
       const countNum = parseInt(count, 10) || 10;
       this._logger.debug(`@Get, userId = [${userId}], start = [${startNum}], count = [${countNum}]`)
       return await this.srv.getByHikerId(userId, startNum, countNum);

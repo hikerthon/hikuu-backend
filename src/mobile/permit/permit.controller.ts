@@ -30,17 +30,17 @@ export class PermitController {
   async getPermitsByUser(
     @Request() req,
     @Query('type') dataType: DataTypeRole,
-    @Query('start') start: number,
-    @Query('count') count: number,
+    @Query('start') start: string,
+    @Query('count') count: string,
   ): Promise<HikeViewDto[]> {
     const userId = req.user.userId;
-    this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, start: ${start}, count: ${count}`);
-    start = (start !== null ? start : 0);
-    count = (count !== null ? count : 10);
-    // count need more than 0
+    const startNum = parseInt(start, 10) || 0
+    const countNum = parseInt(count, 10) || 10
+    this._logger.debug(`Get Permit userId: ${userId}, dataType: ${dataType}, start: ${startNum}, count: ${countNum}`);
+
     try {
       // Todo: filter by dataType
-      return await this.srv.getByHikerId(userId, start, count);
+      return await this.srv.getByHikerId(userId, startNum, countNum);
     } catch (e) {
       throw new HttpException(
         { success: false, errorMessage: e.errorMessage },
