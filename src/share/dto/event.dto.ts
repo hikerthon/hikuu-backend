@@ -55,8 +55,8 @@ export class EventDto {
   @Max(100)
   radius: number;
 
-  @ApiProperty({ nullable: false, example: 1 })
-  @IsNumber()
+  @ApiProperty({ nullable: false, example: 1, required: false })
+  // @IsNumber()
   reporterId: number;
 
   @ApiProperty({
@@ -64,8 +64,9 @@ export class EventDto {
     default: EventStatusEnum.PENDING,
     description: 'auto generated on create',
     nullable: true,
+    required: false
   })
-  @IsEnum(EventStatusEnum)
+  // @IsEnum(EventStatusEnum)
   stat: string;
 
   @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
