@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsDefined, IsNumber, IsString } from 'class-validator';
 import { CheckinEntity } from '../entity/checkin.entity';
 
 export class CheckinDto {
@@ -55,4 +55,16 @@ export class CheckinTimeByTodayDto {
     it.count = Number(entity['count(*)']);
     return it;
   }
+}
+
+export class CheckinCreateDto {
+  @ApiProperty({type: Number, example: 1, nullable: false})
+  @IsNumber()
+  @IsDefined()
+  hikerId: number;
+
+  @ApiProperty({type: Number, example: 1, nullable: false})
+  @IsNumber()
+  @IsDefined()
+  hikeId: number;
 }
