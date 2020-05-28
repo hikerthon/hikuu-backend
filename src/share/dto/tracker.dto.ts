@@ -11,7 +11,7 @@ export class TrackerDto {
   @IsNumber()
   hikeId: number;
 
-  @ApiProperty({ nullable: false, description: 'creation time in mobile phone before pushing to backend' })
+  @ApiProperty({ nullable: false, example: new Date().getTime(), description: 'creation time in mobile phone before pushing to backend' })
   @IsNumber()
   recordTime: number;
 
@@ -50,8 +50,8 @@ export class TrackerDto {
 
   public toEntity(): TrackerEntity {
     const it = new TrackerEntity();
-    it.hiker.id = this.hikerId;
-    it.hike.id = this.hikeId;
+    it.hikerId = this.hikerId;
+    it.hikeId = this.hikeId;
     it.recordTime = new Date(this.recordTime);
     it.latpt = this.latpt;
     it.lngpt = this.lngpt;
@@ -65,8 +65,8 @@ export class TrackerDto {
 
   public static fromEntity(entity: TrackerEntity): TrackerDto {
     const it = new TrackerDto();
-    it.hikerId = entity.hiker.id;
-    it.hikeId = entity.hike.id;
+    it.hikerId = entity.hikerId
+    it.hikeId = entity.hikeId
     it.recordTime = new Date(entity.recordTime).getTime();
     it.latpt = entity.latpt;
     it.lngpt = entity.lngpt;

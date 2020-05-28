@@ -10,7 +10,7 @@ export class LocationService {
 
   constructor(
     @InjectRepository(TrackerEntity, 'mobile')
-    private readonly repo: Repository<TrackerEntity>,
+    private readonly repo: Repository<TrackerEntity>
   ) {
   }
 
@@ -18,6 +18,8 @@ export class LocationService {
     try {
       // Cannot do plain insert due to hikerId is PK. Must use on duplicate key update
       // But typeORM doesnt support this feature with query builder
+      const trackDto = Object.assign(new TrackerDto(), track);
+      const savedTrack = trackDto.toEntity()
 
       await getManager()
         .query(`
@@ -33,7 +35,7 @@ export class LocationService {
           network=VALUES(network),
           elapsed_time=VALUES(elapsed_time),
           logtime=NOW();`, [
-          track.hikerId, track.hikeId, track.recordTime, track.latpt, track.lngpt, track.elevation, track.battery, track.network, track.elapsedTime,
+          savedTrack.hikerId, savedTrack.hikeId, savedTrack.recordTime, savedTrack.latpt, savedTrack.lngpt, savedTrack.elevation, savedTrack.battery, savedTrack.network, savedTrack.elapsedTime,
         ]);
     } catch (e) {
       return new HikooResponse(false, e.message);
