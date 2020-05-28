@@ -10,4 +10,5 @@ import { AlertEntity } from '../../share/entity/alert.entity';
   providers: [AlertService, Logger],
 })
 
-export class AlertModule { }
+export class AlertModule {
+}

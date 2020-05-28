@@ -1,28 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString, MaxLength } from 'class-validator';
 import { PermitEntity } from '../entity/permit.entity';
-import { IsNumber, IsString } from 'class-validator';
 
 export class PermitDto {
-    @ApiProperty({readOnly: true})
-    @IsNumber()
-    id: number;
-    
-    @ApiProperty()
-    @IsString()
-    name: string;
+  @ApiProperty({ readOnly: true })
+  id: number;
 
-    public toEntity(): PermitEntity {
-        const it = new PermitEntity();
-        it.id = this.id;
-        it.name = this.name;
-        return it;
-    }
+  @ApiProperty({ maxLength: 255 })
+  @IsString()
+  @MaxLength(255)
+  name: string;
 
-    public static fromEntity(entity: PermitEntity): PermitDto {
-        const it = new PermitDto();
-        it.id = entity.id;
-        it.name = entity.name;
+  public toEntity(): PermitEntity {
+    const it = new PermitEntity();
+    it.id = this.id;
+    it.name = this.name;
+    return it;
+  }
 
-        return it;
-    }
+  public static fromEntity(entity: PermitEntity): PermitDto {
+    const it = new PermitDto();
+    it.id = entity.id;
+    it.name = entity.name;
+
+    return it;
+  }
 }

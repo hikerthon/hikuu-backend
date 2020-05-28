@@ -12,8 +12,9 @@ export class UserService {
   constructor(
     @InjectRepository(AccountEntity, 'mobile')
     private readonly repo: Repository<AccountEntity>,
-    private _logger: Logger
-  ) { }
+    private _logger: Logger,
+  ) {
+  }
 
   async getAll(): Promise<AccountDto[]> {
     const accounts = await this.repo.find();
@@ -23,7 +24,7 @@ export class UserService {
 
   async getById(id: number): Promise<AccountDto> {
     const account = await this.repo.findOne(
-      { where: { id: id } }
+      { where: { id: id } },
     );
 
     return AccountDto.fromEntity(account);
@@ -33,8 +34,8 @@ export class UserService {
     const account = await this.repo.findOne(
       {
         where: { email: email },
-        order: { id: 'ASC' }
-      }
+        order: { id: 'ASC' },
+      },
     );
 
     for (const queryKey of Object.keys(account)) {
@@ -46,22 +47,22 @@ export class UserService {
 
   async create(account: AccountDto): Promise<HikooResponse> {
     try {
-      await this.repo.save(account)
+      await this.repo.save(account);
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }
 
-    return { success: true }
+    return { success: true };
   }
 
   async update(account: AccountDto): Promise<HikooResponse> {
     try {
-      await this.repo.save(account)
+      await this.repo.save(account);
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }
 
-    return { success: true }
+    return { success: true };
   }
 }
 

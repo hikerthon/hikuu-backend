@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { getManager, getConnection } from 'typeorm';
-import { Location } from '../../share/models/location.model';
-import { AroundMeDto } from 'src/share/dto/aroundme.dto';
-import { AccountEntity } from 'src/share/entity/account.entity';
+import { AroundMeDto } from '../../share/dto/aroundme.dto';
+import { UserLocationDto } from '../../share/dto/location.dto';
+import { AccountEntity } from '../../share/entity/account.entity';
 
 @Injectable()
 export class AroundMeService {
 
-  async getAroundMe(loc: Location): Promise<AroundMeDto[]> {
+  async getAroundMe(loc: UserLocationDto): Promise<AroundMeDto[]> {
     const user = await getConnection()
       .createQueryBuilder()
       .select('user.id')
       .from(AccountEntity, 'user')
-      .where("id=:id", { id: loc.userId })
+      .where('id=:id', { id: loc.userId })
       .getRawOne();
 
     if (!user) {
@@ -20,7 +20,7 @@ export class AroundMeService {
     }
 
     return await getManager()
-      .query('CALL GetEventAroundMe(?, ?)', [loc.lat, loc.lng])
-      .then( rows => rows[0].map( row => AroundMeDto.fromEntity(row)));
+      .query('CALL GetEventAroundMe(?, ?)', [loc.latpt, loc.lngpt])
+      .then(rows => rows[0].map(row => AroundMeDto.fromEntity(row)));
   }
 }

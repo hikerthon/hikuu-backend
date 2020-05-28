@@ -1,41 +1,54 @@
-import { Controller, Request, Get, Post, UseGuards, Logger, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiProperty } from '@nestjs/swagger';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Logger,
+  Body,
+  HttpException,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LoginDataDto, JwtDataDto } from '../../share/dto/logindata.dto';
+import { HikooBadReqResponse } from '../../share/dto/generic.dto';
 
-
-export class LoginData {
-  @ApiProperty()
-  email: string;
-
-  @ApiProperty()
-  password: string;
-}
-
-export class JwtData {
-  @ApiProperty()
-  accessToken: string
-}
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private srv: AuthService,
-    private _logger: Logger
-  ) { _logger.setContext(AuthController.name); }
-
+    private _logger: Logger,
+  ) {
+    _logger.setContext(AuthController.name);
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
+  @ApiResponse({ status: HttpStatus.OK, type: JwtDataDto, description: 'successful operation' })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: HikooBadReqResponse,
+    description: 'Invalid username/ password supplied',
+  })
   async login(
     @Request() req,
-    @Body() loginData: LoginData
-  ): Promise<JwtData> {
-    // return req.user;
-    this._logger.debug(`Post auth login email ${req.user.email}`);
-    return this.srv.login(req.user);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() loginData: LoginDataDto,
+  ): Promise<JwtDataDto> {
+    try {
+      this._logger.debug(`Post auth login email ${req.user.email}`);
+      return await this.srv.login(req.user);
+    } catch (e) {
+      throw new HttpException(
+        { success: false, errorMessage: e.message },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

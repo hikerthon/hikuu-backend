@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CheckinTimeByTodayDto } from './checkin.dto';
 import { EventCountDto } from './event.dto';
+import { AllGPSDto } from './allgps.dto';
 import { IsNumber } from 'class-validator';
 
 export class DashboardDto {
@@ -39,6 +40,17 @@ export class DashboardDto {
   @IsNumber()
   cautionCount: number;
 
+  @ApiProperty()
+  @IsNumber()
+  dangerCount: number;
+
+  @ApiProperty()
+  @IsNumber()
+  emergencyCount: number;
+
+  @ApiProperty({type: AllGPSDto, isArray: true})
+  allGps: AllGPSDto[];
+
 
   public static fromEntity(hikeCount: number,
                            checkinCount: number,
@@ -46,7 +58,8 @@ export class DashboardDto {
                            sosCount: number,
                            offTrailHikerCount: number,
                            eventCount: EventCountDto,
-                           alertCount: AlertCountDto): DashboardDto {
+                           alertCount: AlertCountDto,
+                           allgps: AllGPSDto[]): DashboardDto {
     const it = new DashboardDto();
 
 
@@ -58,7 +71,10 @@ export class DashboardDto {
     it.unResolvedEventCount = eventCount.resolved;
     it.pendingCount = eventCount.pendingCount;
     it.infoCount = alertCount.infoCount;
-    it.cautionCount = alertCount.cautionCount
+    it.cautionCount = alertCount.cautionCount;
+    it.dangerCount = alertCount.dangerCount;
+    it.emergencyCount = alertCount.emergencyCount;
+    it.allGps = allgps
     return it;
   }
 

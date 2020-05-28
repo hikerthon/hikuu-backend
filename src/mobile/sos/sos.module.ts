@@ -9,4 +9,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [Logger, SosService],
   controllers: [SosController],
 })
-export class SosModule { }
+export class SosModule {
+}

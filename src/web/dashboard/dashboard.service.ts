@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { HikeEntity } from '../../share/entity/hike.entity';
 import { EventEntity } from '../../share/entity/event.entity';
 import { CheckinEntity } from '../../share/entity/checkin.entity';
@@ -11,49 +12,54 @@ import { CheckinTimeByTodayDto } from '../../share/dto/checkin.dto';
 import { EventCountDto } from '../../share/dto/event.dto';
 import { EventsGateway } from '../events/events.gateway';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { EventListeners } from 'aws-sdk';
-import Core = EventListeners.Core;
+import { AllGpsEntity } from '../../share/entity/allgps.entity';
+import { AllGPSDto } from '../../share/dto/allgps.dto';
 
 
 @Injectable()
 export class DashboardService {
 
   constructor(
-    @InjectRepository(HikeEntity)  private readonly repoHike: Repository<HikeEntity>,
-    @InjectRepository(EventEntity)  private readonly repoEvent: Repository<EventEntity>,
-    @InjectRepository(CheckinEntity)  private readonly repoCheckin: Repository<CheckinEntity>,
-    @InjectRepository(AlertEntity)  private readonly repoAlert: Repository<AlertEntity>,
+    @InjectRepository(HikeEntity) private readonly repoHike: Repository<HikeEntity>,
+    @InjectRepository(EventEntity) private readonly repoEvent: Repository<EventEntity>,
+    @InjectRepository(CheckinEntity) private readonly repoCheckin: Repository<CheckinEntity>,
+    @InjectRepository(AlertEntity) private readonly repoAlert: Repository<AlertEntity>,
+    @InjectRepository(AllGpsEntity) private readonly repoAllgps: Repository<AllGpsEntity>,
     private _eventGateway: EventsGateway,
-  ) {}
+  ) {
+  }
 
   @Cron(CronExpression.EVERY_5_SECONDS)
   async handleCron() {
-    const value = await this.getAll()
+    const value = await this.getAll();
     this._eventGateway.newDashboard(value);
   }
 
   async getAll(): Promise<DashboardDto> {
-    const hikeCount = await this.repoHike.count()
-    const checkinCount = await this.repoCheckin.count()
-    const eventCount = await this.repoEvent.createQueryBuilder("events")
-      .select("stat, count(*)")
+    const hikeCount = await this.repoHike.count();
+    const checkinCount = await this.repoCheckin.count();
+    const eventCount = await this.repoEvent.createQueryBuilder('events')
+      .select('stat, count(*)')
       .groupBy('stat')
-      .getRawMany()
-    const checkinTime = await this.repoCheckin.createQueryBuilder("checkin")
+      .getRawMany();
+    const checkinTime = await this.repoCheckin.createQueryBuilder('checkin')
       .select('count(*), hour(checkin_time)')
       .groupBy('hour(checkin_time)')
-      .getRawMany()
-    const alertCount = await this.repoAlert.createQueryBuilder("alerts")
+      .getRawMany();
+    const alertCount = await this.repoAlert.createQueryBuilder('alerts')
       .select('alert_level_id, count(*)')
       .groupBy('alert_level_id')
-      .getRawMany()
+      .getRawMany();
+    const gpsData = await this.repoAllgps.find();
+
     return DashboardDto.fromEntity(
       hikeCount,
       checkinCount,
-      checkinTime.map(record => CheckinTimeByTodayDto.fromEntity(record)) ,
+      checkinTime.map(record => CheckinTimeByTodayDto.fromEntity(record)),
       0,
       0,
       EventCountDto.fromEntity(eventCount),
-      AlertCountDto.fromEntity(alertCount));
+      AlertCountDto.fromEntity(alertCount),
+      gpsData.map(gps => AllGPSDto.fromEntity(gps)));
   }
 }

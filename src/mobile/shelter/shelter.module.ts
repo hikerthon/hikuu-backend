@@ -4,7 +4,8 @@ import { ShelterService } from './shelter.service';
 
 @Module({
   controllers: [ShelterController],
-  providers: [Logger, ShelterService]
+  providers: [Logger, ShelterService],
 })
 
-export class ShelterModule { }
+export class ShelterModule {
+}

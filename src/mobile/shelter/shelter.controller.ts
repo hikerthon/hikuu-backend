@@ -1,8 +1,12 @@
-import { Controller, Logger, Get, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiParam, ApiResponse, ApiQuery } from '@nestjs/swagger';
-import { ShelterService } from './shelter.service'
-import { ShelterDto } from 'src/share/dto/shelter.dto';
+import { Controller, Request, Logger, Get, Query, HttpStatus, UseGuards, HttpException } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+import { ShelterService } from './shelter.service';
+import { ShelterAroundMeDto } from '../../share/dto/shelter.dto';
+import { UserLocationDto } from '../../share/dto/location.dto';
+import { HikooResponse } from '../../share/dto/generic.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('shelter')
 @Controller('shelter')
 export class ShelterController {
@@ -10,12 +14,36 @@ export class ShelterController {
     _logger.setContext(ShelterController.name);
   }
 
-  @Get('')
-  @ApiOperation({ summary: 'Get nearby shelters by user id' })
-  @ApiQuery({ name: 'userId', type: 'number' })
-  @ApiResponse({ status: 200, type: ShelterDto, isArray: true, description: 'successful operation' })
-  getNearbyShelters(@Query('userId') userId: number): ShelterDto[] {
-    this._logger.debug(`Get nearby shelters by user id [${userId}]`);
-    return this.srv.getNearbyShelters(userId);
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  @ApiOperation({ summary: 'Get 5 nearby shelters from current location' })
+  @ApiQuery({ name: 'latpt', type: 'number', description: 'latitude value', required: true, example: 23.466305 })
+  @ApiQuery({ name: 'lngpt', type: 'number', description: 'longitude value', required: true, example: 120.949836 })
+  @ApiResponse({ status: 200, type: ShelterAroundMeDto, isArray: true, description: 'successful operation' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    type: HikooResponse,
+    description: 'Fail to get 5 nearby shelters from current location',
+  })
+  async getNearbyShelters(
+    @Request() req,
+    @Query('latpt') latpt: number,
+    @Query('lngpt') lngpt: number,
+  ): Promise<ShelterAroundMeDto[]> {
+    const userId = req.user.userId;
+    this._logger.debug(`@Get Shelter around id = [${userId}] at [${latpt}, ${lngpt}]`);
+    const location = new UserLocationDto();
+    location.userId = userId;
+    location.latpt = latpt;
+    location.lngpt = lngpt;
+    try {
+      return this.srv.getNearbyShelters(location);
+    } catch (e) {
+      throw new HttpException(
+        { success: false, errorMessage: e.errorMessage },
+        HttpStatus.FORBIDDEN,
+      );
+    }
   }
 }

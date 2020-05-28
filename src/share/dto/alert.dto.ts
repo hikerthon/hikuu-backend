@@ -1,134 +1,160 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AlertEntity } from '../entity/alert.entity';
-import { IsNumber, Max, MIN, Min, IsDate } from 'class-validator';
+import { IsNumber, Max, Min, MaxLength, IsString } from 'class-validator';
+import { AlertEntity, AlertAttachmentEntity } from '../entity/alert.entity';
+
+export class AlertAttachmentDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty()
+  alertId: number;
+
+  @ApiProperty({ isArray: true })
+  imagePath: string[];
+
+  public static fromEntity(entity: AlertAttachmentEntity[]): AlertAttachmentDto {
+    const it = new AlertAttachmentDto();
+    it.imagePath = [];
+    if (entity) {
+      entity.forEach(element => {
+        it.imagePath.push(element.imagePath);
+      });
+    }
+    return it;
+  }
+}
 
 export class AlertDto {
-    @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
-    @IsNumber()
-    id: number;
+  @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
+  id: number;
 
-    @ApiProperty({ nullable: false, minimum: 1, maximum: 4 })
-    @IsNumber()
-    @Min(1)
-    @Max(4)
-    eventTypeId: number;
+  @ApiProperty({ nullable: false, minimum: 1, maximum: 4, example: 1 })
+  @IsNumber()
+  @Min(1)
+  @Max(4)
+  eventTypeId: number;
 
-    @ApiProperty({ nullable: false, minimum: 1, maximum: 4 })
-    @IsNumber()
-    @Min(1)
-    @Max(4)
-    alertLevelId: number;
+  @ApiProperty({ nullable: false, minimum: 1, maximum: 4, example: 1 })
+  @IsNumber()
+  @Min(1)
+  @Max(4)
+  alertLevelId: number;
 
-    @ApiProperty({ nullable: false })
-    eventInfo: string;
+  @ApiProperty({ maxLength: 255, nullable: false, example: 'This is eventInfo' })
+  @MaxLength(255)
+  @IsString()
+  eventInfo: string;
 
-    @ApiProperty({ nullable: false })
-    @IsDate()
-    eventTime: Date;
+  @ApiProperty({ description: 'The time of the event happens', nullable: false, example: 1590551269000 })
+  @IsNumber()
+  eventTime: number;
 
-    @ApiProperty({ nullable: false })
-    @IsDate()
-    eventEnd: Date;
+  @ApiProperty({
+    description: 'The time the event is considered finish (not shown in map anymore)',
+    nullable: false,
+    example: 1590551269000,
+  })
+  @IsNumber()
+  eventEnd: number;
 
-    @ApiProperty({ nullable: false })
-    permitId: number;
+  @ApiProperty({ nullable: false, example: 1 })
+  permitId: number;
 
-    @ApiProperty({ nullable: false, minimum: -90, maximum: 90 })
-    @IsNumber()
-    @Min(-90)
-    @Max(90)
-    latpt: number;
+  @ApiProperty({ nullable: false, minimum: -90, maximum: 90, example: 24.769752 })
+  @IsNumber()
+  @Min(-90)
+  @Max(90)
+  latpt: number;
 
-    @ApiProperty({ nullable: false, minimum: -180, maximum: 180 })
-    @IsNumber()
-    @Min(-180)
-    @Max(180)
-    lngpt: number;
+  @ApiProperty({ nullable: false, minimum: -180, maximum: 180, example: 120.9993924 })
+  @IsNumber()
+  @Min(-180)
+  @Max(180)
+  lngpt: number;
 
-    @ApiProperty({ nullable: false })
-    radius: number;
+  @ApiProperty({ minimum: 0, maximum: 100, nullable: true, example: 5, required: false })
+  radius: number;
 
-    @ApiProperty({ nullable: false })
-    creatorId: number;
+  @ApiProperty({ description: 'station id', nullable: false, example: 1 })
+  @IsNumber()
+  creatorId: number;
 
-    @ApiProperty({ description: 'id of the event to be upgraded into alert', nullable: true })
-    originEventId: number;
+  @ApiProperty({ description: 'id of the event to be upgraded into alert', nullable: true })
+  originEventId: number;
 
-    @ApiProperty({description: 'auto generated on create', nullable: true, readOnly: true})
-    @IsDate()
-    logtime: Date;
+  @ApiProperty()
+  attachments: string[];
 
-    public toEntity(): AlertEntity {
-        const it = new AlertEntity();
-        it.id = this.id;
-        it.eventType.id = this.eventTypeId;
-        it.alertLevel.id = this.alertLevelId;
-        it.eventInfo = this.eventInfo;
-        it.eventTime = this.eventTime;
-        it.eventEnd = this.eventEnd;
-        it.permit.id = this.permitId;
-        it.latpt = this.latpt;
-        it.lngpt = this.lngpt;
-        it.radius = this.radius;
-        it.creator.id = this.creatorId;
-        it.originSource.id = this.originEventId;
-        it.logtime = this.logtime;
+  @ApiProperty({ description: 'Broadcast time. auto generated on create', nullable: true, readOnly: true })
+  logtime: number = new Date().getTime();
 
-        return it;
-    }
+  public toEntity(): AlertEntity {
+    const it = new AlertEntity();
+    it.eventTypeId = this.eventTypeId;
+    it.alertLevelId = this.alertLevelId;
+    it.eventInfo = this.eventInfo;
+    it.eventTime = new Date(this.eventTime);
+    it.eventEnd = new Date(this.eventEnd);
+    it.permitId = this.permitId;
+    it.latpt = this.latpt;
+    it.lngpt = this.lngpt;
+    it.radius = this.radius;
+    it.creatorId = this.creatorId;
+    it.originSourceId = (this.originEventId ? this.originEventId : null);
+    it.logtime = new Date(this.logtime);
 
-    public static fromEntity(entity: AlertEntity): AlertDto {
-        const it = new AlertDto();
-        it.id = entity.id;
-        it.eventTypeId = entity.eventTypeId;
-        it.alertLevelId = entity.alertLevelId;
-        it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
-        it.eventEnd = entity.eventEnd;
-        it.permitId = entity.permitId;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
-        it.radius = entity.radius;
-        it.creatorId = entity.creatorId;
-        it.originEventId = entity.originSourceId;
-        it.logtime = entity.logtime;
+    return it;
+  }
 
-        return it;
-    }
+  public static fromEntity(entity: AlertEntity): AlertDto {
+    const it = new AlertDto();
+    it.id = entity.id;
+    it.eventTypeId = entity.eventTypeId;
+    it.alertLevelId = entity.alertLevelId;
+    it.eventInfo = entity.eventInfo;
+    it.eventTime = new Date(entity.eventTime).getTime();
+    it.eventEnd = new Date(entity.eventEnd).getTime();
+    it.permitId = entity.permitId;
+    it.latpt = Number(entity.latpt);
+    it.lngpt = Number(entity.lngpt);
+    it.radius = Number(entity.radius);
+    it.creatorId = entity.creatorId;
+    it.originEventId = entity.originSourceId;
+    it.logtime = new Date(entity.logtime).getTime();
+
+    return it;
+  }
 }
 
 export class AlertViewDto extends AlertDto {
-    @ApiProperty()
-    eventTypeName: string;
+  @ApiProperty()
+  eventTypeName: string;
 
-    @ApiProperty()
-    alertLevelName: string;
+  @ApiProperty()
+  permitName: string;
 
-    @ApiProperty()
-    permitName: string;
+  @ApiProperty()
+  creatorName: string;
 
-    @ApiProperty()
-    creatorName: string;
-
-    public static fromEntity(entity: AlertEntity): AlertViewDto {
-        const it = new AlertViewDto();
-        it.id = entity.id;
-        it.eventTypeId = entity.eventTypeId;
-        it.eventTypeName = entity.eventType.name;
-        it.alertLevelId = entity.alertLevelId;
-        it.alertLevelName = entity.alertLevel.name;
-        it.eventInfo = entity.eventInfo;
-        it.eventTime = entity.eventTime;
-        it.eventEnd = entity.eventEnd;
-        it.permitId = entity.permit.id;
-        it.latpt = entity.latpt;
-        it.lngpt = entity.lngpt;
-        it.radius = entity.radius;
-        it.creatorId = entity.creatorId;
-        it.creatorName = entity.creator.name;
-        it.originEventId = entity.originSourceId;
-        it.logtime = entity.logtime;
-
-        return it;
-    }
+  public static fromEntity(entity: AlertEntity): AlertViewDto {
+    const it = new AlertViewDto();
+    const imagePaths = AlertAttachmentDto.fromEntity(entity.attachments);
+    it.id = entity.id;
+    it.eventTypeId = entity.eventTypeId;
+    it.eventTypeName = entity.eventType.name;
+    it.alertLevelId = entity.alertLevelId;
+    it.eventInfo = entity.eventInfo;
+    it.eventTime = new Date(entity.eventTime).getTime();
+    it.eventEnd = new Date(entity.eventEnd).getTime();
+    it.permitId = entity.permit.id;
+    it.latpt = Number(entity.latpt);
+    it.lngpt = Number(entity.lngpt);
+    it.radius = Number(entity.radius);
+    it.creatorId = entity.creatorId;
+    it.creatorName = entity.creator.name;
+    it.originEventId = entity.originSourceId;
+    it.logtime = new Date(entity.logtime).getTime();
+    it.attachments = imagePaths.imagePath;
+    return it;
+  }
 }

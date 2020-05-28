@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS account (
     satellite_number VARCHAR(255),
     emergency_contact VARCHAR(255),
     emergency_number VARCHAR(255),
+    emergency_mobile_number VARCHAR(255),
+    watch_status ENUM('NORMAL', 'WATCHLIST', 'BLACKLIST') NOT NULL DEFAULT 'NORMAL',
     fcm_token VARCHAR(255)
 );
 
@@ -44,12 +46,12 @@ CREATE TABLE IF NOT EXISTS shelters (
 );
 
 INSERT INTO shelters VALUES
-(1, 'Paiyun Lodge', 100, 23.4539585,120.9542283),
-(2, 'Yuanfeng Cabin', 15, 23.4539585,120.9542283),
-(3, 'Lele Cabin', 25, 23.5459956,120.9359691),
-(4, 'Heishuitang Cabin', 8, 23.995492,120.7968085),
-(5, 'Chenggong Cabin', 34, 24.1066942,121.2813432),
-(6, 'Chenggong Cabin 2', 10, 24.11616, 121.31881),
+(1, 'Paiyun Lodge', 100, 23.4653464,120.9524677),
+(2, 'Yuanfeng Cabin', 15, 23.4567747,120.9526708),
+(3, 'Lele Cabin', 25, 23.5341217,120.9271226),
+(4, 'Heishuitang Cabin', 8, 24.1205784,121.3097414),
+(5, 'Chenggong Cabin', 34, 24.1160204,121.3164277),
+(6, 'Chenggong Cabin 2', 10, 24.11616,121.31881),
 (7, 'Qilai Cabin', 8, 24.1086741,121.3247684),
 (8, 'Yunleng Cabin', 55, 24.39118,121.3505313),
 (9, 'Nanhu Cabin', 40, 24.3531246,121.4308206),
@@ -121,6 +123,7 @@ INSERT INTO event_type VALUES
 (3, 'Blocked Route', 'Anything that blocking the trail route', 2),
 (4, 'SOS', 'SOS', 4);
 
+-- this table hold data of hiking plan with permit request. user will apply before he go to mountain
 CREATE TABLE IF NOT EXISTS hikes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED,
@@ -136,7 +139,7 @@ CREATE TABLE IF NOT EXISTS hikes (
     hike_started BOOLEAN DEFAULT FALSE,
     hike_finished BOOLEAN DEFAULT FALSE,
     hike_cancelled BOOLEAN DEFAULT FALSE,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id)
 );
@@ -158,24 +161,24 @@ CREATE TABLE IF NOT EXISTS hike_destination (
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
-INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2);
+INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2),(5, 1),(5, 2),(6, 1),(6, 2),(7, 1),(7, 2),(8, 1),(8, 2);
 
 CREATE TABLE IF NOT EXISTS checkin (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED,
-    hike_id INT UNSIGNED,
-    checkin_time DATETIME,
+    hike_id INT UNSIGNED UNIQUE,
+    checkin_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (hike_id, hiker_id), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
 INSERT INTO checkin VALUES
-(1, 1, 1, '2020-05-11 05:00'),
-(2, 5, 1, '2020-05-11 05:00'),
-(3, 1, 2, '2020-05-25 06:00'),
-(4, 3, 7, '2020-05-25 06:00'),
-(5, 4, 8, '2020-05-25 06:00'),
-(6, 6, 6, '2020-05-25 06:00');
+(1, 1, '2020-05-11 05:00'),
+(5, 5, '2020-05-11 05:00'),
+(1, 2, '2020-05-25 06:00'),
+(3, 7, '2020-05-25 06:00'),
+(4, 8, '2020-05-25 06:00'),
+(6, 6, '2020-05-25 06:00');
 
 -- track history hold history data of each tracker entry
 -- used for statistic data along with hikes table
@@ -189,7 +192,7 @@ CREATE TABLE IF NOT EXISTS track_history (
     battery TINYINT,
     network SMALLINT,
     elapsed_time TIME,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (hike_id, hiker_id, record_time),
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -208,7 +211,7 @@ CREATE TABLE IF NOT EXISTS tracker (
     battery TINYINT,
     network SMALLINT,
     elapsed_time TIME,
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP, -- time this record is inserted to db
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- time this record is inserted to db
     PRIMARY KEY (hiker_id),
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -275,7 +278,7 @@ CREATE TABLE IF NOT EXISTS events (
     radius DECIMAL(5, 2), -- radius in km to broadcast from lat,lng
     reporter INT UNSIGNED,
     stat ENUM('PENDING', 'PROCESSING', 'RESOLVED', 'BAD') NOT NULL DEFAULT 'PENDING',
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id),
@@ -308,7 +311,7 @@ CREATE TABLE IF NOT EXISTS alerts (
     radius DECIMAL(5, 2), -- if value = -1, to be broadcasted to everyone who have the same permit_id
     creator INT UNSIGNED,
     origin_source INT UNSIGNED DEFAULT NULL, -- event_id if alert came from event
-    logtime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_type_id) REFERENCES event_type(id),
     FOREIGN KEY (alert_level_id) REFERENCES alert_level(id),
     FOREIGN KEY (permit_id) REFERENCES permits(id),
@@ -328,23 +331,3 @@ CREATE TABLE IF NOT EXISTS alert_attachment (
     image_path VARCHAR(255),
     FOREIGN KEY (alert_id) REFERENCES alerts(id)
 );
-
-DROP VIEW IF EXISTS AllGpsMaps;
-CREATE VIEW AllGpsMaps AS
-    SELECT 'hiker' ptinfo, 0 etype, 0 alevel, latpt, lngpt, 0 radius, record_time FROM tracker a INNER JOIN hikes b ON a.hike_id=b.id 
-    WHERE b.hike_finished=0
-    -- AND logtime >= DATE_SUB(NOW(), INTERVAL 3 HOUR)
-    UNION ALL
-    SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
-    -- WHERE event_end >= NOW()
-    UNION ALL 
-    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events;
-    -- WHERE stat IN ('PENDING', 'PROCESSING');
-
-DROP VIEW IF EXISTS BroadcastGpsMaps;
-CREATE VIEW BroadcastGpsMaps AS
-    SELECT 'alert' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM alerts 
-    -- WHERE event_end >= NOW()
-    UNION ALL 
-    SELECT 'event' ptinfo, event_type_id etype, alert_level_id alevel, latpt, lngpt, radius, event_time logtime FROM events;
-    -- WHERE stat IN ('PENDING', 'PROCESSING');

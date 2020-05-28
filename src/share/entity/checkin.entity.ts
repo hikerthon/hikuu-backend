@@ -1,26 +1,23 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, CreateDateColumn, PrimaryColumn } from 'typeorm';
 import { HikeEntity } from './hike.entity';
 import { AccountEntity } from './account.entity';
 
-@Entity({ name: "checkin" })
+@Entity({ name: 'checkin' })
 export class CheckinEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryColumn({ name: 'hiker_id' })
+  hikerId: number;
 
-    @Column({name: 'hiker_id'})
-    hikerId: number;
+  @ManyToOne(type => AccountEntity, { nullable: false })
+  @JoinColumn({ name: 'hiker_id' })
+  hiker: AccountEntity;
 
-    @ManyToOne(type => AccountEntity, {nullable: false})
-    @JoinColumn({name: 'hiker_id'})
-    hiker: AccountEntity;
+  @PrimaryColumn({ name: 'hike_id' })
+  hikeId: number;
 
-    @Column({name: 'hike_id'})
-    hikeId: number;
+  @ManyToOne(type => HikeEntity, { nullable: false })
+  @JoinColumn({ name: 'hike_id' })
+  hike: HikeEntity;
 
-    @ManyToOne(type => HikeEntity, {nullable: false})
-    @JoinColumn({name: 'hike_id'})
-    hike: HikeEntity;
-
-    @CreateDateColumn({name: 'checkin_time'})
-    checkinTime: Date;
+  @CreateDateColumn({ name: 'checkin_time', nullable: true })
+  checkinTime: Date;
 }

@@ -1,7 +1,7 @@
 import { Controller, Logger, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationService } from './station.service';
-import { StationDto } from 'src/share/dto/station.dto';
+import { StationDto } from '../../share/dto/station.dto';
 
 
 @ApiTags('station')

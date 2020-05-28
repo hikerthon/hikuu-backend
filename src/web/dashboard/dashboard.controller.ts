@@ -1,8 +1,8 @@
 import { Controller, Get, Logger } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import { DashboardService } from './dashboard.service';
 import { DashboardDto } from '../../share/dto/dashboard.dto';
-
 
 @Controller('dashboard')
 @ApiTags('dashboard')
