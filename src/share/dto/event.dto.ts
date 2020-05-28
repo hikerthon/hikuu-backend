@@ -87,7 +87,6 @@ export class EventDto {
     it.radius = this.radius;
     it.reporterId = this.reporterId;
     it.stat = this.stat;
-    it.logtime = new Date(this.logtime);
     return it;
   }
 

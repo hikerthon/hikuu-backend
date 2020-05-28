@@ -46,7 +46,6 @@ export class TrackerDto {
   elapsedTime: number;
 
   @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
-  @IsNumber()
   logtime: number;
 
   public toEntity(): TrackerEntity {
