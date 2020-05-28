@@ -32,7 +32,6 @@ export class HikesController {
     return this.hikesSvc.getAllHikesCount();
   }
 
-
   @Get(':id')
   @ApiOperation({ summary: 'Get hikes detail' })
   @ApiParam({ name: 'id', type: 'number' })
@@ -42,6 +41,14 @@ export class HikesController {
     return this.hikesSvc.getHikes(id);
   }
 
+  @Get('/byHikerId/:id')
+  @ApiOperation({ summary: 'Get hikes detail' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiResponse({ status: 200, type: HikeViewDto, isArray: true, description: 'Return list of hikes' })
+  async getByHikerId(@Param('id') id: number): Promise<HikeViewDto> {
+    this._logger.debug(`@Get getHikeByHikerId, id = ${id}`);
+    return this.hikesSvc.getHikeByHikerId(id);
+  }
 
   @Put(':id')
   @ApiOperation({ summary: 'modify memo context' })

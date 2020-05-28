@@ -56,6 +56,16 @@ export class HikesService {
     return HikeViewDto.fromEntity(hikes);
   }
 
+  async getHikeByHikerId(hikerId: number): Promise<HikeViewDto> {
+    const hikes = await this.repo.findOne({
+      relations: ['hiker', 'permit', 'trails'],
+      order: { logtime: 'DESC' },
+      where: { hikerId },
+    });
+
+    return HikeViewDto.fromEntity(hikes);
+  }
+
 
   async modifyHikes(data: HikeViewModifyDto[]): Promise<HikooResponse> {
 
