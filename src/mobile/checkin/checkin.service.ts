@@ -20,18 +20,20 @@ export class CheckInService {
       // make sure hike id exist, have the same hiker id, and not yet started
       const thisHike = await getConnection('mobile')
         .createQueryBuilder()
-        .select('id')
+        .select('id, hike_started, hike_finished')
         .from(HikeEntity, 'hike')
-        .where('hike_started=0')
-        .andWhere('hike_finished=0')
-        .andWhere('hike_end > NOW()')
+        .where('hike_end > NOW()')
         .andWhere('permit_accepted=:stat', { stat: PermitReqStatEnum.ACCEPTED })
         .andWhere('hiker_id=:id', { id: hikerId })
         .orderBy('hike_start', 'DESC')
         .getRawOne();
 
-      if (thisHike.id != hikeId) {
+      if ( !thisHike || thisHike.id != hikeId ) {
         return new HikooResponse(false, 'This user does not have this hiking plan!');
+      } else if ( thisHike.hike_started == true ) {
+        return new HikooResponse(false, 'This hiking plan has already started!');
+      } else if ( thisHike.hike_finished == true ) {
+        return new HikooResponse(false, 'This hiking plan has already finished!');
       }
 
       // insert to checkin table
@@ -59,18 +61,20 @@ export class CheckInService {
       // make sure hike id exist, have the same hiker id, started but not finished
       const thisHike = await getConnection('mobile')
         .createQueryBuilder()
-        .select('id')
+        .select('id, hike_started, hike_finished')
         .from(HikeEntity, 'hike')
-        .where('hike_started=1')
-        .andWhere('hike_finished=0')
-        .andWhere('hike_end > NOW()')
+        .where('hike_end > NOW()')
         .andWhere('permit_accepted=:stat', { stat: PermitReqStatEnum.ACCEPTED })
         .andWhere('hiker_id=:id', { id: hikerId })
         .orderBy('hike_start', 'DESC')
         .getRawOne();
 
-      if (thisHike.id != hikeId) {
+      if ( !thisHike || thisHike.id != hikeId ) {
         return new HikooResponse(false, 'This user does not have this hiking plan!');
+      } else if ( thisHike.hike_started == true ) {
+        return new HikooResponse(false, 'This hiking plan has already started!');
+      } else if ( thisHike.hike_finished == true ) {
+        return new HikooResponse(false, 'This hiking plan has already finished!');
       }
 
       // update hikes table set hiking started

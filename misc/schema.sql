@@ -164,21 +164,21 @@ CREATE TABLE IF NOT EXISTS hike_destination (
 INSERT INTO hike_destination VALUES(1, 1),(1, 2),(1, 3),(2, 1),(2, 2),(3, 1),(3, 2),(4, 1),(4, 2),(5, 1),(5, 2),(6, 1),(6, 2),(7, 1),(7, 2),(8, 1),(8, 2);
 
 CREATE TABLE IF NOT EXISTS checkin (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     hiker_id INT UNSIGNED,
-    hike_id INT UNSIGNED,
+    hike_id INT UNSIGNED UNIQUE,
     checkin_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (hike_id, hiker_id), 
     FOREIGN KEY (hiker_id) REFERENCES account(id),
     FOREIGN KEY (hike_id) REFERENCES hikes(id)
 );
 
 INSERT INTO checkin VALUES
-(1, 1, 1, '2020-05-11 05:00'),
-(2, 5, 1, '2020-05-11 05:00'),
-(3, 1, 2, '2020-05-25 06:00'),
-(4, 3, 7, '2020-05-25 06:00'),
-(5, 4, 8, '2020-05-25 06:00'),
-(6, 6, 6, '2020-05-25 06:00');
+(1, 1, '2020-05-11 05:00'),
+(5, 5, '2020-05-11 05:00'),
+(1, 2, '2020-05-25 06:00'),
+(3, 7, '2020-05-25 06:00'),
+(4, 8, '2020-05-25 06:00'),
+(6, 6, '2020-05-25 06:00');
 
 -- track history hold history data of each tracker entry
 -- used for statistic data along with hikes table

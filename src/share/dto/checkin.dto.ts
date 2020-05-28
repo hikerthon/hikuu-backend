@@ -3,9 +3,6 @@ import { IsDefined, IsNumber, IsString } from 'class-validator';
 import { CheckinEntity } from '../entity/checkin.entity';
 
 export class CheckinDto {
-  @ApiProperty({ readOnly: true })
-  id: number;
-
   @ApiProperty()
   @IsNumber()
   hikerId: number;
@@ -26,14 +23,15 @@ export class CheckinDto {
     const it = new CheckinEntity();
     it.hikerId = this.hikerId;
     it.hikeId = this.hikeId;
-    it.checkinTime = new Date(this.checkinTime);
+    if (this.checkinTime) {
+      it.checkinTime = new Date(this.checkinTime);
+    }
 
     return it;
   }
 
   public static fromEntity(entity: CheckinEntity): CheckinDto {
     const it = new CheckinDto();
-    it.id = entity.id;
     it.hikerId = entity.hikerId;
     it.hikeId = entity.hikeId;
     it.checkinTime = new Date(entity.checkinTime).getTime();

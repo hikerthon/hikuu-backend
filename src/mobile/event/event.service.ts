@@ -23,6 +23,10 @@ export class EventService {
       take: count
     });
 
+    if (!events) {
+      return [];
+    }
+
     return events.map(event => EventViewDto.fromEntity(event));
   }
 

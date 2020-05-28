@@ -37,7 +37,7 @@ export class CheckInController {
     const userId = req.user.userId;
     this._logger.debug(`@Post CheckIn, hiker=[${userId}], hike=[${hikeId}]`);
     const result = await this.srv.sendCheckIn(userId, hikeId);
-    this._logger.debug(`@Post CheckI@ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooResponse, description: 'Fail to send hiker check-in to backend server' })n Result, hiker=[${userId}], result=[${(result).success}]`);
+    this._logger.debug(`@Post CheckIn, hiker=[${userId}], result=[${(result).success}]`);
 
     if (!result.success) {
       throw new HttpException(

@@ -120,10 +120,6 @@ export class EventViewDto extends EventDto {
 
   public static fromEntity(entity: EventEntity): EventViewDto {
     const it = new EventViewDto();
-    let attachments = [];
-    entity.attachments.forEach(element => {
-      attachments.push(element.imagePath);
-    });
     it.id = entity.id;
     it.eventTypeId = entity.eventTypeId;
     it.eventTypeName = entity.eventType.name;
@@ -138,6 +134,13 @@ export class EventViewDto extends EventDto {
     it.reporterName = entity.reporter.firstName;
     it.stat = entity.stat;
     it.logtime = new Date(entity.logtime).getTime();
+
+    const attachments = [];
+    if (entity.attachments) {
+      entity.attachments.forEach(element => {
+        attachments.push(element.imagePath);
+      });
+    }
     it.attachments = attachments;
     return it;
   }
