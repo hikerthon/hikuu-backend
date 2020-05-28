@@ -47,27 +47,22 @@ export class EventController {
   @ApiQuery({ name: 'count', type: 'number', required: false })
   @ApiResponse({ status: HttpStatus.OK, type: Event, isArray: true, description: 'successful operation' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, type: HikooResponse, description: 'Error: Unauthorized' })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    type: HikooBadReqResponse,
-    description: 'Invalid start / count supplied',
-  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid start / count supplied' })
   async getEventsByHikeId(
     @Request() req,
-    @Query('start') start: number,
-    @Query('count') count: number): Promise<EventViewDto[]> {
+    @Query('start') start: string,
+    @Query('count') count: string): Promise<EventViewDto[]> {
 
     try {
       const userId = req.user.userId;
-      this._logger.debug(`@Get, userId = [${userId}], start = [${start}], count = [${count}]`);
-      start = (start !== null ? start : 0);
-      count = (count !== null ? count : 10);
-      // count must more than 0
-      return this.srv.getByHikeId(userId, start || 0, count || 0);
+      const startNum = parseInt(start, 10) || 1;
+      const countNum = parseInt(count, 10) || 10;
+      this._logger.debug(`@Get, userId = [${userId}], start = [${startNum}], count = [${countNum}]`)
+      return await this.srv.getByHikerId(userId, startNum, countNum);
     } catch (e) {
       throw new HttpException(
         { success: false, errorMessage: e.message },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.BAD_REQUEST
       );
     }
 
@@ -86,7 +81,7 @@ export class EventController {
     @Body() event: EventDto,
   ): Promise<HikooResponse> {
     const userId = req.user.userId;
-
+    event.reporterId = userId;
     this._logger.debug(`@Post, userId = [${userId}], info: ${event.eventInfo}`);
 
     // notify platform
@@ -99,7 +94,7 @@ export class EventController {
         this._logger.error(`Failed to notify platform - ${err.errorMessage}`);
         throw new HttpException(
           { success: false, errorMessage: `Failed to notify platform - ${err.errorMessage}` },
-          HttpStatus.FORBIDDEN,
+          HttpStatus.FORBIDDEN
         );
       });
 
@@ -109,7 +104,7 @@ export class EventController {
     } catch (e) {
       throw new HttpException(
         { success: false, errorMessage: e.message },
-        HttpStatus.FORBIDDEN,
+        HttpStatus.FORBIDDEN
       );
     }
   }

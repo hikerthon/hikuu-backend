@@ -14,17 +14,16 @@ export class EventService {
   ) {
   }
 
-  async getByHikeId(hikeId: number, start: number, count: number): Promise<EventViewDto[]> {
+  async getByHikerId(hikerId: number, start: number, count: number): Promise<EventViewDto[]> {
     const events = await this.repo.find({
-      relations: ['eventType', 'alertLevel', 'hike', 'reporter'],
-      where: { hikeId: hikeId },
+      relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
+      where: { reporterId: hikerId },
       order: { logtime: 'DESC' },
       skip: start,
-      take: count,
-
+      take: count
     });
 
-    return events.map(alert => EventViewDto.fromEntity(alert));
+    return events.map(event => EventViewDto.fromEntity(event));
   }
 
   async create(event: EventDto): Promise<HikooResponse> {
@@ -35,7 +34,7 @@ export class EventService {
 
       // save attachments
       event.attachments.forEach(
-        function(attachment) {
+        function (attachment) {
           const atc = new EventAttachmentEntity();
           atc.event = newEvent;
           atc.imagePath = attachment;
