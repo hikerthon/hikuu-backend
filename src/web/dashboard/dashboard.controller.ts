@@ -16,6 +16,7 @@ export class DashboardController {
   @ApiResponse({ status: 200, type: DashboardDto, description: 'return each count of dashboard' })
   async getAll(): Promise<DashboardDto> {
     this._logger.debug('Get permit and checkin count');
-    return this.dashboardSvc.getAll();
+    // return this.dashboardSvc.getAll();
+    return null;
   }
 }

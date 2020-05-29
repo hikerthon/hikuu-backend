@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CheckinTimeByTodayDto } from './checkin.dto';
-import { EventCountDto } from './event.dto';
+import { EventCountDto, EventDto, EventSoSDto } from './event.dto';
 import { AllGPSDto } from './allgps.dto';
 import { IsNumber } from 'class-validator';
 
@@ -13,7 +13,7 @@ export class DashboardDto {
   @IsNumber()
   checkinCount: number;
 
-  @ApiProperty({type: CheckinTimeByTodayDto, isArray: true})
+  @ApiProperty({ type: CheckinTimeByTodayDto, isArray: true })
   checkinTime: CheckinTimeByTodayDto[];
 
   @ApiProperty()
@@ -23,6 +23,15 @@ export class DashboardDto {
   @ApiProperty()
   @IsNumber()
   offTrailHikerCount: number;
+
+  @ApiProperty()
+  @IsNumber()
+  resolvedCount: number;
+
+  @ApiProperty()
+  @IsNumber()
+  eventTotalCount: number;
+
 
   @ApiProperty()
   @IsNumber()
@@ -48,8 +57,11 @@ export class DashboardDto {
   @IsNumber()
   emergencyCount: number;
 
-  @ApiProperty({type: AllGPSDto, isArray: true})
+  @ApiProperty({ type: AllGPSDto, isArray: true })
   allGps: AllGPSDto[];
+
+  @ApiProperty({ type: EventSoSDto, isArray: true })
+  eventSos: EventSoSDto[];
 
 
   public static fromEntity(hikeCount: number,
@@ -58,67 +70,27 @@ export class DashboardDto {
                            sosCount: number,
                            offTrailHikerCount: number,
                            eventCount: EventCountDto,
-                           alertCount: AlertCountDto,
+                           sosInfo: EventSoSDto[],
                            allgps: AllGPSDto[]): DashboardDto {
     const it = new DashboardDto();
-
-
     it.hikesCount = hikeCount;
     it.checkinCount = checkinCount;
     it.checkinTime = checkinTime;
     it.sosCount = sosCount;
     it.offTrailHikerCount = offTrailHikerCount;
-    it.unResolvedEventCount = eventCount.resolved;
+
+    it.eventTotalCount = eventCount.eventTotalCount;
+    it.resolvedCount = eventCount.resolvedCount;
+    it.unResolvedEventCount = eventCount.notResolvedCount;
     it.pendingCount = eventCount.pendingCount;
-    it.infoCount = alertCount.infoCount;
-    it.cautionCount = alertCount.cautionCount;
-    it.dangerCount = alertCount.dangerCount;
-    it.emergencyCount = alertCount.emergencyCount;
-    it.allGps = allgps
+
+    it.infoCount = eventCount.infoCount;
+    it.cautionCount = eventCount.cautionCount;
+    it.dangerCount = eventCount.dangerCount;
+    it.emergencyCount = eventCount.emergencyCount;
+    it.allGps = allgps;
+    it.eventSos = sosInfo;
     return it;
   }
 
-}
-
-export class AlertCountDto {
-
-  @ApiProperty({type: Number, default: 0})
-  infoCount: number;
-
-  @ApiProperty({type: Number, default: 0})
-  cautionCount: number;
-
-  @ApiProperty({type: Number, default: 0})
-  dangerCount: number;
-
-  @ApiProperty({type: Number, default: 0})
-  emergencyCount: number;
-
-  constructor(infoCount: number, cautionCount: number, dangerCount: number, emergencyCount: number) {
-    this.infoCount = infoCount;
-    this.cautionCount = cautionCount;
-    this.dangerCount = dangerCount;
-    this.emergencyCount = emergencyCount;
-  }
-
-  public static fromEntity(entity: any): AlertCountDto {
-    const it = new AlertCountDto(0, 0, 0, 0);
-    entity.forEach(e => {
-      switch (e['alert_level_id']) {
-        case 1:
-          it.infoCount = Number(e['count(*)'])
-          break
-        case 2:
-          it.cautionCount = Number(e['count(*)'])
-          break
-        case 3:
-          it.dangerCount = Number(e['count(*)'])
-          break
-        case 4:
-          it.emergencyCount = Number(e['count(*)'])
-          break
-      }
-    })
-    return it;
-  }
 }
