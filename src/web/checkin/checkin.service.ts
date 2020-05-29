@@ -15,7 +15,6 @@ export class CheckinService {
   ) {
   }
 
-
   async getCheckinRecordById(hikeId: number): Promise<CheckinDto[]> {
     const records = await this.repo.find({
       relations: ['hiker', 'hike'],

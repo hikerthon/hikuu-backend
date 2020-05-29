@@ -32,16 +32,16 @@ export class StatisticService {
         .groupBy('a.permit_id')
         .getRawMany()
         .then( rows => rows.map( row => PermitStatisticDto.fromRawEntity(row) ));
-      
+
       const eventCounter = await getConnection().createQueryBuilder()
         .select(`SUM(CASE WHEN stat='RESOLVED' THEN 1 ELSE 0 END)`, 'eventResolvedCount')
         .addSelect(`SUM(CASE WHEN stat='PENDING' OR stat='PROCESSING' THEN 1 ELSE 0 END)`, 'eventNotResolvedCount')
         .addSelect(`COUNT(id)`, 'eventTotalCount')
         .from('events', 'a')
         .where('event_type_id != 4')
-        .andWhere('event_time BETWEEN :st AND :end', {st: startTime, end: endTime})
+        .andWhere('event_time BETWEEN :st AND :end', { st: startTime, end: endTime })
         .getRawOne()
-        .then( row => EventStatisticDto.fromRawEntity(row) );
+        .then(row => EventStatisticDto.fromRawEntity(row));
 
       const eventTypeCounter = await getConnection().createQueryBuilder()
         .select(`b.event_type_name`, 'eventTypeName')

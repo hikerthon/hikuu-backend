@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { TrailService } from './trail.service';
 import { TrailDto } from '../../share/dto/trail.dto';
@@ -13,7 +13,7 @@ export class TrailController {
 
   @Get()
   @ApiOperation({ summary: 'Get trail list' })
-  @ApiResponse({ status: 200, type: TrailDto, isArray: true, description: 'Get trail list' })
+  @ApiResponse({ status: HttpStatus.OK, type: TrailDto, isArray: true, description: 'Get trail list' })
   async getAll(): Promise<TrailDto[]> {
     this._logger.debug('get all trail');
     return this.trailsSvc.getAll();
@@ -22,7 +22,7 @@ export class TrailController {
   @Get(':id')
   @ApiOperation({ summary: 'Get trail info by id' })
   @ApiParam({ name: 'id', type: 'number' })
-  @ApiResponse({ status: 200, type: TrailDto, description: 'Get trail info by id' })
+  @ApiResponse({ status: HttpStatus.OK, type: TrailDto, description: 'Get trail info by id' })
   async getById(@Param('id') id: number): Promise<TrailDto> {
     this._logger.debug(`get trail id [${id}]`);
     return this.trailsSvc.getById(id);

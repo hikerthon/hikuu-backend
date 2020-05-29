@@ -15,6 +15,7 @@ import { EventsGateway } from '../events/events.gateway';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { AllGpsEntity } from '../../share/entity/allgps.entity';
 import { AllGPSDto } from '../../share/dto/allgps.dto';
+import { formatDate } from '../../share/utils/utils';
 
 
 @Injectable()
@@ -31,36 +32,14 @@ export class DashboardService {
 
   }
 
-
-
-
-
-
-
   @Cron(CronExpression.EVERY_5_SECONDS)
   async handleCron() {
-
-    function formatDate(date) {
-      var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-      if (month.length < 2)
-        month = '0' + month;
-      if (day.length < 2)
-        day = '0' + day;
-
-      return [year, month, day].join('-');
-    }
-
     const value = await this.getAll(new Date(formatDate(new Date(Date.now()))));
     this._eventGateway.newDashboard(value);
   }
 
   async getAll(startTime: Date): Promise<DashboardDto> {
-    const betweenDate = Between(subDays(startTime, 3), startTime );
-
+    const betweenDate = Between(subDays(startTime, 3), startTime);
     const hikeCount = await this.repoHike.count({
       where: {
         logtime: betweenDate,
@@ -70,30 +49,26 @@ export class DashboardService {
     const checkinCount = await this.repoCheckin.count({
       where: {
         checkinTime: betweenDate,
-      }
+      },
     });
 
     const checkinTime = await this.repoCheckin.createQueryBuilder('checkin')
-      .select('count(*), hour(checkin_time), checkin_time')
-      // .where('checkin_time BETWEEN :st AND :end', { st: startTime, end: endTime })
+      .select('count(*), hour(checkin_time)')
+      .where(`DATE(checkin_time) = CURDATE()`)
       .groupBy('hour(checkin_time)')
       .getRawMany();
-
 
     const gpsData = await this.repoAllgps.find({
       where: {
         logtime: betweenDate,
-      }
+      },
     });
-    // console.log(gpsData)
-
 
     const sosInfo = await this.repoEvent.find({
-      relations: ['reporter'],
+      relations: ['reporter', 'eventType'],
       where: {
-        eventTypeId: 4,
         eventTime: betweenDate,
-        stat: Not('RESOLVED')
+        stat: Not('RESOLVED'),
       },
     });
 

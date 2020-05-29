@@ -14,7 +14,7 @@ export class AccountController {
 
   @Get()
   @ApiOperation({ summary: 'Get account list' })
-  @ApiResponse({ status: 200, type: AccountDto, isArray: true, description: 'Get account list' })
+  @ApiResponse({ status: HttpStatus.OK, type: AccountDto, isArray: true, description: 'Get account list' })
   async getAll(): Promise<AccountDto[]> {
     this._logger.debug('get all account');
     return this.accountsSvc.getAll();
@@ -23,7 +23,7 @@ export class AccountController {
   @Get(':id')
   @ApiOperation({ summary: 'Get account info by id' })
   @ApiParam({ name: 'id', type: 'number' })
-  @ApiResponse({ status: 200, type: AccountDto, description: 'Get account info by id' })
+  @ApiResponse({ status: HttpStatus.OK, type: AccountDto, description: 'Get account info by id' })
   @ApiResponse({ status: 404, type: HikooResponse, description: 'Get account info by id failed' })
   async getById(@Param('id') id: number): Promise<AccountDto> {
     this._logger.debug(`get account id [${id}]`);
@@ -42,7 +42,7 @@ export class AccountController {
   @Get('/withemail/:email')
   @ApiOperation({ summary: 'Get account info by email' })
   @ApiParam({ name: 'email', type: 'string' })
-  @ApiResponse({ status: 200, type: AccountDto, description: 'Get account info by email' })
+  @ApiResponse({ status: HttpStatus.OK, type: AccountDto, description: 'Get account info by email' })
   @ApiResponse({ status: 404, type: HikooResponse, description: 'Get account info by email failed' })
   async getByEmail(@Param('email') email: string): Promise<AccountDto> {
     this._logger.debug(`get account email [${email}]`);

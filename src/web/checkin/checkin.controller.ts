@@ -25,14 +25,15 @@ export class CheckinController {
   @Get(':hikeId')
   @ApiOperation({ summary: 'Get checkin-record by hikerId' })
   @ApiParam({ name: 'hikeId', type: 'number' })
-  @ApiResponse({ status: 200, type: CheckinDto, isArray: true, description: 'Return list of checkin-record' })
+  @ApiResponse({ status: HttpStatus.OK, type: CheckinDto, isArray: true, description: 'Return list of checkin-record' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse })
   getById(@Param('hikeId') hikeId: number) {
     this._logger.debug(`@Get hikes, id = ${hikeId}`);
     return this.checkinSvc.getCheckinRecordById(hikeId);
   }
 
   @Post()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create new Checkin record' })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse, description: 'successful operation' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse, description: 'Invalid hikeId supplied' })

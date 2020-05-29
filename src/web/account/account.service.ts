@@ -12,10 +12,6 @@ export class AccountService {
         private readonly repo: Repository<AccountEntity>,
     ) { }
 
-    getFakeData() {
-        return []
-    }
-
     async getAll(): Promise<AccountDto[]> {
         const accounts = await this.repo.find();
         return accounts.map(account => AccountDto.fromEntity(account));

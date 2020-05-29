@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ShelterService } from './shelter.service';
 import { ShelterDto } from '../../share/dto/shelter.dto';
@@ -14,7 +14,7 @@ export class ShelterController {
 
   @Get()
   @ApiOperation({ summary: 'Get shelter list' })
-  @ApiResponse({ status: 200, type: ShelterDto, isArray: true, description: 'Get shelter list' })
+  @ApiResponse({ status: HttpStatus.OK, type: ShelterDto, isArray: true, description: 'Get shelter list' })
   async getAll(): Promise<ShelterDto[]> {
     this._logger.debug('get all station');
     return this.shelterSvc.getAll();
@@ -23,11 +23,10 @@ export class ShelterController {
   @Get(':id')
   @ApiOperation({ summary: 'Get shelter info by Id' })
   @ApiParam({ name: 'id', type: 'number' })
-  @ApiResponse({ status: 200, type: ShelterDto, description: 'Get shelter info by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: ShelterDto, description: 'Get shelter info by Id' })
   async getById(@Param('id') id: number): Promise<ShelterDto> {
     this._logger.debug(`get station id [${id}]`);
     return this.shelterSvc.getById(id);
   }
-
 
 }

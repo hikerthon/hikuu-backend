@@ -14,7 +14,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { EventService } from './events.service';
-import { HikooResponse, CountResponseDto } from '../../share/dto/generic.dto';
+import { HikooResponse, CountResponseDto, HikooBadReqResponse } from '../../share/dto/generic.dto';
 import { EventDto, EventViewDto, ModifyEventDto } from 'src/share/dto/event.dto';
 import { EventsGateway } from './events.gateway';
 
@@ -71,10 +71,11 @@ export class EventsController {
   // }
 
   @Put()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Modify more event detail' })
   @ApiBody({ type: ModifyEventDto, isArray: true })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse })
   async modifyEvent(@Body() data: ModifyEventDto[]): Promise<HikooResponse> {
     this._logger.debug(`@Put event`);
     return this.eventSvc.modify(data);
@@ -82,10 +83,11 @@ export class EventsController {
 
 
   @Put(':id')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Modify events detail' })
   @ApiBody({ type: ModifyEventDto, isArray: false })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse })
   async modifyEventbyId(
     @Param('id') id: number,
     @Body() data: ModifyEventDto): Promise<HikooResponse> {
@@ -95,7 +97,7 @@ export class EventsController {
   }
 
   @Post('notify')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   onNotifyEvent(@Req() request, @Body() event: EventDto): HikooResponse {
     console.log(`sourceIp = ${request.ip} ${request.connection.remoteAddress}`);
     const ip = request.ip || request.connection.remoteAddress;

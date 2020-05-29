@@ -239,6 +239,12 @@ export class EventSoSDto {
   @ApiProperty()
   hikerName: string;
 
+  @ApiProperty()
+  alertLevelId: number;
+
+  @ApiProperty()
+  eventName: string;
+
   @ApiProperty({ nullable: false, minimum: -90, maximum: 90, example: 24.769752 })
   @IsNumber()
   @Min(-90)
@@ -254,10 +260,12 @@ export class EventSoSDto {
   public static fromEntity(entity: EventEntity): EventSoSDto {
     const it = new EventSoSDto();
     it.eventId = entity.id;
-    it.hikerId = entity.reporter.id;
+    it.hikerId = Number(entity.reporter.id);
     it.hikerName = entity.reporter.username;
-    it.latpt = entity.latpt;
-    it.lngpt = entity.lngpt;
+    it.latpt = Number(entity.latpt);
+    it.lngpt = Number(entity.lngpt);
+    it.alertLevelId = Number(entity.alertLevelId);
+    it.eventName = entity.eventType.name;
     return it;
   }
 

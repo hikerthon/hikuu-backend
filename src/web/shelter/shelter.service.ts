@@ -12,10 +12,6 @@ export class ShelterService {
   ) {
   }
 
-  getFakeData() {
-    return [];
-  }
-
   async getAll(): Promise<ShelterDto[]> {
     const permits = await this.repo.find();
     return permits.map(permit => ShelterDto.fromEntity(permit));

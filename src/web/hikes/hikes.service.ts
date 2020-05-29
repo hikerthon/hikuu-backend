@@ -70,7 +70,7 @@ export class HikesService {
   async modifyHikes(data: HikeViewModifyDto[]): Promise<HikooResponse> {
 
     try {
-      data.forEach(async (element) => {
+      for (const element of data) {
         if (element.memo) {
           await this.repo.update(
             element.hikeId,
@@ -88,7 +88,7 @@ export class HikesService {
             },
           );
         }
-      });
+      }
       return {
         success: true,
         errorMessage: null,
