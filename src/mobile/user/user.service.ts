@@ -55,9 +55,17 @@ export class UserService {
     return { success: true };
   }
 
-  async update(account: AccountDto): Promise<HikooResponse> {
+  async update(userId: number, account: AccountDto): Promise<HikooResponse> {
     try {
-      await this.repo.save(account);
+      const oldAccount = await this.repo.findOne(
+        { where: { id: userId, username: account.username } },
+      );
+
+      if (!oldAccount) {
+        return new HikooResponse(false, 'Invalid data to update!');
+      }
+
+      await this.repo.update(oldAccount, account);
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }

@@ -60,9 +60,10 @@ export class UserController {
     @Request() req,
     @Body() account: AccountDto,
   ): Promise<HikooResponse> {
-    this._logger.debug(`update user info, userID ${account.id}`);
+    const userId = req.user.userId;
+    this._logger.debug(`@Update, userId ${req.user.username} (${userId})`);
     // need check user permission
-    const result = await this.srv.update(account);
+    const result = await this.srv.update(userId, account);
     if (!result) {
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },

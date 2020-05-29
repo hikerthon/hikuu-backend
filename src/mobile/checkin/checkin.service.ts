@@ -77,7 +77,7 @@ export class CheckInService {
         return new HikooResponse(false, 'This hiking plan has already finished!');
       }
 
-      // update hikes table set hiking started
+      // update hikes table set hiking finished
       await getConnection('mobile')
         .createQueryBuilder()
         .update(HikeEntity)
