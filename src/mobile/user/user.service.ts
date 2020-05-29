@@ -65,7 +65,8 @@ export class UserService {
         return new HikooResponse(false, 'Invalid data to update!');
       }
 
-      await this.repo.update(oldAccount, account);
+      const saveThis = Object.assign(new AccountDto(), account);
+      await this.repo.update({id: userId}, saveThis.toEntity());
     } catch (e) {
       return { success: false, errorMessage: e.message };
     }

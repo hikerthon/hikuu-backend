@@ -65,6 +65,7 @@ export class UserController {
     // need check user permission
     const result = await this.srv.update(userId, account);
     if (!result) {
+      this._logger.debug(`@Update ${req.user.username} (${userId} failed. Err:${result.errorMessage}`)
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },
         HttpStatus.BAD_REQUEST,

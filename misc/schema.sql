@@ -5,10 +5,10 @@ ALTER DATABASE hikoo CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS account (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    userid VARCHAR(255),
-    userpwd VARCHAR(255),
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
+    userid VARCHAR(255) UNIQUE NOT NULL,
+    userpwd VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     selfie_path VARCHAR(255),
     identity_path VARCHAR(255),
     gender ENUM('M', 'F') NOT NULL DEFAULT 'M',
@@ -33,7 +33,12 @@ INSERT INTO account(id, userid, userpwd, first_name, last_name, selfie_path, ide
 (3, 'jerrylee', 'iliketosleep', 'Jerry', 'Lee', '/selfie/jerrylee', '/identity/jerrylee', 'M', '2000-01-01', 'Hsinchu, St.That area No.77', 'jerrylee@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Margot Robbie', '0965-777-8888'),
 (4, 'nyotoyang', 'iliketofart', 'Nyoto', 'Yang', '/selfie/nyotoyang', '/identity/nyotoyang', 'M', '2000-01-01', 'Hsinchu, St.This area No.66', 'nyotoyang@gmail.com', 'Indonesia', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Emma Stone', '0965-777-8888'),
 (5, 'mrchuck', 'ilikeme', 'Chuck', 'Norris', '/selfie/mrchuck', '/identity/mrchuck', 'M', '2000-01-01', 'Navasota, St.Those area No.88', 'mrchuck@gmail.com', 'United States', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Gena O-Kelley', '0965-777-8888'),
-(6, 'mrstallone', 'ilikemyself', 'Sylvester', 'Stallone', '/selfie/mrstallone', '/identity/mrstallone', 'M', '2000-01-01', 'California, St.These area No.88', 'mrstallone@gmail.com', 'United States', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Jennifer Flavin', '0965-777-8888');
+(6, 'mrstallone', 'ilikemyself', 'Sylvester', 'Stallone', '/selfie/mrstallone', '/identity/mrstallone', 'M', '2000-01-01', 'California, St.These area No.88', 'mrstallone@gmail.com', 'United States', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Jennifer Flavin', '0965-777-8888'),
+(7, 'nasinlin', 'iliketowork', 'Nasin', 'Lin', '/selfie/nasinlin', '/identity/nasinlin', 'M', '2000-01-01', 'Taichung, St.There No.88', 'nasinlin@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Pom Klementieff', '0965-777-8888'),
+(8, 'fermichen', 'iliketorun', 'Fermi', 'Chen', '/selfie/fermichen', '/identity/fermichen', 'M', '2000-01-01', 'Taichung, St.There No.77', 'fermichen@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Lee Ji-eun', '0965-777-8888'),
+(9, 'sivanchen', 'iliketoplay', 'Sivan', 'Chen', '/selfie/sivanchen', '/identity/sivanchen', 'M', '2000-01-01', 'Taichung, St.There No.66', 'sivanchen@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Rainie Yang', '0965-777-8888'),
+(10, 'bonniecool', 'iliketoclimb', 'Bonnie', 'Cool', '/selfie/bonniecool', '/identity/bonniecool', 'F', '2000-01-01', 'Tainan, St.There No.99', 'bonniecool@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Robert Downey Jr.', '0965-777-8888'),
+(11, 'rachelhsiao', 'iliketosmash', 'Rachel', 'Hsiao', '/selfie/rachelhsiao', '/identity/rachelhsiao', 'F', '2000-01-01', 'Hsinchu, St.There No.88', 'rachelhsiao@gmail.com', 'Taiwan', 'O223782019', '0965-777-8888', '0965-777-8888', '0965-777-8888', 'Kim Jong KOok', '0965-777-8888');
 
 UPDATE account SET fcm_token='fCNd2eNpSquvyoJ82woi3W:APA91bHoZW6DFnQre3eZkvL85QpdaZ8gmlWAC7ILdG14a9cPpMDOlhlfW9W-jfif7l_vDqoLp_85tznKKfBYY7Xda1r6R2ZpxRjhRvFPDOF86ayQCC7H1oSy_LuoGg8dDsay407OmXlh';
 
@@ -86,14 +91,14 @@ CREATE TABLE IF NOT EXISTS trails (
 );
 
 INSERT INTO trails VALUES
-(1, 'Yushan trails', 1),
+(1, 'Yushan Trail', 1),
 (2, 'Batonggaun Traversing Trail', 1),
 (3, 'South Section 2 of Central Mountains Trail', 1),
-(4, 'Qilai trails', 2),
-(5, 'Zhuilu trails', 2),
-(6, 'Nanhu trails', 2),
-(7, 'Xuejian trails', 3),
-(8, 'Daba trails', 3),
+(4, 'Qilai Trail', 2),
+(5, 'Zhuilu Trail', 2),
+(6, 'Nanhu Trail', 2),
+(7, 'Xuejian Trail', 3),
+(8, 'Daba Trail', 3),
 (9, 'Shengleng Trail', 3);
 
 CREATE TABLE IF NOT EXISTS alert_level (
