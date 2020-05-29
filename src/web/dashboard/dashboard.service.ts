@@ -34,7 +34,7 @@ export class DashboardService {
 
   @Cron(CronExpression.EVERY_5_SECONDS)
   async handleCron() {
-    const value = await this.getAll(new Date(formatDate(new Date(Date.now()))));
+    const value = await this.getAll(new Date(formatDate(new Date(Date.now())) + ' 23:59:59'));
     this._eventGateway.newDashboard(value);
   }
 

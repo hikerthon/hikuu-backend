@@ -155,6 +155,7 @@ export class AlertViewDto extends AlertDto {
     it.originEventId = entity.originSourceId;
     it.logtime = new Date(entity.logtime).getTime();
     it.attachments = imagePaths.imagePath;
+    it.permitName = entity.permit.name;
     return it;
   }
 }

@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getConnection } from 'typeorm';
+import { Repository, getConnection, getManager } from 'typeorm';
 import { AlertEntity, AlertAttachmentEntity } from 'src/share/entity/alert.entity';
 import { AlertDto, AlertViewDto } from 'src/share/dto/alert.dto';
 import { HikooResponse, CountResponseDto } from 'src/share/dto/generic.dto';
+import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin/dist';
+import { AccountEntity } from '../../share/entity/account.entity';
 
 @Injectable()
 export class AlertService {
   constructor(
     @InjectRepository(AlertEntity)
     private readonly repo: Repository<AlertEntity>,
+    private _fcm: FirebaseMessagingService,
   ) {
   }
 
@@ -61,7 +64,29 @@ export class AlertService {
       atc.imagePath = attachment;
       getConnection().getRepository(AlertAttachmentEntity).save(atc);
     });
+    let userTokens = [];
+    const tokens = await getManager().query(`
+SELECT c.fcm_token
+FROM hikes a INNER JOIN tracker b ON a.id=b.hike_id AND a.hiker_id=b.hiker_id INNER JOIN account c ON a.hiker_id=c.id 
+WHERE a.hike_started=1 AND a.hike_finished=0 AND a.hike_cancelled=0
+AND latpt BETWEEN ? - ? / 111.045 AND ? + ? / 111.045 
+AND lngpt BETWEEN ? - (? / (111.045 * COS(RADIANS(?)))) AND ? + (? / (111.045 * COS(RADIANS(?))));
+`, [alert.latpt, alert.radius, alert.latpt, alert.radius, alert.lngpt, alert.radius, alert.latpt, alert.lngpt, alert.radius, alert.latpt]).then(rows => rows);
+    tokens.forEach(element => {
+      userTokens.push(element['fcm_token']);
+    });
 
-    return { success: true };
+    await this._fcm.sendMulticast({
+      notification: {
+        title: 'Hikoo',
+        body: alert.eventInfo,
+      },
+      tokens: userTokens,
+    });
+
+    return {
+      success: true,
+    };
+
   }
 }
