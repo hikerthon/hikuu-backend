@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Max, Min, IsNumber, IsString, IsEnum, MaxLength } from 'class-validator';
 import { EventEntity, EventStatusEnum } from '../entity/event.entity';
+import exp = require('constants');
 
 export class EventDto {
   @ApiProperty({
@@ -56,7 +57,7 @@ export class EventDto {
   radius: number;
 
   @ApiProperty({ nullable: false, example: 1, required: false })
-  // @IsNumber()
+    // @IsNumber()
   reporterId: number;
 
   @ApiProperty({
@@ -64,9 +65,9 @@ export class EventDto {
     default: EventStatusEnum.PENDING,
     description: 'auto generated on create',
     nullable: true,
-    required: false
+    required: false,
   })
-  // @IsEnum(EventStatusEnum)
+    // @IsEnum(EventStatusEnum)
   stat: string;
 
   @ApiProperty({ description: 'auto generated on create', nullable: true, readOnly: true })
@@ -149,42 +150,66 @@ export class EventViewDto extends EventDto {
 export class EventCountDto {
 
   @ApiProperty({ type: Number, default: 0 })
+  eventTotalCount: number;
+
+  @ApiProperty({ type: Number, default: 0 })
   pendingCount: number;
 
   @ApiProperty({ type: Number, default: 0 })
   processingCount: number;
 
   @ApiProperty({ type: Number, default: 0 })
-  resolved: number;
+  resolvedCount: number;
+
+  @ApiProperty({ type: Number, default: 0 })
+  notResolvedCount: number;
 
   @ApiProperty({ type: Number, default: 0 })
   bad: number;
 
-  constructor(pendingCount: number, processingCount: number, resolved: number, bad: number) {
+  @ApiProperty({ type: Number, default: 0 })
+  infoCount: number;
+
+  @ApiProperty({ type: Number, default: 0 })
+  cautionCount: number;
+
+  @ApiProperty({ type: Number, default: 0 })
+  dangerCount: number;
+
+  @ApiProperty({ type: Number, default: 0 })
+  emergencyCount: number;
+
+
+  constructor(eventTotalCount: number,
+              pendingCount: number,
+              processingCount: number,
+              resolved: number,
+              bad: number,
+              infoCount: number,
+              cautionCount: number,
+              dangerCount: number,
+              emergencyCount: number) {
+    this.eventTotalCount = eventTotalCount;
     this.pendingCount = pendingCount;
     this.processingCount = processingCount;
-    this.resolved = resolved;
+    this.resolvedCount = resolved;
     this.bad = bad;
+    this.infoCount = infoCount;
+    this.cautionCount = cautionCount;
+    this.dangerCount = dangerCount;
+    this.emergencyCount = emergencyCount;
   }
 
-  public static fromEntity(entity: any): EventCountDto {
-    const it = new EventCountDto(0, 0, 0, 0);
-    entity.forEach(e => {
-      switch (e['stat']) {
-        case 'PENDING':
-          it.pendingCount = Number(e['count(*)']);
-          break;
-        case 'PROCESSING':
-          it.processingCount = Number(e['count(*)']);
-          break;
-        case 'RESOLVED':
-          it.resolved = Number(e['count(*)']);
-          break;
-        case 'BAD':
-          it.bad = Number(e['count(*)']);
-          break;
-      }
-    });
+  public static fromRawEntity(raw: any): EventCountDto {
+    const it = new EventCountDto(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    it.eventTotalCount = Number(raw.eventTotalCount);
+    it.pendingCount = Number(raw.eventPendingCount);
+    it.resolvedCount = Number(raw.eventResolvedCount);
+    it.notResolvedCount = Number(raw.eventNotResolvedCount);
+    it.infoCount = Number(raw.infoCount);
+    it.cautionCount = Number(raw.cautionCount);
+    it.dangerCount = Number(raw.dangerCount);
+    it.emergencyCount = Number(raw.emergencyCount);
     return it;
   }
 }
@@ -200,5 +225,48 @@ export class ModifyEventDto {
   @ApiProperty({ enum: EventStatusEnum, example: EventStatusEnum.RESOLVED })
   @IsEnum(EventStatusEnum)
   stat: string;
+
+}
+
+export class EventSoSDto {
+
+  @ApiProperty()
+  eventId: number;
+
+  @ApiProperty()
+  hikerId: number;
+
+  @ApiProperty()
+  hikerName: string;
+
+  @ApiProperty()
+  alertLevelId: number;
+
+  @ApiProperty()
+  eventName: string;
+
+  @ApiProperty({ nullable: false, minimum: -90, maximum: 90, example: 24.769752 })
+  @IsNumber()
+  @Min(-90)
+  @Max(90)
+  latpt: number;
+
+  @ApiProperty({ nullable: false, minimum: -180, maximum: 180, example: 120.9993924 })
+  @IsNumber()
+  @Min(-180)
+  @Max(180)
+  lngpt: number;
+
+  public static fromEntity(entity: EventEntity): EventSoSDto {
+    const it = new EventSoSDto();
+    it.eventId = entity.id;
+    it.hikerId = Number(entity.reporter.id);
+    it.hikerName = entity.reporter.username;
+    it.latpt = Number(entity.latpt);
+    it.lngpt = Number(entity.lngpt);
+    it.alertLevelId = Number(entity.alertLevelId);
+    it.eventName = entity.eventType.name;
+    return it;
+  }
 
 }

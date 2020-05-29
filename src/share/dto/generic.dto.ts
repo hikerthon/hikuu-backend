@@ -27,6 +27,31 @@ export class HikooBadReqResponse {
   @ApiProperty({ example: 'Bad Request' })
   @IsString()
   error: string;
+
+  constructor(statusCode: number, message: string, error: string) {
+    this.statusCode = statusCode;
+    this.message = message;
+    this.error = error;
+  }
+}
+
+export class HikooISEResponse {
+  @ApiProperty({ readOnly: true, default: 500, example: 500 })
+  statusCode: number;
+
+  @ApiProperty({ isArray: true })
+  @IsString()
+  message: string;
+
+  @ApiProperty({ example: 'INTERNAL SERVER ERROR' })
+  @IsString()
+  error: string;
+
+  constructor(statusCode: number, message: string, error: string) {
+    this.statusCode = statusCode;
+    this.message = message;
+    this.error = error;
+  }
 }
 
 export class ImageUploadResponse extends HikooResponse {

@@ -36,7 +36,7 @@ export class AlertController {
   @ApiOperation({ summary: 'Get all alerts' })
   @ApiQuery({ name: 'startIndex', type: 'number', required: true })
   @ApiQuery({ name: 'count', type: 'number', required: true })
-  @ApiResponse({ status: 200, type: AlertViewDto, isArray: true, description: 'Return list of alert' })
+  @ApiResponse({ status: HttpStatus.OK, type: AlertViewDto, isArray: true, description: 'Return list of alert' })
   async getAllAlert(
     @Query('startIndex') startIndex: number,
     @Query('count') count: number): Promise<AlertViewDto[]> {
@@ -65,18 +65,13 @@ export class AlertController {
   }
 
   @Post()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create new Alert' })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse })
-  async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
-    try {
-      this._logger.debug(`@Post, info: ${alert.eventInfo}`);
-      await this.alertSvc.create(alert);
-      return { success: true };
-    } catch (e) {
-      throw new HttpException({ success: false, errorMessage: e.message }, HttpStatus.BAD_REQUEST);
-    }
+    async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
+    this._logger.debug(`@Post, info: ${alert.eventInfo}`);
+    return await this.alertSvc.create(alert);
   }
 
   @Post('uploadImage')

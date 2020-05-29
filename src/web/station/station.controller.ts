@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationService } from './station.service';
 import { StationDto } from '../../share/dto/station.dto';
@@ -14,7 +14,7 @@ export class StationController {
 
   @Get()
   @ApiOperation({ summary: 'Get station list' })
-  @ApiResponse({ status: 200, type: StationDto, isArray: true, description: 'Get station list' })
+  @ApiResponse({ status: HttpStatus.OK, type: StationDto, isArray: true, description: 'Get station list' })
   async getAll(): Promise<StationDto[]> {
     this._logger.debug('get all station');
     return this.stationSvc.getAll();
@@ -23,11 +23,10 @@ export class StationController {
   @Get(':id')
   @ApiOperation({ summary: 'Get station info' })
   @ApiParam({ name: 'id', type: 'number' })
-  @ApiResponse({ status: 200, type: StationDto, description: 'Get station info by Id' })
+  @ApiResponse({ status: HttpStatus.OK, type: StationDto, description: 'Get station info by Id' })
   async getById(@Param('id') id: number): Promise<StationDto> {
     this._logger.debug(`get station id [${id}]`);
     return this.stationSvc.getById(id);
   }
-
 
 }

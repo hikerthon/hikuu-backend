@@ -1,5 +1,5 @@
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { AllgpsService } from './allgps.service';
 import { AllGPSDto } from 'src/share/dto/allgps.dto';
 
@@ -11,7 +11,7 @@ export class AllgpsController {
 
   @Get()
   @ApiResponse({
-    status: 200,
+    status: HttpStatus.OK,
     type: AllGPSDto,
     isArray: true,
     description: 'Returns list of hiker, events, and alert to be shown on web dashboard map.',

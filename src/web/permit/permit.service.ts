@@ -13,14 +13,6 @@ export class PermitService {
   ) {
   }
 
-  getFakeData() {
-    return [
-      { id: 1, name: 'Yushan National Park Permit' },
-      { id: 2, name: 'Taroko National Park Permit' },
-      { id: 3, name: 'Shei-Pa National Park Permit' },
-    ];
-  }
-
   async getAll(): Promise<PermitDto[]> {
     const permits = await this.repo.find();
     return permits.map(permit => PermitDto.fromEntity(permit));

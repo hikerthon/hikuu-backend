@@ -13,36 +13,31 @@ export class AlertService {
   ) {
   }
 
-  getFakeAlerts() {
-    return {
-      permitId: 1,
-      permitName: 'Yushan National Park Permit',
-      lat: 23.468818,
-      lng: 120.954489,
-      radius: 3,
-      alertLevelId: 2,
-      alertLevel: 'Caution',
-      eventTypeId: 1,
-      eventType: 'Animal',
-      eventInfo: 'Water Buffalloo nearby',
-      eventTIme: '2020-05-19 17:00',
-      ttl: 6,
-      stationId: 1,
-      stationName: 'Yushan',
-    };
-  }
-
   async getAll(): Promise<AlertDto[]> {
     const alerts = await this.repo.find();
     return alerts.map(alert => AlertDto.fromEntity(alert));
   }
 
-  async getById(id: number): Promise<AlertDto> {
-    const one = await this.repo.findOne({
-      relations: ['attachments'],
-      where: { id: id },
-    });
-    return AlertDto.fromEntity(one);
+  async getById(id: number): Promise<AlertDto | HikooResponse> {
+    try {
+      const one = await this.repo.findOne({
+        relations: ['attachments'],
+        where: { id: id },
+      });
+      if (!one) {
+        return {
+          success: false,
+          errorMessage: `undefined`,
+        };
+      }
+      return AlertDto.fromEntity(one);
+    } catch (e) {
+      return {
+        success: false,
+        errorMessage: e.message,
+      };
+    }
+
   }
 
   async getAllView(start: number, count: number): Promise<AlertViewDto[]> {

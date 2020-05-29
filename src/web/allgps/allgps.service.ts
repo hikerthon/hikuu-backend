@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 
 import { AllGpsEntity } from '../../share/entity/allgps.entity';
 import { AllGPSDto } from '../../share/dto/allgps.dto';
+import { subDays } from "date-fns";
+import { formatDate } from '../../share/utils/utils';
 
 @Injectable()
 export class AllgpsService {
@@ -13,30 +15,14 @@ export class AllgpsService {
   ) {
   }
 
-  getFakeGPS() {
-    return [{
-      location: '23.468858, 120.954451',
-      pointType: 'hiker',
-      eventId: 0,
-      alertId: 0,
-      timestamp: 1589894000,
-    }, {
-      location: '23.468878, 120.954459',
-      pointType: 'hiker',
-      eventId: 0,
-      alertId: 0,
-      timestamp: 1589894000,
-    }, {
-      location: '23.469311, 120.955127',
-      pointType: 'event',
-      eventId: 1,
-      alertId: 1,
-      timestamp: 1589895049,
-    }];
-  }
-
   async getAll(): Promise<AllGPSDto[]> {
-    const gpsData = await this.repo.find();
+    const startTime = new Date(formatDate(new Date(Date.now())))
+    const betweenDate = Between(subDays(startTime, 3), startTime);
+    const gpsData = await this.repo.find({
+      where: {
+        logtime: betweenDate,
+      }
+    });
     return gpsData.map(gps => AllGPSDto.fromEntity(gps));
   }
 }
