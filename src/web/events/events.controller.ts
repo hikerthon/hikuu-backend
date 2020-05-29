@@ -57,7 +57,11 @@ export class EventsController {
   @ApiResponse({ status: HttpStatus.OK, type: EventViewDto, isArray: false, description: 'Return event detail' })
   async getEvent(@Param('id') id: number): Promise<EventViewDto> {
     this._logger.debug(`@Get, id = [${id}]`);
-    return this.eventSvc.getViewById(id);
+    const result = this.eventSvc.getViewById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
   // @Post()

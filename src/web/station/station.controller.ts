@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StationService } from './station.service';
 import { StationDto } from '../../share/dto/station.dto';
@@ -26,7 +26,11 @@ export class StationController {
   @ApiResponse({ status: HttpStatus.OK, type: StationDto, description: 'Get station info by Id' })
   async getById(@Param('id') id: number): Promise<StationDto> {
     this._logger.debug(`get station id [${id}]`);
-    return this.stationSvc.getById(id);
+    const result = this.stationSvc.getById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
 }

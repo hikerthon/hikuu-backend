@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { TrailService } from './trail.service';
 import { TrailDto } from '../../share/dto/trail.dto';
@@ -25,6 +25,10 @@ export class TrailController {
   @ApiResponse({ status: HttpStatus.OK, type: TrailDto, description: 'Get trail info by id' })
   async getById(@Param('id') id: number): Promise<TrailDto> {
     this._logger.debug(`get trail id [${id}]`);
-    return this.trailsSvc.getById(id);
+    const result = this.trailsSvc.getById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 }

@@ -17,8 +17,11 @@ export class TrailService {
     return permits.map(permit => TrailDto.fromEntity(permit));
   }
 
-  async getById(id: number): Promise<TrailDto> {
+  async getById(id: number): Promise<TrailDto | null> {
     const one = await this.repo.findOne({ where: { id: id } });
+    if (!one) {
+      return null;
+    }
     return TrailDto.fromEntity(one);
   }
 }

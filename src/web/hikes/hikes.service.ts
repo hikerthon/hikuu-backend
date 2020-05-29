@@ -30,74 +30,62 @@ export class HikesService {
   }
 
   async getAllHikesCount(): Promise<CountResponseDto> {
-    try {
-      const hikesCount = await this.repo.count();
-      return {
-        success: true,
-        count: hikesCount,
-        errorMessage: null,
-      };
-    } catch (e) {
-      return {
-        success: false,
-        count: 0,
-        errorMessage: e.message,
-      };
-    }
+    const hikesCount = await this.repo.count();
+    return {
+      success: true,
+      count: hikesCount,
+      errorMessage: null,
+    };
   }
 
-  async getHikes(id: number): Promise<HikeViewDto> {
+  async getHikes(id: number): Promise<HikeViewDto | null> {
     const hikes = await this.repo.findOne({
       relations: ['hiker', 'permit', 'trails'],
       order: { logtime: 'DESC' },
       where: { id },
     });
-
+    if (!hikes) {
+      return null;
+    }
     return HikeViewDto.fromEntity(hikes);
   }
 
-  async getHikeByHikerId(hikerId: number): Promise<HikeViewDto> {
+  async getHikeByHikerId(hikerId: number): Promise<HikeViewDto | null> {
     const hikes = await this.repo.findOne({
       relations: ['hiker', 'permit', 'trails'],
       order: { logtime: 'DESC' },
       where: { hikerId },
     });
-
+    if (!hikes) {
+      return null;
+    }
     return HikeViewDto.fromEntity(hikes);
   }
 
 
   async modifyHikes(data: HikeViewModifyDto[]): Promise<HikooResponse> {
-
-    try {
-      for (const element of data) {
-        if (element.memo) {
-          await this.repo.update(
-            element.hikeId,
-            {
-              memo: element.memo,
-            },
-          );
-        }
-        if (element.watchStatus) {
-          console.log(element.watchStatus);
-          await this.repoAccount.update(
-            element.hikerId,
-            {
-              watchStatus: element.watchStatus,
-            },
-          );
-        }
+    for (const element of data) {
+      if (element.memo) {
+        await this.repo.update(
+          element.hikeId,
+          {
+            memo: element.memo,
+          },
+        );
       }
-      return {
-        success: true,
-        errorMessage: null,
-      };
-    } catch (e) {
-      return {
-        success: false,
-        errorMessage: e.errorMessage,
-      };
+      if (element.watchStatus) {
+        console.log(element.watchStatus);
+        await this.repoAccount.update(
+          element.hikerId,
+          {
+            watchStatus: element.watchStatus,
+          },
+        );
+      }
     }
+    return {
+      success: true,
+      errorMessage: null,
+    };
   }
 }

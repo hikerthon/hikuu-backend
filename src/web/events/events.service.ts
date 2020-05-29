@@ -52,47 +52,38 @@ export class EventService {
     }
   }
 
-  async getViewById(id: number): Promise<EventViewDto> {
+  async getViewById(id: number): Promise<EventViewDto | null> {
     const event = await this.repo.findOne({
       relations: ['eventType', 'alertLevel', 'hike', 'reporter', 'attachments'],
       order: { logtime: 'DESC' },
       where: { id: id },
     });
 
+    if (!event) {
+      return null;
+    }
     return EventViewDto.fromEntity(event);
   }
 
   async create(event: EventDto): Promise<HikooResponse> {
-    try {
-      await this.repo.save(event.toEntity());
-    } catch (e) {
-      return { success: false, errorMessage: e.message };
-    }
-
+    await this.repo.save(event.toEntity());
     return { success: true };
   }
 
 
   async modify(event: ModifyEventDto[]): Promise<HikooResponse> {
-    try {
-      for (const element of event) {
-        await this.repo.update(
-          element.id,
-          {
-            stat: element.stat,
-            alertLevelId: element.alertId,
-          },
-        );
-      }
-      return {
-        success: true,
-        errorMessage: null,
-      };
-    } catch (e) {
-      return {
-        success: false,
-        errorMessage: e.errorMessage,
-      };
+    for (const element of event) {
+      await this.repo.update(
+        element.id,
+        {
+          stat: element.stat,
+          alertLevelId: element.alertId,
+        },
+      );
     }
+    return {
+      success: true,
+      errorMessage: null,
+    };
   }
 }

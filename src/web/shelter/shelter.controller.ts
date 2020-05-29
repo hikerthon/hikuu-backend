@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ShelterService } from './shelter.service';
 import { ShelterDto } from '../../share/dto/shelter.dto';
@@ -26,7 +26,11 @@ export class ShelterController {
   @ApiResponse({ status: HttpStatus.OK, type: ShelterDto, description: 'Get shelter info by Id' })
   async getById(@Param('id') id: number): Promise<ShelterDto> {
     this._logger.debug(`get station id [${id}]`);
-    return this.shelterSvc.getById(id);
+    const result = this.shelterSvc.getById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
 }

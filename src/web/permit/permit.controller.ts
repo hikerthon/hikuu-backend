@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Logger, Get, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PermitService } from './permit.service';
 import { PermitDto } from '../../share/dto/permit.dto';
@@ -25,6 +25,10 @@ export class PermitController {
   @ApiResponse({ status: HttpStatus.OK, type: PermitDto, description: 'Get permit info' })
   async getById(@Param('id') id: number): Promise<PermitDto> {
     this._logger.debug(`get permit id [${id}]`);
+    const result = this.permitSvc.getById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
     return this.permitSvc.getById(id);
   }
   

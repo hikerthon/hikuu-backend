@@ -1,4 +1,4 @@
-import { Controller, Logger, Get, Query, Param, Put, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Logger, Get, Query, Param, Put, Body, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 
 import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
@@ -38,7 +38,11 @@ export class HikesController {
   @ApiResponse({ status: HttpStatus.OK, type: HikeViewDto, isArray: true, description: 'Return list of hikes' })
   async getById(@Param('id') id: number): Promise<HikeViewDto> {
     this._logger.debug(`@Get hikes, id = ${id}`);
-    return this.hikesSvc.getHikes(id);
+    const result = this.hikesSvc.getHikes(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
   @Get('/byHikerId/:id')

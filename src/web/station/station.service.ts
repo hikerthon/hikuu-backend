@@ -17,8 +17,11 @@ export class StationService {
     return permits.map(permit => StationDto.fromEntity(permit));
   }
 
-  async getById(id: number): Promise<StationDto> {
+  async getById(id: number): Promise<StationDto | null> {
     const one = await this.repo.findOne({ where: { id: id } });
+    if (!one) {
+      return null;
+    }
     return StationDto.fromEntity(one);
   }
 }

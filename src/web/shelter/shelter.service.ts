@@ -17,8 +17,11 @@ export class ShelterService {
     return permits.map(permit => ShelterDto.fromEntity(permit));
   }
 
-  async getById(id: number): Promise<ShelterDto> {
+  async getById(id: number): Promise<ShelterDto | null> {
     const one = await this.repo.findOne({ where: { id: id } });
+    if (!one) {
+      return null;
+    }
     return ShelterDto.fromEntity(one);
   }
 }

@@ -61,7 +61,11 @@ export class AlertController {
   async getAlertById(
     @Param('id') id: number): Promise<AlertViewDto> {
     this._logger.debug(`@Get, id = [${id}]`);
-    return this.alertSvc.getViewById(id);
+    const result = this.alertSvc.getViewById(id);
+    if (!result) {
+      throw new HttpException({ success: false, errorMessage: 'undefined' }, HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
   @Post()
@@ -69,7 +73,7 @@ export class AlertController {
   @ApiOperation({ summary: 'Create new Alert' })
   @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: HikooBadReqResponse })
-    async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
+  async createAlert(@Body() alert: AlertDto): Promise<HikooResponse> {
     this._logger.debug(`@Post, info: ${alert.eventInfo}`);
     return await this.alertSvc.create(alert);
   }
