@@ -9,14 +9,21 @@
 ## Installation
 
 ### Step 1
+Clone hikoo backend code
+```bash
+$ git clone https://github.com/hikerthon/hikoo-backend.git
+```
+
+### Step 2
+Install package
 ```bash
 $ npm install --no-save
 ```
 
-### Step 2
+### Step 3
 If FCM account server is not configured, go to firebase console to acquire a account service json file and put it under fcm folder and name it hikoo.json.
 
-### Step 3
+### Step 4
 Create ormconfig.json
 example
 ```json
@@ -48,7 +55,7 @@ example
 }
 ```
 
-### Step 4
+### Step 5
 Add jwt.conf.json to project root
 ```json
 {

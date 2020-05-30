@@ -76,13 +76,15 @@ AND lngpt BETWEEN ? - (? / (111.045 * COS(RADIANS(?)))) AND ? + (? / (111.045 * 
       userTokens.push(element['fcm_token']);
     });
 
-    await this._fcm.sendMulticast({
-      notification: {
-        title: 'Hikoo',
-        body: alert.eventInfo,
-      },
-      tokens: userTokens,
-    });
+    if (userTokens.length > 0) {
+      await this._fcm.sendMulticast({
+        notification: {
+          title: 'Hikoo',
+          body: alert.eventInfo,
+        },
+        tokens: userTokens,
+      });
+    }
 
     return {
       success: true,
