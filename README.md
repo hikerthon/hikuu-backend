@@ -1,3 +1,5 @@
+![image](doc/source/image/Hikoo_logo.png)
+
 # Hikoo Backend
 
 ## Prerequisite
@@ -12,7 +14,7 @@ $ npm install --no-save
 ```
 
 ### Step 2
-If FCM account server is not configured, go to firebase console to aquire a account service json file and put it under fcm folder and name it hikoo.json.
+If FCM account server is not configured, go to firebase console to acquire a account service json file and put it under fcm folder and name it hikoo.json.
 
 ### Step 3
 Create ormconfig.json
@@ -47,7 +49,7 @@ example
 ```
 
 ### Step 4
-add jwt.conf.json to project root
+Add jwt.conf.json to project root
 ```json
 {
   "secret": "victoria's secret"
