@@ -1,7 +1,19 @@
-import { Controller, Logger, Get, Query, Param, Put, Body, HttpCode, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Logger,
+  Get,
+  Query,
+  Param,
+  Put,
+  Body,
+  HttpCode,
+  HttpStatus,
+  HttpException,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 
-import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
+import { HikeDto, HikeModifyDto, HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
 import { HikesService } from './hikes.service';
 import { CountResponseDto, HikooBadReqResponse, HikooResponse } from '../../share/dto/generic.dto';
 
@@ -78,5 +90,27 @@ export class HikesController {
     @Body() data: HikeViewModifyDto[]): Promise<HikooResponse> {
     this._logger.debug(`@Put, data = ${data}`);
     return this.hikesSvc.modifyHikes(data);
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create new hikes by hikerId' })
+  @ApiBody({ type: HikeDto })
+  @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
+  async insertHikes(@Body() data: HikeDto): Promise<HikooResponse> {
+    this._logger.debug(`@Post, data = ` + data);
+    const result = await this.hikesSvc.insertHikes(data);
+    return result;
+  }
+
+  @Put('/acceptHike/:id')
+  @ApiParam({ name: 'id', type: 'number', example: 1 })
+  @ApiOperation({ summary: 'Modify hikes acceptTime by hikerId' })
+  @ApiBody({ type: HikeModifyDto })
+  @ApiResponse({ status: HttpStatus.OK, type: HikooResponse })
+  async modifyHikes(@Param('id') id: number,
+                    @Body() data: HikeModifyDto): Promise<HikooResponse> {
+    this._logger.debug(`@Put AcceptHike, data = ` + data);
+    const result = await this.hikesSvc.modifyHikePermitStatus(data);
+    return result;
   }
 }

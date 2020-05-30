@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { HikeEntity } from '../../share/entity/hike.entity';
-import { HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
+import { HikeDto, HikeModifyDto, HikeViewDto, HikeViewModifyDto } from '../../share/dto/hike.dto';
 import { CountResponseDto } from '../../share/dto/generic.dto';
 import { HikooResponse } from '../../share/dto/generic.dto';
 import { AccountEntity } from '../../share/entity/account.entity';
+import { AlertDto } from '../../share/dto/alert.dto';
 
 @Injectable()
 export class HikesService {
@@ -88,4 +89,25 @@ export class HikesService {
       errorMessage: null,
     };
   }
+
+  async insertHikes(hikeData: HikeDto): Promise<HikooResponse> {
+    const saveThis = Object.assign(new HikeDto(), hikeData);
+    await this.repo.save(saveThis.toEntity());
+    return {
+      success: true,
+      errorMessage: null,
+    };
+  }
+
+  async modifyHikePermitStatus(dto: HikeModifyDto): Promise<HikooResponse> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(HikeEntity)
+      .set({ acceptedTime: new Date(dto.acceptTime), permitAccepted: dto.permitAccepted })
+      .where("id = :id", { id: dto.hikeId })
+      .execute();
+    return { success: true, errorMessage: null }
+  }
 }
+
+

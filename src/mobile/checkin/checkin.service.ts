@@ -71,8 +71,8 @@ export class CheckInService {
 
       if ( !thisHike || thisHike.id != hikeId ) {
         return new HikooResponse(false, 'This user does not have this hiking plan!');
-      } else if ( thisHike.hike_started == true ) {
-        return new HikooResponse(false, 'This hiking plan has already started!');
+      } else if ( thisHike.hike_started == false ) {
+        return new HikooResponse(false, 'This hiking plan not yet started');
       } else if ( thisHike.hike_finished == true ) {
         return new HikooResponse(false, 'This hiking plan has already finished!');
       }
