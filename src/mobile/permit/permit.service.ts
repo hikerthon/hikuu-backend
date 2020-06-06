@@ -27,8 +27,8 @@ export class PermitService {
       relations: ['hiker', 'permit', 'trails'],
       where: { hikerId: hikerId },
       order: { hikeStart: 'ASC' },
-      skip: start,
-      take: count,
+      // skip: start,
+      // take: count,
     });
 
     return hikes.map(hike => HikeViewDto.fromEntity(hike));
