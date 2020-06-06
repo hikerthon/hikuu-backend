@@ -82,7 +82,7 @@ export class AlertDto {
   @ApiProperty({ description: 'id of the event to be upgraded into alert', nullable: true })
   originEventId: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   attachments: string[];
 
   @ApiProperty({ description: 'Broadcast time. auto generated on create', nullable: true, readOnly: true })

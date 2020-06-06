@@ -58,12 +58,15 @@ export class AlertService {
     const newAlert = await this.repo.save(saveThis.toEntity());
 
     // save attachments
-    alert.attachments.forEach(function(attachment) {
-      const atc = new AlertAttachmentEntity();
-      atc.alert = newAlert;
-      atc.imagePath = attachment;
-      getConnection().getRepository(AlertAttachmentEntity).save(atc);
-    });
+    if (alert.attachments && alert.attachments.length > 0) {
+      alert.attachments.forEach(function(attachment) {
+        const atc = new AlertAttachmentEntity();
+        atc.alert = newAlert;
+        atc.imagePath = attachment;
+        getConnection().getRepository(AlertAttachmentEntity).save(atc);
+      });
+    }
+
     let userTokens = [];
     const tokens = await getManager().query(`
 SELECT c.fcm_token
@@ -81,6 +84,11 @@ AND lngpt BETWEEN ? - (? / (111.045 * COS(RADIANS(?)))) AND ? + (? / (111.045 * 
         notification: {
           title: 'Hikoo',
           body: alert.eventInfo,
+        },
+        data: {
+          latpt: alert.latpt.toString(),
+          lngpt: alert.lngpt.toString(),
+          alertlevel: alert.alertLevelId.toString(),
         },
         tokens: userTokens,
       });
