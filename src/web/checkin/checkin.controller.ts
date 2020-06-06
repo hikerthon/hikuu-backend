@@ -13,12 +13,15 @@ import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckinService } from './checkin.service';
 import { CheckinDto, CheckinCreateDto } from '../../share/dto/checkin.dto';
 import { HikooBadReqResponse, HikooResponse } from '../../share/dto/generic.dto';
+import { FirebaseMessagingService } from '@aginix/nestjs-firebase-admin/dist';
 
 
 @ApiTags('checkin')
 @Controller('checkin')
 export class CheckinController {
-  constructor(private checkinSvc: CheckinService, private _logger: Logger) {
+  constructor(private checkinSvc: CheckinService,
+              private _logger: Logger,
+              private _fcm: FirebaseMessagingService,) {
     _logger.setContext(CheckinController.name);
   }
 
@@ -40,12 +43,21 @@ export class CheckinController {
   async createAlert(@Body() checkin: CheckinCreateDto): Promise<HikooResponse> {
     this._logger.debug(`@Post, Checkin info: ${checkin.hikerId}, ${checkin.hikeId}`);
     const result = await this.checkinSvc.sendCheckIn(checkin);
+
     if (!result.success) {
       throw new HttpException(
         { success: false, errorMessage: result.errorMessage },
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    await this._fcm.send({
+      notification: {
+        title: 'check-in',
+        body: 'checkin success'
+      },
+      token: checkin.fcmToken
+    });
     return result;
   }
 }

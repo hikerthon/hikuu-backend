@@ -56,7 +56,7 @@ export class CheckinTimeByTodayDto {
 }
 
 export class CheckinCreateDto {
-  @ApiProperty({type: Number, example: 1, nullable: false})
+  @ApiProperty({type: Number, example: 3, nullable: false})
   @IsNumber()
   @IsDefined()
   hikerId: number;
@@ -65,4 +65,9 @@ export class CheckinCreateDto {
   @IsNumber()
   @IsDefined()
   hikeId: number;
+
+  @ApiProperty({type: 'string', example: "f2liOhxPRYSd-sp0r7M-KI:APA91bH4fYvPcrCVNEPXLPSRrMcknSTBWvQ8vjnqLi6g1V9nzd3WzzQoKd3uXsBfnPw3vbfnkg8rzf5MPZU4mBjJNiQoC5RwZ1oSpqyfUvV33JqeW_ARzp7ZKK9iOT1S17J8bEwmqHEL", nullable: false})
+  @IsString()
+  @IsDefined()
+  fcmToken: string;
 }
