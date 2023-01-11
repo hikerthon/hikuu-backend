@@ -35,7 +35,7 @@
     "@nestjs/websockets": "^7.0.13",
     "aws-sdk": "^2.683.0",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.12.2",
+    "class-validator": "^0.14.0",
     "date-fns": "^2.14.0",
     "firebase-admin": "^8.12.1",
     "mysql": "^2.18.1",
